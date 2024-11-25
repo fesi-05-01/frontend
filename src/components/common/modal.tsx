@@ -3,6 +3,7 @@
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 
+import XIcon from '~/src/assets/icons/x.svg';
 import { cn } from '~/src/utils/class-name';
 
 const Dialog = DialogPrimitive.Root;
@@ -48,8 +49,8 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-6 top-6 disabled:pointer-events-none">
-        <span>X</span>
+      <DialogPrimitive.Close className="absolute right-6 top-[1.65rem] disabled:pointer-events-none">
+        <XIcon />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
@@ -79,10 +80,7 @@ const DialogTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Title
     ref={ref}
-    className={cn(
-      'text-lg font-semibold leading-none tracking-tight',
-      className,
-    )}
+    className={cn('text-lg font-semibold tracking-tight', className)}
     {...props}
   />
 ));
