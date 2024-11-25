@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import Dropdown from '~/src/components/common/Dropdown';
+import Dropdown from '~/src/components/common/dropdown';
 
 export default function Filter({
   type,
@@ -19,15 +19,22 @@ export default function Filter({
   };
 
   return (
-    <div className="relative h-9 w-[110px] lg:h-10 lg:w-[120px]">
+    <div className="relative">
       <button
         onClick={toggleDropdown}
-        className="w-full rounded border border-gray-300 bg-white px-4 py-2 hover:bg-gray-100"
+        className={`flex h-8 w-[110px] rounded-xl border-[2px] border-secondary-100 bg-white px-3 py-[6px] text-secondary-800 hover:bg-secondary-50 sm:h-9 sm:w-[120px] sm:py-2 ${
+          type === 'Right'
+            ? 'justify-between active:border-none active:bg-secondary-900 active:text-secondary-50'
+            : 'gap-[10px]'
+        } ${type === 'Left' ? 'h-9 w-9 px-[6px] py-[6px] sm:h-auto sm:w-auto sm:px-3 sm:py-2' : ''}`}
       >
         <div className={`${type === 'Left' ? 'text-left' : 'hidden'}`}>왼</div>
-        {selected}
+        <div className={`${type === 'Left' ? 'hidden sm:block' : ''}`}>
+          {selected}
+        </div>
         <div className={`${type === 'Right' ? 'text-left' : 'hidden'}`}>오</div>
       </button>
+
       {isOpen && (
         <Dropdown options={options} onSelect={selectOption} type={type} />
       )}
