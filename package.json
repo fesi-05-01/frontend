@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "lts/iron"
+    "node": "v20.18.1"
   },
   "scripts": {
     "dev": "next dev",
