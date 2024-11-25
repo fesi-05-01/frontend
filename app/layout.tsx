@@ -1,5 +1,8 @@
 import type { Metadata } from 'next';
 
+import { pretendard } from '~/src/fonts/fonts';
+import { cn } from '~/src/utils/class-name';
+
 import '~/src/styles/globals.css';
 
 export const metadata: Metadata = {
@@ -14,7 +17,9 @@ interface Props {
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="ko">
-      <body>{children}</body>
+      <body className={cn(pretendard.variable, 'font-pretendard')}>
+        {children}
+      </body>
     </html>
   );
 }
