@@ -1,0 +1,55 @@
+name: Test CI
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit-test-and-coverage:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18.x'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Unit Test
+        run: npm run test -- --coverage
+
+      - name: Upload results to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  cypress-test:
+    runs-on: ubuntu-latest
+    needs: unit-test-and-coverage
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            cypress:
+              - 'cypress/e2e/**'
+              - 'app/**'
+              - 'src/**'
+
+      - name: Cypress Test
+        if: steps.changes.outputs.cypress == 'true'
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm run start
+          wait-on: http://localhost:3000
