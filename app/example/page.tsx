@@ -6,10 +6,10 @@ export default function example() {
   return (
     <div className="flex justify-between p-4">
       <div>
-        <Filter type="Left" options={options} />
+        <Filter version="Left" options={options} />
       </div>
       <div>
-        <Filter type="Right" options={options} />
+        <Filter version="Right" options={options} />
       </div>
     </div>
   );
