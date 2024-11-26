@@ -1,35 +1,36 @@
-import React from 'react';
+'use client';
 
-interface ButtonProps {
-  children: React.ReactNode;
-  type: 'button' | 'submit' | 'reset';
-  disabled?: boolean;
-  variant?: 'default' | 'cancel';
+import React, { type ComponentPropsWithoutRef } from 'react';
+
+import { cn } from '~/src/utils/class-name';
+
+interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
+  variant?: 'outlined';
 }
 
 export default function Button({
   children,
-  type,
-  disabled = false,
-  variant = 'default',
+  variant,
+  disabled,
+  className,
+  ...props
 }: ButtonProps) {
-  const buttonstyle = 'w-full rounded-xl p-3';
-
-  const defaultstyle = disabled
-    ? 'bg-secondary-400 text-white'
-    : 'bg-primary-600 text-white';
-
-  const cancelstyle = disabled
-    ? 'bg-white border-secondary-300 border text-secondary-400'
-    : 'bg-white border-primary-600 border text-primary-600';
-
-  const variantstyle = variant === 'cancel' ? cancelstyle : defaultstyle;
-
   return (
     <button
-      className={`${buttonstyle} ${variantstyle} ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}
-      type={type}
+      {...props}
       disabled={disabled}
+      className={cn(
+        'w-full rounded-xl p-3 text-white',
+        variant === 'outlined'
+          ? disabled
+            ? 'border border-secondary-400 bg-white text-secondary-400'
+            : 'border border-primary-600 bg-white text-primary-600'
+          : disabled
+            ? 'bg-secondary-400'
+            : 'bg-primary-600',
+        disabled ? 'cursor-not-allowed' : 'cursor-pointer',
+        className,
+      )}
     >
       {children}
     </button>

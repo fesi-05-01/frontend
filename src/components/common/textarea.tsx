@@ -1,27 +1,21 @@
 'use client';
 
-interface TextareaProps {
-  placeholder: string;
-  name?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-}
+import { type ComponentPropsWithoutRef } from 'react';
+
+import { cn } from '~/src/utils/class-name';
 
 export default function Textarea({
-  placeholder,
-  name,
-  value,
-  onChange,
-}: TextareaProps) {
+  className,
+  ...props
+}: ComponentPropsWithoutRef<'textarea'>) {
   return (
-    <div className="rounded-lg bg-secondary-50 p-2">
+    <div className={cn('rounded-lg bg-secondary-50 p-2')}>
       <textarea
-        className={`h-[120px] w-full resize-none bg-transparent scrollbar-thin scrollbar-track-transparent scrollbar-thumb-secondary-200 focus:outline-none`}
-        placeholder={placeholder}
-        required
-        name={name}
-        onChange={onChange}
-        value={value}
+        {...props}
+        className={cn(
+          'h-[120px] w-full resize-none bg-transparent scrollbar-thin scrollbar-track-transparent scrollbar-thumb-secondary-200 focus:outline-none',
+          className,
+        )}
       />
     </div>
   );
