@@ -13,7 +13,9 @@ interface filterProps extends React.ComponentPropsWithoutRef<'button'> {
 }
 
 export default function Filter({ version, options, ...rest }: filterProps) {
-  const [selected, setSelected] = useState('Filter');
+  const [selected, setSelected] = useState(
+    options.length > 0 ? options[0] : '',
+  );
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => setIsOpen(!isOpen);
