@@ -1,8 +1,8 @@
 'use client';
 import { DayPicker } from 'react-day-picker';
 
-import ButtonLeft from '~/src/components/calender/button-left';
-import ButtonRight from '~/src/components/calender/button-right';
+import ButtonLeft from '~/src/assets/icons/caret-left.svg';
+import ButtonRight from '~/src/assets/icons/caret-right.svg';
 import { cn } from '~/src/utils/class-name';
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 export default function Calender({
