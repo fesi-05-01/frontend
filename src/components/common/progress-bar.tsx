@@ -17,7 +17,7 @@ export default function ProgressBar({
 
   return (
     <div className={cn(`h-[60px] w-full px-6 pb-4 pt-2`, className)}>
-      <div className="relative h-1 rounded-md bg-white">
+      <div className="relative h-1 rounded-md bg-orange-50">
         <div
           className={cn(`h-1 rounded-md bg-orange-600`, barClassName)}
           style={{ width: `${progressPercentage}%` }}
