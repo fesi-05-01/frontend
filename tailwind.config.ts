@@ -4,6 +4,15 @@ const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx,mdx}', './src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
+      screens: {
+        mobile: '375px',
+        tablet: '744px',
+        desktop: '1200px',
+      },
+      spacing: {
+        header: 'var(--height-header)',
+        floatingBar: 'var(--height-floating-bar)',
+      },
       fontFamily: {
         pretendard: [
           'var(--font-pretendard)',
