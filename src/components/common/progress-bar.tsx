@@ -16,13 +16,13 @@ export default function ProgressBar({
   const progressPercentage = Math.min((current / capacity) * 100, 100);
 
   return (
-    <div className={cn(`h-[60px] w-full px-6 pb-4 pt-2`, className)}>
-      <div className="relative h-1 rounded-md bg-orange-50">
-        <div
-          className={cn(`h-1 rounded-md bg-orange-600`, barClassName)}
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
+    <div
+      className={cn(`relative h-1 w-full rounded-md bg-orange-50`, className)}
+    >
+      <div
+        className={cn(`h-1 rounded-md bg-orange-600`, barClassName)}
+        style={{ width: `${progressPercentage}%` }}
+      ></div>
     </div>
   );
 }
