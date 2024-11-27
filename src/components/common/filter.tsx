@@ -18,7 +18,9 @@ export default function Filter({ version, options, ...rest }: filterProps) {
   );
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleDropdown = () => setIsOpen(!isOpen);
+  const toggleDropdown = () => {
+    setIsOpen(!isOpen);
+  };
   const selectOption = (option: string) => {
     setSelected(option);
     setIsOpen(false);
@@ -31,13 +33,18 @@ export default function Filter({ version, options, ...rest }: filterProps) {
         onClick={toggleDropdown}
         className={cn(
           'flex h-9 rounded-xl border-[2px] border-secondary-100 bg-white px-3 py-[6px] text-secondary-800',
-          'sm:h-10 sm:py-2',
+          'mobile:h-10 mobile:py-2',
           version === 'Right' &&
-            (isOpen
-              ? 'justify-between border-none bg-secondary-900 text-secondary-50'
-              : 'justify-between hover:bg-secondary-50'),
+            cn(
+              isOpen
+                ? 'justify-between border-none bg-secondary-900 text-secondary-50'
+                : 'justify-between hover:bg-secondary-50',
+            ),
           version === 'Left' &&
-            'h-9 w-9 px-[6px] py-[6px] hover:bg-secondary-50 sm:w-[120px] sm:gap-[10px] sm:px-3 sm:py-2',
+            cn(
+              'h-9 w-9 px-[6px] py-[6px] hover:bg-secondary-50',
+              'mobile:w-[120px] mobile:gap-[10px] mobile:px-3 mobile:py-2',
+            ),
           version !== 'Left' && 'w-[110px]',
         )}
       >
@@ -46,18 +53,21 @@ export default function Filter({ version, options, ...rest }: filterProps) {
           alt="sortIcon"
           width={24}
           height={24}
-          className={`${version === 'Left' ? 'text-left' : 'hidden'}`}
+          className={cn(version === 'Left' ? 'text-left' : 'hidden')}
         />
 
         <div
-          className={`flex items-center text-sm ${version === 'Left' ? 'hidden sm:block' : ''}`}
+          className={cn(
+            'flex items-center text-sm',
+            version === 'Left' ? 'hidden mobile:block' : '',
+          )}
         >
           {selected}
         </div>
         <Image
           src={isOpen ? DownCaretInverse : DownCaret}
           alt="Caret Icon"
-          className={version === 'Right' ? 'text-left' : 'hidden'}
+          className={cn(version === 'Right' ? 'text-left' : 'hidden')}
           width={24}
           height={24}
         />
