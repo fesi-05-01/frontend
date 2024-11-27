@@ -27,7 +27,7 @@ export default function Filter({ version, options, ...rest }: filterProps) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative whitespace-nowrap">
       <button
         {...rest}
         onClick={toggleDropdown}
@@ -43,9 +43,10 @@ export default function Filter({ version, options, ...rest }: filterProps) {
           version === 'Left' &&
             cn(
               'h-9 w-9 px-[6px] py-[6px] hover:bg-secondary-50',
-              'mobile:w-[120px] mobile:gap-[10px] mobile:px-3 mobile:py-2',
+              'w-auto',
+              'mobile:min-w-[120px] mobile:gap-[10px] mobile:px-3 mobile:py-2',
             ),
-          version !== 'Left' && 'w-[110px]',
+          version !== 'Left' && 'min-w-[110px]',
         )}
       >
         <Image
