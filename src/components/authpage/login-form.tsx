@@ -4,13 +4,13 @@ import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
+import Button from '~/src/components/common/button';
 import {
   Form,
   FormField,
   FormItem,
   FormLabel,
-} from '~/src/components/authpage/form';
-import Button from '~/src/components/common/button';
+} from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
 
 const formSchema = z.object({
