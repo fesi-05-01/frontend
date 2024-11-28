@@ -4,18 +4,21 @@ import Image from 'next/image';
 
 import SaveBye from '~/src/assets/icons/circle-bye.svg';
 import Save from '~/src/assets/icons/save';
-import ChipInfoContainer from '~/src/components/card/chip-info-container';
-import ClosedButton from '~/src/components/card/closed-button';
-import Confirmation from '~/src/components/card/confirmation';
-import JoinNowButton from '~/src/components/card/join-now-button';
-import MemberCountChip from '~/src/components/card/member-count-chip';
-import { type CardProps } from '~/src/components/card/type-props';
-import useCard from '~/src/components/card/use-card';
+import MemberCountChip from '~/src/components/common/member-count-chip';
 import ProgressBar from '~/src/components/common/progress-bar';
 import Tag from '~/src/components/common/tag';
+import ChipInfoContainer from '~/src/components/gathering-card/chip-info-container';
+import ClosedButton from '~/src/components/gathering-card/closed-button';
+import Confirmation from '~/src/components/gathering-card/confirmation';
+import JoinNowButton from '~/src/components/gathering-card/join-now-button';
+import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
+import useGatheringCard from '~/src/components/gathering-card/use-gathering-card';
 
-export default function CardLarge({ state, gathering }: CardProps) {
-  const { isActive, handleSaveButton, cardState } = useCard({
+export default function GatheringCardLarge({
+  state,
+  gathering,
+}: GatheringCardProps) {
+  const { isActive, handleSaveButton, cardState } = useGatheringCard({
     initialState: false,
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,

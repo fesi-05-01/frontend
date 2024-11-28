@@ -3,8 +3,8 @@
 import { useState } from 'react';
 import useBreakpoint from 'use-breakpoint';
 
-import CardLarge from '~/src/components/card/card-large';
-import CardSmall from '~/src/components/card/card-small';
+import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
+import GatheringCardSmall from '~/src/components/gathering-card/gathering-card-small';
 import MainContainer from '~/src/components/layout/main-container';
 import { type Gathering } from '~/src/services/gatherings/types';
 import { getBreakpoints } from '~/src/utils/breakpoints';
@@ -37,9 +37,9 @@ export default function GatheringsPage() {
     <MainContainer>
       {breakpoint}
       {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
-        <CardLarge state={tmpState} gathering={tmpVar} />
+        <GatheringCardLarge state={tmpState} gathering={tmpVar} />
       ) : (
-        <CardSmall state={tmpState} gathering={tmpVar} />
+        <GatheringCardSmall state={tmpState} gathering={tmpVar} />
       )}
       <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
         default | disabled

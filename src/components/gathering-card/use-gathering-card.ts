@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 
-interface UseCardProps {
+interface UseGatheringCardProps {
   initialState?: boolean;
   participantCount: number;
   capacity: number;
 }
 
-export default function useCard({
+export default function useGatheringCard({
   initialState = false,
   participantCount,
   capacity,
-}: UseCardProps) {
+}: UseGatheringCardProps) {
   const [isActive, setIsActive] = useState<boolean>(initialState);
   const [cardState, setCardState] = useState<
     'ongoing' | 'confirmation' | 'closed'
