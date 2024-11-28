@@ -9,8 +9,8 @@ interface TagProps {
 
 export default function Tag({ children, size, className }: TagProps) {
   const sizeClasses = {
-    small: 'pr-2.5',
-    large: 'pr-4 rounded-tr-[22px]',
+    small: 'pr-4 rounded-tr-[22px]',
+    large: 'pr-2.5',
   };
   return (
     <span
