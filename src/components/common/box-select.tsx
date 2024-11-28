@@ -23,16 +23,18 @@ export default function BoxSelect({
     checked === true ? 'text-white' : 'text-secondary-700';
   return (
     <div
-      className={`flex h-[76px] w-[109px] gap-[2px] rounded-lg pl-2 pt-[6px] mobile:h-[70px] mobile:w-[149px] mobile:gap-2 mobile:pl-4 mobile:pt-3 ${checkClass}`}
+      className={`flex h-[76px] w-[109px] gap-[2px] rounded-lg pl-2 pr-3 pt-[6px] mobile:h-[70px] mobile:w-[149px] mobile:gap-2 mobile:pl-4 mobile:pt-3 ${checkClass}`}
     >
       <Checkbox isChecked={checked} onClick={toggleChecked} />
       <div className="flex-col gap-1 mobile:gap-[2px]">
         <span
-          className={`block text-sm font-medium mobile:text-base mobile:font-bold ${checkedTitleClass}`}
+          className={`block text-sm font-semibold mobile:text-base ${checkedTitleClass}`}
         >
           {title}
         </span>
-        <span className={`block ${checkedDescriptionClass}`}>
+        <span
+          className={`block break-keep text-xs font-medium ${checkedDescriptionClass}`}
+        >
           {description}
         </span>
       </div>
