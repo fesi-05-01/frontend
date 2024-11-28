@@ -5,7 +5,7 @@ import Logo from '~/src/components/common/logo';
 
 export default function Gnb() {
   return (
-    <nav className="flex gap-4">
+    <nav className="flex items-center justify-center gap-4 whitespace-nowrap text-sm tablet:text-base">
       <Logo />
 
       <ActiveLink href="/gatherings">모임 찾기</ActiveLink>

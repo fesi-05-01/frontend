@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { cn } from '~/src/utils/class-name';
 
-const Card = React.forwardRef<
+const AuthCard = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -15,9 +15,9 @@ const Card = React.forwardRef<
     {...props}
   />
 ));
-Card.displayName = 'Card';
+AuthCard.displayName = 'AuthCard';
 
-const CardTitle = React.forwardRef<
+const AuthCardTitle = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -27,17 +27,17 @@ const CardTitle = React.forwardRef<
     {...props}
   />
 ));
-CardTitle.displayName = 'CardTitle';
+AuthCardTitle.displayName = 'AuthCardTitle';
 
-const CardContent = React.forwardRef<
+const AuthCardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
   <div ref={ref} className={cn('w-full', className)} {...props} />
 ));
-CardContent.displayName = 'CardContent';
+AuthCardContent.displayName = 'AuthCardContent';
 
-const CardFooter = React.forwardRef<
+const AuthCardFooter = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
@@ -47,6 +47,6 @@ const CardFooter = React.forwardRef<
     {...props}
   />
 ));
-CardFooter.displayName = 'CardFooter';
+AuthCardFooter.displayName = 'AuthCardFooter';
 
-export { Card, CardContent, CardFooter, CardTitle };
+export { AuthCard, AuthCardContent, AuthCardFooter, AuthCardTitle };
