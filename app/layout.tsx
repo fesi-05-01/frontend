@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 
 import Header from '~/src/components/layout/header';
 import { pretendard } from '~/src/fonts/fonts';
+import { TanstackQueryProvider } from '~/src/providers/tanstack-query-provider';
 import { cn } from '~/src/utils/class-name';
 
 import '~/src/styles/globals.css';
@@ -21,8 +22,10 @@ export default function RootLayout({ children }: Readonly<Props>) {
       <body
         className={cn(pretendard.variable, 'bg-secondary-100 font-pretendard')}
       >
-        <Header />
-        {children}
+        <TanstackQueryProvider>
+          <Header />
+          {children}
+        </TanstackQueryProvider>
       </body>
     </html>
   );
