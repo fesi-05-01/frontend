@@ -5,6 +5,7 @@ import Image from 'next/image';
 import RectangleBye from '~/src/assets/icons/rectangle-bye.svg';
 import Save from '~/src/assets/icons/save';
 import ChipInfoContainer from '~/src/components/card/chip-info-container';
+import ClosedButton from '~/src/components/card/closed-button';
 import Confirmation from '~/src/components/card/confirmation';
 import JoinNowButton from '~/src/components/card/join-now-button';
 import MemberCountChip from '~/src/components/card/member-count-chip';
@@ -14,7 +15,11 @@ import ProgressBar from '~/src/components/common/progress-bar';
 import Tag from '~/src/components/common/tag';
 
 export default function CardSmall({ state, gathering }: CardProps) {
-  const { isActive, handleSaveButton } = useCard();
+  const { isActive, handleSaveButton, cardState } = useCard({
+    initialState: false,
+    participantCount: gathering.participantCount ?? 5,
+    capacity: gathering.capacity ?? 20,
+  });
 
   return (
     <div
@@ -65,18 +70,23 @@ export default function CardSmall({ state, gathering }: CardProps) {
               <MemberCountChip
                 current={gathering.participantCount || 5}
                 capacity={gathering.capacity || 20}
+                className={cardState === 'closed' ? 'text-orange-400' : ''}
               />
-              <Confirmation />
+              {cardState === 'confirmation' && <Confirmation />}
             </div>
             <ProgressBar
               current={gathering.participantCount || 5}
               capacity={gathering.capacity || 20}
+              barClassName={cardState === 'closed' ? 'bg-orange-400' : ''}
             />
           </div>
 
           {/* 버튼 */}
-          <JoinNowButton onClick={() => console.log('wow')} />
-          {/* <ClosedButton /> */}
+          {cardState === 'closed' ? (
+            <ClosedButton />
+          ) : (
+            <JoinNowButton onClick={() => console.log('wow')} />
+          )}
         </div>
       </div>
 

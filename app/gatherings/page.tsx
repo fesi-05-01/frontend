@@ -15,7 +15,7 @@ const tmpVar: Gathering = {
   name: '달램핏 마인드풀니스',
   location: '을지로3가',
   dateTime: '2024-07-31T09:06:16.184Z',
-  participantCount: 5,
+  participantCount: 5, // 20으로 채우면 cardState 변경
   capacity: 20,
 };
 

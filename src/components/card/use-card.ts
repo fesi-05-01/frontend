@@ -1,12 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-export default function useCard(initialState: boolean = false) {
+interface UseCardProps {
+  initialState?: boolean;
+  participantCount: number;
+  capacity: number;
+}
+
+export default function useCard({
+  initialState = false,
+  participantCount,
+  capacity,
+}: UseCardProps) {
   const [isActive, setIsActive] = useState<boolean>(initialState);
+  const [cardState, setCardState] = useState<
+    'ongoing' | 'confirmation' | 'closed'
+  >('ongoing');
+
+  useEffect(() => {
+    if (participantCount >= capacity) {
+      setCardState('closed');
+    } else if (participantCount >= 5) {
+      setCardState('confirmation');
+    } else {
+      setCardState('ongoing');
+    }
+  }, [participantCount, capacity]);
 
   const handleSaveButton = (event: React.MouseEvent<SVGSVGElement>) => {
     event.stopPropagation();
-    setIsActive(!isActive);
+    setIsActive((prev) => !prev);
   };
 
-  return { isActive, handleSaveButton };
+  return { isActive, cardState, handleSaveButton };
 }
