@@ -28,7 +28,9 @@ export default function Dropdown({
     <div
       className={cn(
         'absolute mt-2 rounded-xl bg-white shadow-lg',
-        version === 'Filter' ? 'w-full' : 'w-[110px] desktop:w-[142px]',
+        version === 'Filter'
+          ? 'w-full mobile:min-w-[120px]'
+          : 'mobile:w-[110px] desktop:w-[142px]',
         className,
       )}
     >
@@ -38,10 +40,8 @@ export default function Dropdown({
           key={option}
           onClick={() => handleSelect(option)}
           className={cn(
-            'm-1 block rounded-xl px-4 py-2 text-left hover:bg-secondary-200',
-            version === 'Filter'
-              ? 'w-[calc(100%-8px)]'
-              : 'h-10 w-[calc(100%-8px)] desktop:h-11',
+            'm-1 block w-[calc(100%-8px)] rounded-xl px-4 py-2 text-left hover:bg-secondary-200',
+            version === 'Filter' ? '' : 'mobile:h-10 desktop:h-11',
             selectedOption === option ? 'bg-orange-100' : '',
             className,
           )}
