@@ -1,15 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { useBreakpoint } from 'use-breakpoint';
 
 import Chip from '~/src/components/common/chip';
 import { type GatheringType } from '~/src/services/types';
 import { getBreakpoints } from '~/src/utils/breakpoints';
+import { cn } from '~/src/utils/class-name';
 
 const BREAKPOINT = getBreakpoints();
 
-const VALUE = [
+const VALUE: Array<{ label: string; value: GatheringType }> = [
   {
     label: '전체',
     value: 'DALLAEMFIT',
@@ -24,30 +24,31 @@ const VALUE = [
   },
 ];
 
-export default function Sub() {
+interface Props {
+  type: GatheringType;
+  onChangeFilter: (type: GatheringType) => void;
+}
+
+export default function Sub({ type, onChangeFilter }: Props) {
   const { breakpoint } = useBreakpoint(BREAKPOINT, 'mobile');
 
-  const [selected, setSelected] = useState<GatheringType>('DALLAEMFIT');
-  const handleSelect = (type: GatheringType) => {
-    setSelected(type);
-  };
-
   return (
-    <div className="flex min-h-10 gap-2">
-      {selected !== 'WORKATION' && (
-        <>
-          {VALUE.map(({ label, value }) => (
-            <Chip
-              key={value}
-              size={breakpoint === 'mobile' ? 'small' : 'large'}
-              state={value === selected ? 'active' : 'default'}
-              onClick={() => handleSelect(value as GatheringType)}
-            >
-              {label}
-            </Chip>
-          ))}
-        </>
+    <div
+      className={cn(
+        'flex min-h-10 gap-2 transition-opacity duration-300',
+        type === 'WORKATION' && 'opacity-0',
       )}
+    >
+      {VALUE.map(({ label, value }) => (
+        <Chip
+          key={value}
+          size={breakpoint === 'mobile' ? 'small' : 'large'}
+          state={value === type ? 'active' : 'default'}
+          onClick={() => onChangeFilter(value)}
+        >
+          {label}
+        </Chip>
+      ))}
     </div>
   );
 }
