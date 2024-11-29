@@ -52,6 +52,10 @@ const config: Config = {
           600: '#DC2626',
         },
       },
+      boxShadow: {
+        'card-hover':
+          '2px 2px 12px 0px #DBDBDB33, -2px -2px 12px 0px #DBDBDB33',
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports
