@@ -22,7 +22,11 @@ export default async function AllReviewsPage() {
   return (
     <MainContainer>
       <PageTitleWithImage />
-      <GatheringTab />
+
+      <GatheringTab>
+        <GatheringTab.Main />
+        <GatheringTab.Sub />
+      </GatheringTab>
 
       <ReviewScore />
 
