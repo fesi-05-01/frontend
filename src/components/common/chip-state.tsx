@@ -1,10 +1,12 @@
 import CheckIcon from '~/src/assets/icons/check.svg';
+import { cn } from '~/src/utils/class-name';
 
 interface ChipStateProps {
   state: 'scheduled' | 'done' | 'confirmed' | 'pending';
+  className?: string;
 }
 
-export default function ChipState({ state }: ChipStateProps) {
+export default function ChipState({ state, className }: ChipStateProps) {
   const stateTexts = {
     scheduled: '이용 예정',
     done: '이용 완료',
@@ -21,7 +23,10 @@ export default function ChipState({ state }: ChipStateProps) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1 rounded-3xl px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`}
+      className={cn(
+        `inline-flex items-center gap-1 rounded-3xl px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
+        className,
+      )}
     >
       {state === 'confirmed' && <CheckIcon />}
       {stateTexts[state]}

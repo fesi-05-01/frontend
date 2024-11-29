@@ -1,10 +1,18 @@
-interface ChipTimeProps {
+import { type ComponentPropsWithoutRef } from 'react';
+
+import { cn } from '~/src/utils/class-name';
+
+interface ChipTimeProps extends ComponentPropsWithoutRef<'button'> {
   children: React.ReactNode;
   state: 'active' | 'inactive' | 'disabled';
-  onClick?: () => void;
+  className?: string;
 }
 
-export default function ChipTime({ children, state, onClick }: ChipTimeProps) {
+export default function ChipTime({
+  children,
+  state,
+  className,
+}: ChipTimeProps) {
   const stateClasses = {
     active: 'bg-gray-900 text-white',
     inactive: 'bg-gray-50 text-gray-900 border border-gray-200',
@@ -13,8 +21,10 @@ export default function ChipTime({ children, state, onClick }: ChipTimeProps) {
 
   return (
     <button
-      onClick={onClick}
-      className={`rounded-lg px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`}
+      className={cn(
+        `rounded-lg px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
+        className,
+      )}
     >
       {children}
     </button>

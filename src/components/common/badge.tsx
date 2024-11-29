@@ -1,8 +1,11 @@
+import { cn } from '~/src/utils/class-name';
+
 interface BadgeProps {
   children: React.ReactNode;
+  className?: string;
 }
 
-export default function Badge({ children }: BadgeProps) {
+export default function Badge({ children, className }: BadgeProps) {
   const numericValue =
     typeof children === 'number'
       ? children
@@ -14,7 +17,12 @@ export default function Badge({ children }: BadgeProps) {
     numericValue !== null && numericValue > 999 ? '999+' : children;
 
   return (
-    <span className="rounded-[8.5px] bg-gray-900 px-[7px] text-white">
+    <span
+      className={cn(
+        `rounded-[8.5px] bg-gray-900 px-[7px] text-white`,
+        className,
+      )}
+    >
       {displayText}
     </span>
   );
