@@ -54,13 +54,16 @@ export default function GatheringsPage() {
         </div>
 
         {/* 카드 */}
-        <div className="flex flex-col items-center gap-6">
-          {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
+
+        {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
+          <div className="flex flex-col gap-6">
             <GatheringCardLarge state={tmpState} gathering={tmpVar} />
-          ) : (
+          </div>
+        ) : (
+          <div className="flex flex-col items-center gap-6">
             <GatheringCardSmall state={tmpState} gathering={tmpVar} />
-          )}
-        </div>
+          </div>
+        )}
       </div>
 
       {breakpoint}
