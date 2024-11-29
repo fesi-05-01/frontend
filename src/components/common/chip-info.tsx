@@ -1,9 +1,12 @@
+import { cn } from '~/src/utils/class-name';
+
 interface ChipInfoProps {
   children: React.ReactNode;
   type: 'date' | 'time';
+  className?: string;
 }
 
-export default function ChipInfo({ children, type }: ChipInfoProps) {
+export default function ChipInfo({ children, type, className }: ChipInfoProps) {
   const typeClasses = {
     date: 'text-white',
     time: 'text-orange-600',
@@ -11,7 +14,10 @@ export default function ChipInfo({ children, type }: ChipInfoProps) {
 
   return (
     <span
-      className={`rounded-[4px] bg-gray-900 px-2 py-[2px] text-sm font-medium ${typeClasses[type]}`}
+      className={cn(
+        `rounded-[4px] bg-gray-900 px-2 py-[2px] text-sm font-medium ${typeClasses[type]}`,
+        className,
+      )}
     >
       {children}
     </span>
