@@ -26,7 +26,7 @@ export default function GatheringCardLarge({
 
   return (
     <div
-      className={`relative flex rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
+      className={`relative flex self-stretch rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       <Save
         className="absolute right-4 top-4"

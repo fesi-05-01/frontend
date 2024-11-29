@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import useBreakpoint from 'use-breakpoint';
 
+import Button from '~/src/components/common/button';
 import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
 import GatheringCardSmall from '~/src/components/gathering-card/gathering-card-small';
 import JoinUsBanner from '~/src/components/gathering-card/join-us-banner';
@@ -37,14 +38,32 @@ export default function GatheringsPage() {
   return (
     <MainContainer>
       <JoinUsBanner />
-      {breakpoint}
-      <div className="flex flex-col">
-        {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
-          <GatheringCardLarge state={tmpState} gathering={tmpVar} />
-        ) : (
-          <GatheringCardSmall state={tmpState} gathering={tmpVar} />
-        )}
+      <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-2">
+          <div className="flex justify-between">
+            <div className="">여기 달램핏과 워케이션</div>
+            <Button className="w-[115px]">모임 만들기</Button>
+          </div>
+          <div className="flex flex-col gap-4">
+            <div className="c">전체 오피스스트레칭</div>
+            <div className="flex justify-between gap-2">
+              지역전체 닐짜전체 마감임박 하려면 필터랑 드롭다운 클래스네임
+              수정되어야
+            </div>
+          </div>
+        </div>
+
+        {/* 카드 */}
+        <div className="flex flex-col items-center gap-6">
+          {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
+            <GatheringCardLarge state={tmpState} gathering={tmpVar} />
+          ) : (
+            <GatheringCardSmall state={tmpState} gathering={tmpVar} />
+          )}
+        </div>
       </div>
+
+      {breakpoint}
       <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
         default | disabled
       </button>
