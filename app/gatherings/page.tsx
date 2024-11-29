@@ -5,6 +5,7 @@ import useBreakpoint from 'use-breakpoint';
 
 import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
 import GatheringCardSmall from '~/src/components/gathering-card/gathering-card-small';
+import JoinUsBanner from '~/src/components/gathering-card/join-us-banner';
 import MainContainer from '~/src/components/layout/main-container';
 import { type Gathering } from '~/src/services/gatherings/types';
 import { getBreakpoints } from '~/src/utils/breakpoints';
@@ -35,12 +36,15 @@ export default function GatheringsPage() {
 
   return (
     <MainContainer>
+      <JoinUsBanner />
       {breakpoint}
-      {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
-        <GatheringCardLarge state={tmpState} gathering={tmpVar} />
-      ) : (
-        <GatheringCardSmall state={tmpState} gathering={tmpVar} />
-      )}
+      <div className="flex flex-col">
+        {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
+          <GatheringCardLarge state={tmpState} gathering={tmpVar} />
+        ) : (
+          <GatheringCardSmall state={tmpState} gathering={tmpVar} />
+        )}
+      </div>
       <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
         default | disabled
       </button>
