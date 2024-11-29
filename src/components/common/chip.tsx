@@ -9,10 +9,16 @@ interface ChipProps extends ComponentPropsWithoutRef<'button'> {
   className?: string;
 }
 
-export default function Chip({ children, size, state, className }: ChipProps) {
+export default function Chip({
+  children,
+  size,
+  state,
+  className,
+  ...props
+}: ChipProps) {
   const sizeClasses = {
-    small: 'px-4 py-2.5',
-    large: 'px-3 py-2',
+    small: 'px-3 py-2',
+    large: 'px-4 py-2.5',
   };
 
   const stateClasses = {
@@ -26,6 +32,7 @@ export default function Chip({ children, size, state, className }: ChipProps) {
         `rounded-xl text-sm font-medium ${sizeClasses[size]} ${stateClasses[state]}`,
         className,
       )}
+      {...props}
     >
       {children}
     </button>
