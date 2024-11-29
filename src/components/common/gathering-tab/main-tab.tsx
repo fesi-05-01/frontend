@@ -1,6 +1,6 @@
 'use client';
 
-import { type ComponentPropsWithoutRef, useState } from 'react';
+import { useState } from 'react';
 
 import DalaemfitIcon from '~/src/assets/icons/dalaemfit.svg';
 import WorkationIcon from '~/src/assets/icons/workation.svg';
@@ -9,7 +9,7 @@ import { cn } from '~/src/utils/class-name';
 
 type SelectedGatheringType = Extract<GatheringType, 'DALLAEMFIT' | 'WORKATION'>;
 
-export default function GatheringTab() {
+export default function Main() {
   /**
    * NOTE: 추후에 전역 상태관리로 변경하고 외부에서 주입하는 로직으로 변경해야함
    */
@@ -21,27 +21,27 @@ export default function GatheringTab() {
   return (
     <div className="relative h-10 w-fit">
       <section className="flex gap-3 text-secondary-400">
-        <TabItem
+        <div
           className={cn(
-            'w-[83px]',
+            'flex w-[83px] cursor-pointer items-center gap-1 transition-colors duration-300',
             selected === 'DALLAEMFIT' && 'text-secondary-900',
           )}
           onClick={() => handleSelect('DALLAEMFIT')}
         >
           <span className="text-lg font-semibold">달램핏</span>
           <DalaemfitIcon />
-        </TabItem>
+        </div>
 
-        <TabItem
+        <div
           className={cn(
-            'w-[99px]',
+            'flex w-[99px] cursor-pointer items-center gap-1 transition-colors duration-300',
             selected === 'WORKATION' && 'text-secondary-900',
           )}
           onClick={() => handleSelect('WORKATION')}
         >
           <span className="text-lg font-semibold">워케이션</span>
           <WorkationIcon />
-        </TabItem>
+        </div>
       </section>
 
       <div
@@ -51,24 +51,6 @@ export default function GatheringTab() {
           selected === 'WORKATION' && 'w-[99px] translate-x-[calc(100%-4px)]',
         )}
       />
-    </div>
-  );
-}
-
-function TabItem({
-  children,
-  className,
-  ...props
-}: ComponentPropsWithoutRef<'div'>) {
-  return (
-    <div
-      className={cn(
-        'flex cursor-pointer items-center gap-1 transition-colors duration-300',
-        className,
-      )}
-      {...props}
-    >
-      {children}
     </div>
   );
 }
