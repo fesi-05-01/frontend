@@ -1,11 +1,15 @@
-interface ChipProps {
+import { type ComponentPropsWithoutRef } from 'react';
+
+import { cn } from '~/src/utils/class-name';
+
+interface ChipProps extends ComponentPropsWithoutRef<'button'> {
   children: React.ReactNode;
   size: 'small' | 'large';
   state: 'active' | 'default';
-  onClick?: () => void;
+  className?: string;
 }
 
-export default function Chip({ children, size, state, onClick }: ChipProps) {
+export default function Chip({ children, size, state, className }: ChipProps) {
   const sizeClasses = {
     small: 'px-4 py-2.5',
     large: 'px-3 py-2',
@@ -18,8 +22,10 @@ export default function Chip({ children, size, state, onClick }: ChipProps) {
 
   return (
     <button
-      onClick={onClick}
-      className={`rounded-xl text-sm font-medium ${sizeClasses[size]} ${stateClasses[state]}`}
+      className={cn(
+        `rounded-xl text-sm font-medium ${sizeClasses[size]} ${stateClasses[state]}`,
+        className,
+      )}
     >
       {children}
     </button>
