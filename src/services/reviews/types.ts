@@ -4,7 +4,7 @@ import {
   type SortOrder,
 } from '~/src/services/types';
 
-type ReviewSortBy = 'createAt' | 'score' | 'participantCount';
+type ReviewSortBy = 'createdAt' | 'score' | 'participantCount';
 
 export interface CreateReviewRequest {
   gatheringId: number;
@@ -59,7 +59,7 @@ export type GetReviewListResponse = Array<{
 }>;
 
 export type GetReviewScoreRequest = Partial<{
-  gatheringId: number;
+  gatheringId: string;
   type: GatheringType;
 }>;
 
