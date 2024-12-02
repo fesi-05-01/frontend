@@ -6,6 +6,7 @@ import { cn } from '~/src/utils/class-name';
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   variant?: 'outlined';
+  size?: 'small' | 'large';
 }
 
 export default function Button({
@@ -13,14 +14,18 @@ export default function Button({
   variant,
   disabled,
   className,
+  size = 'large',
   ...props
 }: ButtonProps) {
+  const sizeClass = size === 'small' ? 'h-[40px]' : 'h-[44px]';
+
   return (
     <button
       {...props}
       disabled={disabled}
       className={cn(
-        'w-full rounded-xl p-3 text-white',
+        'w-full rounded-xl px-3 text-white',
+        sizeClass,
         variant === 'outlined'
           ? disabled
             ? 'border border-secondary-400 bg-white text-secondary-400'
