@@ -27,9 +27,10 @@ const VALUE: Array<{ label: string; value: GatheringType }> = [
 interface Props {
   type: GatheringType;
   onChangeFilter: (type: GatheringType) => void;
+  className?: string;
 }
 
-export default function Sub({ type, onChangeFilter }: Props) {
+export default function Sub({ type, onChangeFilter, className }: Props) {
   const { breakpoint } = useBreakpoint(BREAKPOINT, 'mobile');
 
   return (
@@ -37,6 +38,7 @@ export default function Sub({ type, onChangeFilter }: Props) {
       className={cn(
         'flex min-h-10 gap-2 transition-opacity duration-300',
         type === 'WORKATION' && 'opacity-0',
+        className,
       )}
     >
       {VALUE.map(({ label, value }) => (

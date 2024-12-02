@@ -6,11 +6,12 @@ import { cn } from '~/src/utils/class-name';
 interface Props {
   type: GatheringType;
   onChangeFilter: (type: GatheringType) => void;
+  className?: string;
 }
 
-export default function Main({ type, onChangeFilter }: Props) {
+export default function Main({ type, onChangeFilter, className }: Props) {
   return (
-    <div className="relative h-10 w-fit">
+    <div className={cn('relative w-fit', className)}>
       <section className="flex gap-3 text-secondary-400">
         <div
           className={cn(
@@ -37,7 +38,7 @@ export default function Main({ type, onChangeFilter }: Props) {
 
       <div
         className={cn(
-          'absolute bottom-0 h-0.5 bg-secondary-900 transition-transform duration-300',
+          'absolute top-9 h-0.5 bg-secondary-900 transition-transform duration-300',
           type === 'WORKATION'
             ? 'w-[99px] translate-x-[calc(100%-4px)]'
             : 'w-[83px] translate-x-0',
