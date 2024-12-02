@@ -1,3 +1,4 @@
+import ReviewContainer from '~/src/components/all-reviews/review-container';
 import ReviewGatheringTab from '~/src/components/all-reviews/review-gathering-tab';
 import ReviewList from '~/src/components/all-reviews/review-list';
 import ReviewScore from '~/src/components/all-reviews/review-score';
@@ -23,14 +24,16 @@ export default async function AllReviewsPage() {
   });
 
   return (
-    <MainContainer>
+    <MainContainer className="flex flex-col">
       <PageTitleWithImage />
       <ReviewGatheringTab />
       <ReviewScore />
 
-      <Hydration state={state}>
-        <ReviewList />
-      </Hydration>
+      <ReviewContainer>
+        <Hydration state={state}>
+          <ReviewList />
+        </Hydration>
+      </ReviewContainer>
     </MainContainer>
   );
 }
