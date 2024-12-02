@@ -9,18 +9,18 @@ import { cn } from '~/src/utils/class-name';
 interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   options: string[];
   className?: string;
+  placeholder: string;
 }
 
 export default function RightFilter({
+  placeholder,
   options,
   className,
   ...rest
 }: FilterProps) {
-  const [selected, setSelected] = useState(
-    options.length > 0 ? options[0] : '',
-  );
+  const [selected, setSelected] = useState(placeholder);
   const [isOpen, setIsOpen] = useState(false);
-
+  const isClickedFirst = isOpen || selected !== placeholder;
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -36,17 +36,19 @@ export default function RightFilter({
         {...rest}
         onClick={toggleDropdown}
         className={cn(
-          'flex justify-between rounded-xl border-[2px] border-secondary-100 bg-white text-secondary-800 mobile:h-9 mobile:px-[10px] mobile:py-1',
-          'min-w-[110px] tablet:h-10 tablet:py-[6px]',
-          isOpen
-            ? 'border-none bg-secondary-900 text-secondary-50'
-            : 'hover:bg-secondary-50',
+          'flex justify-between rounded-xl border-[2px] border-secondary-100 bg-white text-secondary-800',
+          'min-w-[110px] mobile:h-9 mobile:px-[10px] tablet:h-10',
+          isClickedFirst
+            ? 'border-none bg-secondary-900 text-secondary-50 mobile:py-[6px] tablet:py-2'
+            : 'hover:bg-secondary-50 mobile:py-1 tablet:py-[6px]',
           className,
         )}
       >
-        <div className={cn('py-[2px] text-sm', className)}>{selected}</div>
+        <div className={cn('text-sm mobile:py-[2px]', className)}>
+          {selected}
+        </div>
         <Image
-          src={isOpen ? DownCaretInverse : DownCaret}
+          src={isClickedFirst ? DownCaretInverse : DownCaret}
           alt="Caret Icon"
           className="text-right"
           width={24}
