@@ -39,10 +39,11 @@ export default function Filter({
         {...rest}
         onClick={toggleDropdown}
         className={cn(
-          'flex h-9 rounded-xl border-[2px] border-secondary-100 bg-white px-3 py-[6px] text-secondary-800',
-          'mobile:h-10 mobile:py-2',
+          'flex rounded-xl border-[2px] border-secondary-100 bg-white text-secondary-800 mobile:h-9 mobile:px-[10px] mobile:py-1',
+          'tablet:h-10 tablet:py-[6px]',
           version === 'Right' &&
             cn(
+              'min-w-[110px]',
               isOpen
                 ? 'justify-between border-none bg-secondary-900 text-secondary-50'
                 : 'justify-between hover:bg-secondary-50',
@@ -50,12 +51,12 @@ export default function Filter({
             ),
           version === 'Left' &&
             cn(
-              'h-9 w-9 px-[6px] py-[6px] hover:bg-secondary-50',
-              'w-auto',
-              'mobile:min-w-[120px] mobile:gap-[10px] mobile:px-3 mobile:py-2',
+              'hover:bg-secondary-50 mobile:h-9 mobile:w-9 mobile:px-[6px] mobile:py-[6px]',
+              'tablet:w-auto',
+              'tablet:min-w-[120px] tablet:gap-[10px] tablet:px-[10px] tablet:py-[6px]',
               className,
             ),
-          version !== 'Left' && 'min-w-[110px]',
+
           className,
         )}
       >
@@ -69,8 +70,8 @@ export default function Filter({
 
         <div
           className={cn(
-            'flex items-center text-sm',
-            version === 'Left' ? 'hidden mobile:block' : '',
+            'flex-col items-center justify-center py-[2px] text-sm',
+            version === 'Left' ? 'hidden tablet:block' : '',
             className,
           )}
         >
