@@ -33,9 +33,6 @@ export default function CardContainer() {
 
   return (
     <div className="w-full">
-      <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
-        default | disabled
-      </button>
       {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
         <div className="flex flex-col gap-6">
           <GatheringCardLarge state={tmpState} gathering={tmpVar} />
@@ -45,6 +42,9 @@ export default function CardContainer() {
           <GatheringCardSmall state={tmpState} gathering={tmpVar} />
         </div>
       )}
+      <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
+        default | disabled
+      </button>
     </div>
   );
 }
