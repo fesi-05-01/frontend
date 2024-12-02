@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 
-import useReviewFilterAtom from '~/src/hooks/use-review-filter-atom';
+import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { get } from '~/src/services/api';
 import { reviewsQueryKeys } from '~/src/services/reviews/queryKey';
 import { type GetReviewListResponse } from '~/src/services/reviews/types';
