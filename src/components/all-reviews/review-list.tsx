@@ -1,11 +1,22 @@
 'use client';
 
+import ReviewCardItem from '~/src/components/all-reviews/review-card-item';
 import useGetReviewList from '~/src/services/reviews/use-get-review-list';
 
 export default function ReviewList() {
-  const { data } = useGetReviewList();
+  const { data, isFetching } = useGetReviewList();
 
-  console.log(data);
+  return (
+    <div className="flex grow flex-col">
+      {/* 데이터 있을때 */}
+      {data?.map((data) => <ReviewCardItem key={data.id} {...data} />)}
 
-  return <div>ReviewList</div>;
+      {/* 첫 페칭이 끝나고 데이터 없을때 */}
+      {!isFetching && data?.length === 0 && (
+        <div className="flex grow items-center justify-center">
+          <p className="text-sm text-secondary-500">아직 리뷰가 없어요</p>
+        </div>
+      )}
+    </div>
+  );
 }
