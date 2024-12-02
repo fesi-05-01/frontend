@@ -1,5 +1,7 @@
+import ReviewGatheringTab from '~/src/components/all-reviews/review-gathering-tab';
 import ReviewList from '~/src/components/all-reviews/review-list';
 import ReviewScore from '~/src/components/all-reviews/review-score';
+import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import MainContainer from '~/src/components/layout/main-container';
 import { get } from '~/src/services/api';
 import { reviewsQueryKeys } from '~/src/services/reviews/queryKey';
@@ -19,6 +21,8 @@ export default async function AllReviewsPage() {
 
   return (
     <MainContainer>
+      <PageTitleWithImage />
+      <ReviewGatheringTab />
       <ReviewScore />
 
       <Hydration state={state}>
