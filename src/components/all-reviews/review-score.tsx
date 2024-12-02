@@ -4,17 +4,8 @@ import Rating from '~/src/components/common/rating';
 import useGetReviewScore from '~/src/services/reviews/use-get-review-score';
 import { cn } from '~/src/utils/class-name';
 
-/**
- * NOTE:데이터 연결하고 변경해야함
- */
-const MOCK_AVERAGE = 4;
-const STAR_COUNT = [27, 19, 2, 0, 0];
-const TOTAL_COUNT = STAR_COUNT.reduce((acc, cur) => acc + cur, 0);
-
 export default function ReviewScore() {
   const { data } = useGetReviewScore();
-
-  console.log(data);
 
   return (
     <section
@@ -24,14 +15,16 @@ export default function ReviewScore() {
         'gap-5 tablet:gap-[120px] desktop:gap-[180px]',
       )}
     >
+      {/* 별점 총점 표시 */}
       <div className="flex shrink-0 flex-col items-center gap-2">
         <p className="text-xl font-semibold">
-          <span>{MOCK_AVERAGE.toFixed(1)}</span>
+          <span>{(data?.average || 0).toFixed(1)}</span>
           <span className="ml-0.5 text-secondary-400">{`/5`}</span>
         </p>
-        <Rating value={MOCK_AVERAGE} />
+        <Rating value={data?.average || 0} />
       </div>
 
+      {/* 별점 표시*/}
       <div className="flex flex-col gap-1">
         {Array.from({ length: 5 }).map((_, index) => (
           <div
@@ -47,10 +40,14 @@ export default function ReviewScore() {
             >
               <div
                 className="h-1 rounded-md bg-secondary-950"
-                style={{ width: `${(STAR_COUNT[index] / TOTAL_COUNT) * 100}%` }}
+                style={{
+                  width: `${!data?.sum ? 0 : (data.score[index] / data.sum) * 100}%`,
+                }}
               />
             </div>
-            <span className="text-secondary-400">{STAR_COUNT[index]}</span>
+            <span className="text-secondary-400">
+              {data?.score[index] || 0}
+            </span>
           </div>
         ))}
       </div>

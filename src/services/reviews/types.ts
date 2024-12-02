@@ -71,9 +71,9 @@ export type GetReviewScoreResponse = [
     type: GatheringType;
     averageScore: number;
     oneStar: number;
-    twoStar: number;
-    threeStar: number;
-    fourStar: number;
-    fiveStar: number;
+    twoStars: number;
+    threeStars: number;
+    fourStars: number;
+    fiveStars: number;
   },
 ];
