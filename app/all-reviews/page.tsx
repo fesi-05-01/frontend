@@ -10,12 +10,15 @@ import {
   getDehydratedInfiniteQuery,
   Hydration,
 } from '~/src/services/tanstack-query';
+import { type PageParam } from '~/src/services/types';
 
 export default async function AllReviewsPage() {
   const state = await getDehydratedInfiniteQuery({
-    queryKey: reviewsQueryKeys.reviewList(),
+    queryKey: reviewsQueryKeys.reviewList({ type: 'DALLAEMFIT' }),
     queryFn: ({ pageParam }) =>
-      get<GetReviewListResponse>('/reviews', { params: pageParam }),
+      get<GetReviewListResponse>('/reviews', {
+        params: { type: 'DALLAEMFIT', ...(pageParam as PageParam) },
+      }),
     initialPageParam: { limit: 10, offset: 0 },
   });
 
