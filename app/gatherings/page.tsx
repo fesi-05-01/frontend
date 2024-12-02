@@ -2,9 +2,7 @@
 
 // import useBreakpoint from 'use-breakpoint';
 import Button from '~/src/components/common/button';
-import Divider from '~/src/components/common/divider';
 import Filter from '~/src/components/common/filter';
-import JoinUsBanner from '~/src/components/gathering-card/join-us-banner';
 import MainContainer from '~/src/components/layout/main-container';
 // import { getBreakpoints } from '~/src/utils/breakpoints';
 
@@ -37,10 +35,8 @@ export default function GatheringsPage() {
   //   };
 
   return (
-    <MainContainer>
-      <JoinUsBanner />
-      {/* 200px을 빼니까 됐는데 왜 되는지 모르겠다 */}
-      <div className="flex h-[calc(100dvh-200px)] flex-col gap-6">
+    <MainContainer className="flex flex-col">
+      <div className="flex flex-1 flex-col gap-6">
         {/* 필터링 gap-6 */}
         <div className="flex flex-col gap-2">
           <div className="flex justify-between">
@@ -49,7 +45,6 @@ export default function GatheringsPage() {
           </div>
           <div className="flex flex-col gap-4">
             <div className="">전체 오피스스트레칭</div>
-            <Divider />
             <div className="z-[5] flex justify-between gap-2">
               <div className="flex gap-2">
                 <Filter version="Right" options={tmpLocations} />
