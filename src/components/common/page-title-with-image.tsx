@@ -57,10 +57,17 @@ export default function PageTitleWithImage() {
           matchedPathname === 'gatherings' && 'flex-col-reverse',
         )}
       >
-        <span className={cn('font-semibold', 'text-lg tablet:text-2xl')}>
+        <span
+          className={cn(
+            'font-semibold text-secondary-900',
+            'text-lg tablet:text-2xl',
+          )}
+        >
           {title}
         </span>
-        <span className="text-sm font-medium">{description}</span>
+        <span className="text-sm font-medium text-secondary-700">
+          {description}
+        </span>
       </div>
     </div>
   );
