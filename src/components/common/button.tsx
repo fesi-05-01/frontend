@@ -2,7 +2,6 @@
 
 import React, { type ComponentPropsWithoutRef } from 'react';
 
-// 수정
 import { cn } from '~/src/utils/class-name';
 
 interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
@@ -15,7 +14,7 @@ export default function Button({
   variant,
   disabled,
   className,
-  size,
+  size = 'large',
   ...props
 }: ButtonProps) {
   const sizeClass = size === 'small' ? 'h-[40px]' : 'h-[44px]';
