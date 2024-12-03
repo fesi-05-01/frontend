@@ -27,16 +27,16 @@ export default function BoxSelect({
   return (
     <div
       className={cn(
-        `flex rounded-lg pr-3 mobile:h-[76px] mobile:w-[109px] mobile:gap-[2px] mobile:pl-2 mobile:pt-[6px] tablet:h-[70px] tablet:w-[149px] tablet:gap-2 tablet:pl-4 tablet:pt-3`,
+        `flex h-[76px] w-[109px] gap-[2px] rounded-lg pl-2 pr-3 pt-[6px] tablet:h-[70px] tablet:w-[149px] tablet:gap-2 tablet:pl-4 tablet:pt-3`,
         checkClass,
         className,
       )}
     >
       <Checkbox isChecked={checked} onClick={toggleChecked} />
-      <div className="flex-col mobile:gap-1 tablet:gap-[2px]">
+      <div className="flex-col gap-1 tablet:gap-[2px]">
         <span
           className={cn(
-            `block font-semibold mobile:text-sm tablet:text-base`,
+            `block text-sm font-semibold tablet:text-base`,
             checkedTitleClass,
             className,
           )}

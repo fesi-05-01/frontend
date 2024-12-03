@@ -13,6 +13,7 @@ interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   placeholder: string;
   calendar?: boolean;
 }
+
 function Yymmdd(date: Date) {
   const yy = String(date.getFullYear()).slice(-2);
   const mm = String(date.getMonth() + 1).padStart(2, '0');
@@ -61,16 +62,14 @@ export default function RightFilter({
         onClick={toggleDropdown}
         className={cn(
           'flex justify-between rounded-xl border-[2px] border-secondary-100 bg-white text-secondary-800',
-          'min-w-[110px] mobile:h-9 mobile:px-[10px] tablet:h-10',
+          'h-9 min-w-[110px] px-[10px] tablet:h-10',
           isClickedFirst
-            ? 'border-none bg-secondary-900 text-secondary-50 mobile:py-[6px] tablet:py-2'
-            : 'hover:bg-secondary-50 mobile:py-1 tablet:py-[6px]',
+            ? 'border-none bg-secondary-900 py-[6px] text-secondary-50 tablet:py-2'
+            : 'py-1 hover:bg-secondary-50 tablet:py-[6px]',
           className,
         )}
       >
-        <div className={cn('text-sm mobile:py-[2px]', className)}>
-          {selected}
-        </div>
+        <div className={cn('py-[2px] text-sm', className)}>{selected}</div>
         <Image
           src={isClickedFirst ? DownCaretInverse : DownCaret}
           alt="Caret Icon"
@@ -87,6 +86,7 @@ export default function RightFilter({
               onDateSelect={handleCalendarSelect}
               selectedDate={selectedDate}
               onReset={handleReset}
+              onClose={() => setIsOpen(false)}
             />
           ) : (
             <Dropdown
@@ -94,6 +94,7 @@ export default function RightFilter({
               onSelect={selectOption}
               version="Filter"
               selectedOption={selected}
+              onClose={() => setIsOpen(false)}
             />
           )}
         </>

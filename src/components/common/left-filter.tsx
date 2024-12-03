@@ -36,7 +36,7 @@ export default function LeftFilter({
         onClick={toggleDropdown}
         className={cn(
           'flex rounded-xl border-[2px] border-secondary-100 bg-white text-secondary-800 hover:bg-secondary-50',
-          'mobile:h-9 mobile:w-9 mobile:px-[6px] mobile:py-[6px]',
+          'h-9 w-9 px-[6px] py-[6px]',
           'tablet:h-10 tablet:w-auto tablet:min-w-[120px] tablet:gap-[10px] tablet:px-[10px] tablet:py-[6px]',
           className,
         )}
@@ -59,6 +59,7 @@ export default function LeftFilter({
           onSelect={selectOption}
           version="Filter"
           selectedOption={selected}
+          onClose={() => setIsOpen(false)}
         />
       )}
     </div>

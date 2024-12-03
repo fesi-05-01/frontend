@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Button from '~/src/components/common/button';
 import Calender from '~/src/components/common/calender';
@@ -10,6 +10,7 @@ interface CalendarDownProps {
   onDateSelect: (date: Date | undefined) => void;
   selectedDate: Date | undefined;
   onReset: () => void;
+  onClose?: () => void;
   className?: string;
 }
 
@@ -17,30 +18,41 @@ export default function CalendarDown({
   onDateSelect,
   selectedDate,
   onReset,
+  onClose,
   className,
 }: CalendarDownProps) {
   const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
     selectedDate,
   );
-
+  const calendarRef = useRef<HTMLDivElement>(null);
   const handleSelectDate = (date: Date | undefined) => {
     setTempSelectedDate(date);
   };
-
   const handleSubmit = () => {
     if (tempSelectedDate) {
       onDateSelect(tempSelectedDate);
     }
   };
-
   useEffect(() => {
-    setTempSelectedDate(selectedDate);
-  }, [selectedDate]);
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(event.target as Node)
+      ) {
+        onClose?.();
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [onClose]);
 
   return (
     <div
+      ref={calendarRef}
       className={cn(
-        'mt-2 flex w-[336px] flex-col gap-3 rounded-xl border-[1px] border-secondary-200 bg-white px-[43px] py-6 shadow-xl',
+        'absolute z-50 mt-2 flex w-[336px] flex-col gap-3 rounded-xl border-[1px] border-secondary-200 bg-white px-[43px] py-6 shadow-xl',
         className,
       )}
     >
