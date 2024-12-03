@@ -4,6 +4,7 @@ import GatheringDetailImage from '~/src/components/gathering-card/gathering-deta
 import GatheringInfo from '~/src/components/gathering-card/gathering-info';
 import MainContainer from '~/src/components/layout/main-container';
 import { type Gathering } from '~/src/services/gatherings/types';
+import useGatheringDetail from '~/src/services/gatherings/use-gathering-detail';
 
 interface Props {
   params: {
@@ -22,6 +23,9 @@ const tmpVar: Gathering = {
 };
 
 export default function GatheringItemPage({ params }: Props) {
+  const { data } = useGatheringDetail(Number(params.id));
+  console.log(data);
+
   return (
     <MainContainer>
       <div className="mt-10 grid grid-cols-2 items-stretch gap-x-[24px] gap-y-[14px]">
