@@ -12,12 +12,19 @@ interface Props {
 }
 
 export default function GatheringItemPage({ params }: Props) {
-  const { data, isLoading, isError } = useGatheringDetail(Number(params.id));
-  console.log(data);
+  const { data, isLoading, isError, error } = useGatheringDetail(
+    Number(params.id),
+  );
 
   if (isLoading) return <MainContainer>Loading...</MainContainer>;
-  if (isError || !data || data.length === 0)
+  if (isError || !data || data.length === 0) {
+    if (isError) {
+      console.error('Error fetching gathering details:', error);
+    } else if (!data || data.length === 0) {
+      console.error('Data is empty or undefined:', data);
+    }
     return <MainContainer>Error loading data</MainContainer>;
+  }
 
   return (
     <MainContainer>

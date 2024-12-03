@@ -10,7 +10,7 @@ export default function GatheringDetailImage({
   image,
 }: GatheringDetailImageProps) {
   return (
-    <div className="relative border border-gray-200">
+    <div className="relative rounded-3xl border border-gray-200">
       <Tag size="small" className="absolute right-0 top-0 z-[1]">
         {'오늘 21시 마감'}
       </Tag>
