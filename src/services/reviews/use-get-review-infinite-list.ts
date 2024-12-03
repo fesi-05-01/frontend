@@ -7,11 +7,11 @@ import { type GetReviewListResponse } from '~/src/services/reviews/types';
 
 const LIMIT = 10;
 
-export default function useGetReviewList() {
+export default function useGetReviewInfiniteList() {
   const { filter: params } = useReviewFilterAtom();
 
   return useInfiniteQuery({
-    queryKey: reviewsQueryKeys.reviewList(params),
+    queryKey: reviewsQueryKeys.reviewInfiniteList(params),
     queryFn: ({ pageParam }) =>
       get<GetReviewListResponse>('/reviews', {
         params: { ...params, ...pageParam },

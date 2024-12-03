@@ -15,7 +15,7 @@ import { type PageParam } from '~/src/services/types';
 
 export default async function AllReviewsPage() {
   const state = await getDehydratedInfiniteQuery({
-    queryKey: reviewsQueryKeys.reviewList({ type: 'DALLAEMFIT' }),
+    queryKey: reviewsQueryKeys.reviewInfiniteList({ type: 'DALLAEMFIT' }),
     queryFn: ({ pageParam }) =>
       get<GetReviewListResponse>('/reviews', {
         params: { type: 'DALLAEMFIT', ...(pageParam as PageParam) },

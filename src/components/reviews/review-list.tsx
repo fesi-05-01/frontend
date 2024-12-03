@@ -1,10 +1,10 @@
 'use client';
 
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
-import useGetReviewList from '~/src/services/reviews/use-get-review-list';
+import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
 
 export default function ReviewList() {
-  const { data, isFetching } = useGetReviewList();
+  const { data, isFetching } = useGetReviewInfiniteList();
 
   return (
     <div className="flex grow flex-col">
