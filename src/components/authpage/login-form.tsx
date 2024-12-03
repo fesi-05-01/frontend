@@ -2,8 +2,27 @@
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { useMutation } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
+import { type z } from 'zod';
 
+import { loginSchema } from '~/src/components/authpage/validation/auth-schemas';
+
+interface ErrorResponseData {
+  data: {
+    code: string;
+    message: string;
+  };
+}
+
+interface SigninData {
+  email: string;
+  password: string;
+}
+
+interface TokenResponseData {
+  token: string;
+}
 import Button from '~/src/components/common/button';
 import {
   Form,
@@ -12,28 +31,73 @@ import {
   FormLabel,
 } from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
-
-const formSchema = z.object({
-  email: z.string().nonempty({ message: '이메일을 입력해주세요' }),
-  password: z.string().nonempty({ message: '비밀번호를 입력해주세요' }),
-});
+import { post } from '~/src/services/api';
 
 export default function LoginForm() {
-  const rotuer = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    mode: 'onSubmit',
+  const router = useRouter();
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    mode: 'all',
+
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    rotuer.push('/');
-    alert('로그인 성공' + JSON.stringify(values));
+  const mutation = useMutation<
+    TokenResponseData,
+    ErrorResponseData,
+    SigninData
+  >({
+    mutationFn: (data: z.infer<typeof loginSchema>) =>
+      post<TokenResponseData>('/auths/signin', {
+        email: data.email,
+        password: data.password,
+      }),
+    onSuccess: (data) => {
+      Cookies.set('accessToken', data.token, {
+        secure: true,
+        sameSite: 'strict',
+        expires: 1 / 24,
+      });
+      console.log(data.token);
+
+      alert('로그인이 완료되었습니다.');
+      router.push('/');
+    },
+    onError: (error) => {
+      console.error(error);
+
+      if (error?.data?.code === 'INVALID_CREDENTIALS') {
+        form.setError('password', {
+          type: 'manual',
+          message: '비밀번호가 아이디와 일치하지 않습니다.',
+        });
+      }
+      if (error?.data?.code === 'USER_NOT_FOUND') {
+        form.setError('email', {
+          type: 'manual',
+          message: '존재하지 않는 아이디입니다.',
+        });
+      }
+      if (error?.data?.code === 'SERVER_ERROR') {
+        form.setError('email', {
+          type: 'manual',
+          message: '서버 오류가 발생했습니다',
+        });
+      }
+    },
+  });
+
+  const { email, password } = form.watch();
+
+  const isFormFilled = email && password;
+
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    mutation.mutate(values);
   }
+
   return (
     <Form {...form}>
       <form
@@ -70,7 +134,9 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">로그인</Button>
+        <Button type="submit" disabled={!isFormFilled}>
+          {mutation.isPending ? '로그인 중...' : '로그인'}
+        </Button>
       </form>
     </Form>
   );

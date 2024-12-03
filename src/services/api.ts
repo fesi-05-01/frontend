@@ -1,5 +1,5 @@
 import axios, { isAxiosError } from 'axios';
-
+import Cookie from 'js-cookie';
 const API_URL = 'https://fe-adv-project-together-dallaem.vercel.app/fesi0501';
 
 const instance = axios.create({
@@ -7,16 +7,9 @@ const instance = axios.create({
 });
 
 instance.interceptors.request.use((config) => {
-  if (typeof window === undefined) return config;
+  if (typeof window === 'undefined') return config;
 
-  /**
-   * 토큰 발급 후에 어디에 저장할지 결정 하고나서 로직 추가하시면 됩니다.
-   *
-   * 보통 Nextjs에서는 쿠키에 저장하는게 일반적입니다. 쿠키 라이브러리도 추가하는게 좋을듯!
-   *
-   * 현재는 임시로 넣어둠
-   */
-  const accessToken = 'string';
+  const accessToken = Cookie.get('accessToken');
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
