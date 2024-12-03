@@ -1,5 +1,7 @@
 import {
   dehydrate,
+  type FetchInfiniteQueryOptions,
+  type FetchQueryOptions,
   HydrationBoundary,
   isServer,
   QueryClient,
@@ -28,9 +30,7 @@ const getQueryClient = () => {
   }
 };
 
-const getDehydratedQuery = async (
-  options: Parameters<QueryClient['prefetchQuery']>[0],
-) => {
+const getDehydratedQuery = async (options: FetchQueryOptions) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchQuery(options);
 
@@ -40,7 +40,7 @@ const getDehydratedQuery = async (
 };
 
 const getDehydratedInfiniteQuery = async (
-  options: Parameters<QueryClient['prefetchInfiniteQuery']>[0],
+  options: FetchInfiniteQueryOptions,
 ) => {
   const queryClient = getQueryClient();
   await queryClient.prefetchInfiniteQuery(options);

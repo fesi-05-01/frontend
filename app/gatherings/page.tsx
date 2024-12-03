@@ -8,7 +8,7 @@ import GatheringTab from '~/src/components/common/gathering-tab';
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import CardContainer from '~/src/components/gathering-card/card-container';
 import MainContainer from '~/src/components/layout/main-container';
-import useReviewFilterAtom from '~/src/hooks/use-review-filter-atom';
+import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { type GatheringType } from '~/src/services/types';
 
 const tmpLocations = ['지역 선택', '건대입구', '을지로3가', '신림', '홍대입구'];
