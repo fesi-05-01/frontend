@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Image from 'next/image';
 
 import DownCaret from '~/src/assets/icons/caret-down.svg?url';
 import DownCaretInverse from '~/src/assets/icons/caret-down-inverse.svg?url';
+import CalendarDown from '~/src/components/common/calendar-dropdown';
 import Dropdown from '~/src/components/common/dropdown';
 import { cn } from '~/src/utils/class-name';
 
@@ -10,17 +11,29 @@ interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   options: string[];
   className?: string;
   placeholder: string;
+  calendar?: boolean;
+}
+function Yymmdd(date: Date) {
+  const yy = String(date.getFullYear()).slice(-2);
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+
+  return `${yy}/${mm}/${dd}`;
 }
 
 export default function RightFilter({
   placeholder,
   options,
   className,
+  calendar = false,
   ...rest
 }: FilterProps) {
   const [selected, setSelected] = useState(placeholder);
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+
   const isClickedFirst = isOpen || selected !== placeholder;
+
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -29,6 +42,17 @@ export default function RightFilter({
     setSelected(option);
     setIsOpen(false);
   };
+
+  const handleCalendarSelect = (date: Date | undefined) => {
+    setSelected(Yymmdd(date!));
+    setSelectedDate(date);
+    setIsOpen(false);
+  };
+
+  const handleReset = useCallback(() => {
+    setSelected(placeholder);
+    setSelectedDate(undefined);
+  }, [placeholder]);
 
   return (
     <div className="relative whitespace-nowrap">
@@ -57,12 +81,22 @@ export default function RightFilter({
       </button>
 
       {isOpen && (
-        <Dropdown
-          options={options}
-          onSelect={selectOption}
-          version="Filter"
-          selectedOption={selected}
-        />
+        <>
+          {calendar ? (
+            <CalendarDown
+              onDateSelect={handleCalendarSelect}
+              selectedDate={selectedDate}
+              onReset={handleReset}
+            />
+          ) : (
+            <Dropdown
+              options={options}
+              onSelect={selectOption}
+              version="Filter"
+              selectedOption={selected}
+            />
+          )}
+        </>
       )}
     </div>
   );
