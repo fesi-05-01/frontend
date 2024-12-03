@@ -33,7 +33,7 @@ export default function GatheringsPage() {
       <div className="flex flex-1 flex-col gap-6">
         {/* Control Panel */}
         <div className="flex flex-col gap-4">
-          <GatheringTab>
+          <GatheringTab className="gap-1">
             <div className="flex items-start justify-between">
               <GatheringTab.Main
                 type={filter.type!}
