@@ -28,12 +28,6 @@ export default function GatheringCardLarge({
     <div
       className={`relative flex rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
-      <Save
-        className="absolute right-4 top-4"
-        isActive={isActive}
-        onClick={handleSaveButton}
-      />
-
       {/* 이미지 */}
       <div className="relative h-[156px] w-[280px] flex-shrink-0">
         {/* 이미지 없으면 그냥 하얗게 비워놓음 */}
@@ -68,6 +62,13 @@ export default function GatheringCardLarge({
             </div>
             <ChipInfoContainer dateTime={gathering.dateTime ?? ''} />
           </div>
+        </div>
+        <div>
+          <Save
+            className="absolute right-4 top-4"
+            isActive={isActive}
+            onClick={handleSaveButton}
+          />
         </div>
 
         {/* 아래 */}
