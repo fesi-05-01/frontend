@@ -41,8 +41,7 @@ export default function GatheringCardLarge({
           <Image
             src={gathering.image}
             alt="cat"
-            layout="fill"
-            objectFit="fill"
+            fill
             className="rounded-l-3xl"
           />
         )}
