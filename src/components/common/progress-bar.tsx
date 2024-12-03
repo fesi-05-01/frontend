@@ -13,7 +13,9 @@ export default function ProgressBar({
   className,
   barClassName,
 }: ProgressBarProps) {
-  const progressPercentage = Math.min((current / capacity) * 100, 100);
+  const progressPercentage = !isNaN(current / capacity)
+    ? Math.min((current / capacity) * 100, 100)
+    : 0;
 
   return (
     <div
