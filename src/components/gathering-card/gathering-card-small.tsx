@@ -26,7 +26,7 @@ export default function GatheringCardSmall({
 
   return (
     <div
-      className={`relative flex max-w-[343px] flex-col rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
+      className={`relative flex w-full max-w-[343px] flex-col rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       {/* 이미지 */}
       <div className="relative h-[156px] w-full flex-shrink-0">
