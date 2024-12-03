@@ -1,5 +1,6 @@
 'use client';
 
+import ProgressBar from '~/src/components/common/progress-bar';
 import Rating from '~/src/components/common/rating';
 import useGetReviewScore from '~/src/services/reviews/use-get-review-score';
 import { cn } from '~/src/utils/class-name';
@@ -32,19 +33,12 @@ export default function ReviewScore() {
             className="grid grid-cols-[23px_auto_16px] items-center gap-3 text-sm font-medium"
           >
             <span className="text-end tabular-nums">{5 - index}점</span>
-            <div
-              className={cn(
-                'relative h-1 rounded-md bg-secondary-200',
-                'w-[84px] tablet:w-[240px]',
-              )}
-            >
-              <div
-                className="h-1 rounded-md bg-secondary-950"
-                style={{
-                  width: `${!data?.sum ? 0 : (data.score[index] / data.sum) * 100}%`,
-                }}
-              />
-            </div>
+            <ProgressBar
+              current={data?.score[index] || 0}
+              capacity={data?.sum || 0}
+              className="w-[84px] bg-secondary-200 tablet:w-[240px]"
+              barClassName="bg-secondary-950"
+            />
             <span className="text-secondary-400">
               {data?.score[index] || 0}
             </span>

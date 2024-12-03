@@ -1,9 +1,9 @@
-import ReviewContainer from '~/src/components/all-reviews/review-container';
-import ReviewGatheringTab from '~/src/components/all-reviews/review-gathering-tab';
-import ReviewList from '~/src/components/all-reviews/review-list';
-import ReviewScore from '~/src/components/all-reviews/review-score';
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import MainContainer from '~/src/components/layout/main-container';
+import ReviewContainer from '~/src/components/reviews/review-container';
+import ReviewGatheringTab from '~/src/components/reviews/review-gathering-tab';
+import ReviewList from '~/src/components/reviews/review-list';
+import ReviewScore from '~/src/components/reviews/review-score';
 import { get } from '~/src/services/api';
 import { reviewsQueryKeys } from '~/src/services/reviews/queryKey';
 import { type GetReviewListResponse } from '~/src/services/reviews/types';
