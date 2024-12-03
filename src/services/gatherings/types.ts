@@ -3,13 +3,7 @@ import {
   type GatheringType,
 } from '~/src/services/types';
 
-export type Gathering = Partial<GetGatheringDetailResponse>;
-
-export interface GetGatheringDetailRequest {
-  id: number;
-}
-
-export interface GetGatheringDetailResponse {
+export interface Gathering {
   id: number;
   type: GatheringType;
   name: string;
@@ -22,3 +16,9 @@ export interface GetGatheringDetailResponse {
   createdBy: number;
   canceledAt: string | null;
 }
+
+export interface GetGatheringDetailRequest {
+  id: number;
+}
+
+export type GetGatheringDetailResponse = Gathering[];

@@ -24,7 +24,9 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
         {/* 위 */}
         <div className="flex justify-between px-6">
           <div className="flex flex-col">
-            <span className="text-lg font-semibold">{gathering.name}</span>
+            <span className="text-lg font-semibold">
+              {gathering.name ?? '모임제목정도는좀써주지'}
+            </span>
             <span className="mb-3 mt-0.5 text-sm font-medium text-gray-700">
               {gathering.location}
             </span>
@@ -43,25 +45,26 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
                 <span>모집 정원</span>
                 <span>{gathering.participantCount}명</span>
               </div>
-              <div className="wow">{/* 여기 그 이미지들 들어감 */}</div>
+              <div className="wow">프로필이미지들</div>
             </div>
-            {gathering.participantCount && gathering.participantCount >= 5 && (
-              <Confirmation />
-            )}
+            {gathering.participantCount >= 5 && <Confirmation />}
           </div>
           <ProgressBar
             current={gathering.participantCount || 5}
             capacity={gathering.capacity || 20}
             className="mb-2 mt-3"
+            barClassName={`${gathering.participantCount >= gathering.capacity && 'bg-orange-400'}`}
           />
           <div className="flex justify-between text-xs font-medium text-gray-700">
             <div className="flex gap-1.5">
               <span>최소인원</span>
               <span>5명</span>
             </div>
-            <div className="flex gap-1.5">
+            <div
+              className={`flex gap-1.5 ${gathering.participantCount >= gathering.capacity && 'text-orange-400'}`}
+            >
               <span>최대인원</span>
-              <span>20명</span>
+              <span>{gathering.capacity}명</span>
             </div>
           </div>
         </div>
