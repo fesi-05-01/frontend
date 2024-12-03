@@ -3,11 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { type z } from 'zod';
 
 import { loginSchema } from '~/src/components/authpage/validation/auth-schemas';
-
+import { useAuthStore } from '~/src/store/auth-store';
 interface ErrorResponseData {
   data: {
     code: string;
@@ -45,6 +44,8 @@ export default function LoginForm() {
     },
   });
 
+  const { setAccessToken } = useAuthStore();
+
   const mutation = useMutation<
     TokenResponseData,
     ErrorResponseData,
@@ -56,12 +57,15 @@ export default function LoginForm() {
         password: data.password,
       }),
     onSuccess: (data) => {
-      Cookies.set('accessToken', data.token, {
-        secure: true,
-        sameSite: 'strict',
-        expires: 1 / 24,
-      });
-      console.log(data.token);
+      // Cookies.set('accessToken', data.token, {
+      //   secure: true,
+      //   sameSite: 'strict',
+      //   expires: 1 / 24,
+      // });
+      // console.log(data.token);
+
+      setAccessToken(data.token);
+      console.log(setAccessToken);
 
       alert('로그인이 완료되었습니다.');
       router.push('/');
