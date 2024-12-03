@@ -19,22 +19,23 @@ export default function CalendarDown({
   onReset,
   className,
 }: CalendarDownProps) {
-  const [isDisabled, setIsDisabled] = useState(true);
-
-  useEffect(() => {
-    setIsDisabled(!selectedDate);
-  }, [selectedDate]);
+  const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
+    selectedDate,
+  );
 
   const handleSelectDate = (date: Date | undefined) => {
-    onDateSelect(date);
+    setTempSelectedDate(date);
   };
 
   const handleSubmit = () => {
-    if (selectedDate) {
-      onDateSelect(selectedDate);
-      console.log(selectedDate);
+    if (tempSelectedDate) {
+      onDateSelect(tempSelectedDate);
     }
   };
+
+  useEffect(() => {
+    setTempSelectedDate(selectedDate);
+  }, [selectedDate]);
 
   return (
     <div
@@ -46,20 +47,24 @@ export default function CalendarDown({
       <Calender
         mode="single"
         onSelect={handleSelectDate}
-        selected={selectedDate}
-        defaultMonth={selectedDate ? selectedDate : new Date()}
+        selected={tempSelectedDate}
+        defaultMonth={tempSelectedDate ? tempSelectedDate : new Date()}
       />
 
       <span className="flex h-10 gap-2">
         <Button
           onClick={onReset}
-          disabled={isDisabled}
+          disabled={!tempSelectedDate}
           className="p-2"
           variant="outlined"
         >
           초기화
         </Button>
-        <Button onClick={handleSubmit} disabled={isDisabled} className="p-2">
+        <Button
+          onClick={handleSubmit}
+          disabled={!tempSelectedDate}
+          className="p-2"
+        >
           적용
         </Button>
       </span>
