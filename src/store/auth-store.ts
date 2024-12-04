@@ -1,24 +1,22 @@
-import Cookies from 'js-cookie';
-import { create } from 'zustand';
+import { atom } from 'jotai';
+import Cookie from 'js-cookie';
 
-interface AuthStore {
-  accessToken: string | null;
-  setAccessToken: (token: string) => void;
-  logOut: () => void;
-}
+const initialToken = Cookie.get('accessToken') || null;
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  accessToken: Cookies.get('accessToken') || null,
-  setAccessToken: (token) => {
-    Cookies.set('accessToken', token, {
-      expires: 1 / 24,
-      secure: true,
-      sameSite: 'strict',
-    });
-    set({ accessToken: token });
+export const accessTokenAtom = atom(initialToken);
+
+export const setAccessTokenAtom = atom(
+  null,
+  (get, set, newToken: string | null) => {
+    if (newToken) {
+      Cookie.set('accessToken', newToken, {
+        secure: true, // HTTPS 에서만
+        sameSite: 'strict', // CSRF
+        expires: 1 / 24,
+      });
+    } else {
+      Cookie.remove('accessToken');
+    }
+    set(accessTokenAtom, newToken);
   },
-  logOut: () => {
-    Cookies.remove('accessToken');
-    set({ accessToken: null });
-  },
-}));
+);

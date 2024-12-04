@@ -1,11 +1,11 @@
 import Image from 'next/image';
 
-import bgLoginImage from '~/src/assets/images/bg-login.png';
+import bgLoginImage from '../../assets/images/bg-login.png';
 
 export default function AuthPageBg() {
   return (
     <>
-      <div className="white-space-nowrap flex w-full flex-col items-center gap-[8px] px-0 py-0 text-center text-secondary-800 mobile:px-[24px] mobile:pt-8 desktop:w-1/2">
+      <div className="white-space-nowrap flex w-full flex-col items-center gap-[8px] px-[24px] pt-[24px] text-center text-secondary-800 desktop:w-1/2 desktop:p-0">
         <h1 className="text-xl font-semibold desktop:text-2xl">
           Welcome to 같이 달램!
         </h1>

@@ -12,8 +12,8 @@ import MainContainer from '~/src/components/layout/main-container';
 
 export default function LoginPage() {
   return (
-    <MainContainer className="flex items-center justify-center bg-transparent desktop:px-0">
-      <div className="flex w-full flex-col items-center justify-between desktop:flex-row desktop:gap-24 desktop:p-0">
+    <MainContainer className="flex items-center justify-center bg-transparent p-4 desktop:px-0">
+      <div className="flex w-full flex-col items-center justify-between desktop:flex-row desktop:gap-36 desktop:p-0">
         <AuthPageBg />
 
         <AuthCard>

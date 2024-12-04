@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from 'axios';
+import Cookie from 'js-cookie';
 const API_URL = 'https://fe-adv-project-together-dallaem.vercel.app/fesi0501';
-import { useAuthStore } from '~/src/store/auth-store';
+
 const instance = axios.create({
   baseURL: API_URL,
 });
@@ -8,8 +9,7 @@ const instance = axios.create({
 instance.interceptors.request.use((config) => {
   if (typeof window === 'undefined') return config;
 
-  // const accessToken = Cookie.get('accessToken');
-  const accessToken = useAuthStore.getState().accessToken;
+  const accessToken = Cookie.get('accessToken');
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;

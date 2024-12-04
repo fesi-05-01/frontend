@@ -17,22 +17,11 @@ import {
 import Input from '~/src/components/common/input';
 import { post } from '~/src/services/api';
 
-export interface Signuptype {
-  name: string;
-  email: string;
-  companyName: string;
-  password: string;
-}
-interface ErrorResponseData {
-  data: {
-    code: string;
-    message: string;
-  };
-}
-
-interface SuccessResponseData {
-  message: string;
-}
+import {
+  type ErrorResponseData,
+  type Signuptype,
+  type SuccessResponseData,
+} from './types';
 
 export default function SignupForm() {
   const router = useRouter();

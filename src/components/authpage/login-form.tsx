@@ -3,25 +3,10 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
+import { useSetAtom } from 'jotai';
 import { type z } from 'zod';
 
 import { loginSchema } from '~/src/components/authpage/validation/auth-schemas';
-import { useAuthStore } from '~/src/store/auth-store';
-interface ErrorResponseData {
-  data: {
-    code: string;
-    message: string;
-  };
-}
-
-interface SigninData {
-  email: string;
-  password: string;
-}
-
-interface TokenResponseData {
-  token: string;
-}
 import Button from '~/src/components/common/button';
 import {
   Form,
@@ -31,21 +16,25 @@ import {
 } from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
 import { post } from '~/src/services/api';
+import { setAccessTokenAtom } from '~/src/store/auth-store';
+
+import {
+  type ErrorResponseData,
+  type SigninData,
+  type TokenResponseData,
+} from './types';
 
 export default function LoginForm() {
   const router = useRouter();
+  const setAccessToken = useSetAtom(setAccessTokenAtom);
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     mode: 'all',
-
     defaultValues: {
       email: '',
       password: '',
     },
   });
-
-  const { setAccessToken } = useAuthStore();
-
   const mutation = useMutation<
     TokenResponseData,
     ErrorResponseData,
@@ -57,16 +46,7 @@ export default function LoginForm() {
         password: data.password,
       }),
     onSuccess: (data) => {
-      // Cookies.set('accessToken', data.token, {
-      //   secure: true,
-      //   sameSite: 'strict',
-      //   expires: 1 / 24,
-      // });
-      // console.log(data.token);
-
       setAccessToken(data.token);
-      console.log(setAccessToken);
-
       alert('로그인이 완료되었습니다.');
       router.push('/');
     },

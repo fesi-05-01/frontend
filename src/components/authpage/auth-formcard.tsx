@@ -24,7 +24,7 @@ const AuthCardTitle = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'text-2xl font-semibold text-secondary-800 mobile:text-xl',
+      'text-xl font-semibold text-secondary-800 tablet:text-2xl',
       className,
     )}
     {...props}

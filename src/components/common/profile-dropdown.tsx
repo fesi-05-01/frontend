@@ -6,15 +6,14 @@ import { useRouter } from 'next/navigation';
 
 import profilelarge from '~/src/assets/images/profile-large.png';
 import profilesmall from '~/src/assets/images/profile-small.png';
+import useLogout from '~/src/components/authpage/logout';
 import Dropdown from '~/src/components/common/dropdown';
-import { useAuthStore } from '~/src/store/auth-store';
 
 export default function ProfileDropdown() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
-
-  const { logOut } = useAuthStore();
+  const { mutate: logoutMutate } = useLogout();
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -23,8 +22,7 @@ export default function ProfileDropdown() {
   const handleSelect = (option: string) => {
     setSelectedOption(option);
     if (option === '로그아웃') {
-      logOut();
-      router.push('/login');
+      logoutMutate();
     } else if (option === '마이페이지') {
       router.push('/mypage');
     }
