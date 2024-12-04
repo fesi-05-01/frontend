@@ -1,7 +1,7 @@
 'use client';
 
 import GatheringTab from '~/src/components/common/gathering-tab';
-import useReviewFilterAtom from '~/src/hooks/use-review-filter-atom';
+import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { type GatheringType } from '~/src/services/types';
 
 export default function ReviewGatheringTab() {
