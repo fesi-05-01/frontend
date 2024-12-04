@@ -36,12 +36,12 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
             <Save isActive={isSaved} onClick={handleSaveButton} />
           </div>
         </div>
-        <div className="mx-auto mb-6 mt-[43px] w-full border-t-2 border-dashed border-gray-200"></div>
+        <div className="mx-auto mb-3 mt-[25px] w-full border-t-2 border-dashed border-gray-200"></div>
         {/* 아래 */}
         <div className="flex flex-col px-6">
           <div className="flex justify-between">
             <div className="flex gap-3">
-              <div className="flex gap-1.5 text-sm font-semibold text-gray-900">
+              <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-900">
                 <span>모집 정원</span>
                 <span>{gathering.participantCount}명</span>
               </div>
