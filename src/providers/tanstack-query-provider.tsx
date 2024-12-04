@@ -6,7 +6,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { getQueryClient } from '~/src/services/tanstack-query';
 
-export const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
+export default function TanstackQueryProvider({ children }: PropsWithChildren) {
   const queryClient = getQueryClient();
 
   return (
@@ -15,4 +15,4 @@ export const TanstackQueryProvider = ({ children }: PropsWithChildren) => {
       <ReactQueryDevtools />
     </QueryClientProvider>
   );
-};
+}

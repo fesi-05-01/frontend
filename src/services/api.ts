@@ -1,6 +1,7 @@
 import axios, { isAxiosError } from 'axios';
 
-const API_URL = 'https://fe-adv-project-together-dallaem.vercel.app/fesi0501';
+export const API_URL =
+  'https://fe-adv-project-together-dallaem.vercel.app/fesi0501';
 
 const instance = axios.create({
   baseURL: API_URL,
