@@ -6,7 +6,6 @@ interface UseGatheringCardProps {
   capacity: number;
 }
 
-// 이거 봐서 hooks 폴더로 옮기자
 export default function useGatheringCard({
   initialIsSaved = false,
   participantCount,

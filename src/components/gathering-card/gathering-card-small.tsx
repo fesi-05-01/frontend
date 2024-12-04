@@ -13,13 +13,10 @@ import Confirmation from '~/src/components/gathering-card/confirmation';
 import JoinNowButton from '~/src/components/gathering-card/join-now-button';
 import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
 import useGatheringCard from '~/src/components/gathering-card/use-gathering-card';
+import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
-export default function GatheringCardSmall({
-  state,
-  gathering,
-}: GatheringCardProps) {
-  const { isActive, handleSaveButton, cardState } = useGatheringCard({
-    initialState: false,
+export default function GatheringCardSmall({ gathering }: GatheringCardProps) {
+  const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
   });
@@ -51,7 +48,7 @@ export default function GatheringCardSmall({
           <div className="relative flex items-center gap-2">
             <Save
               className="absolute right-4 top-0"
-              isActive={isActive}
+              isActive={isSaved}
               onClick={handleSaveButton}
             />
             <span className="text-lg font-semibold">{gathering.name}</span>
@@ -92,7 +89,7 @@ export default function GatheringCardSmall({
         </div>
       </div>
 
-      {state === 'disabled' && (
+      {isRegistrationEnded(gathering.registrationEnd) && (
         <div
           onClick={(e) => e.stopPropagation()}
           className="absolute inset-0 z-0 flex cursor-not-allowed flex-col items-center justify-center gap-6 overflow-hidden rounded-3xl bg-black bg-opacity-80"
