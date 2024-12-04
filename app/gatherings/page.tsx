@@ -3,7 +3,7 @@
 import { useState } from 'react';
 
 import Button from '~/src/components/common/button';
-import Filter from '~/src/components/common/filter';
+// import Filter from '~/src/components/common/filter';
 import GatheringTab from '~/src/components/common/gathering-tab';
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import CardContainer from '~/src/components/gathering-card/card-container';
@@ -11,9 +11,9 @@ import MainContainer from '~/src/components/layout/main-container';
 import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { type GatheringType } from '~/src/services/types';
 
-const tmpLocations = ['지역 선택', '건대입구', '을지로3가', '신림', '홍대입구'];
-const tmpDates = ['날짜 선택', '달력 연결 나중에'];
-const tmpFilters = ['마감 임박', '참여 인원 순'];
+// const tmpLocations = ['지역 선택', '건대입구', '을지로3가', '신림', '홍대입구'];
+// const tmpDates = ['날짜 선택', '달력 연결 나중에'];
+// const tmpFilters = ['마감 임박', '참여 인원 순'];
 
 export default function GatheringsPage() {
   const [isEmpty, setIsEmpty] = useState(true);
@@ -49,8 +49,8 @@ export default function GatheringsPage() {
           {/* 필터 */}
           <div className="z-[5] flex justify-between gap-2">
             <div className="flex gap-2">
-              <Filter version="Right" options={tmpLocations} />
-              <Filter version="Right" options={tmpDates} />
+              {/* <Filter version="Right" options={tmpLocations} />
+              <Filter version="Right" options={tmpDates} /> */}
               <button
                 className="border border-black bg-gray-200 p-2"
                 onClick={handleTmpEmptyBtn}
@@ -58,7 +58,7 @@ export default function GatheringsPage() {
                 isEmpty
               </button>
             </div>
-            <Filter version="Left" options={tmpFilters} />
+            {/* <Filter version="Left" options={tmpFilters} /> */}
           </div>
         </div>
 
