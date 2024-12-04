@@ -5,7 +5,7 @@ import { useSetAtom } from 'jotai';
 import { post } from '~/src/services/api';
 import { setAccessTokenAtom } from '~/src/store/auth-store';
 
-export default function useLogout() {
+export function useLogout() {
   const router = useRouter();
   const setAccessToken = useSetAtom(setAccessTokenAtom);
 
@@ -17,7 +17,7 @@ export default function useLogout() {
     onSuccess: () => {
       setAccessToken(null);
       alert('로그아웃 완료');
-      router.push('/login');
+      router.push('/');
     },
     onError: (error) => {
       console.error('로그아웃 실패:', error);

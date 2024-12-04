@@ -22,7 +22,7 @@ export default function SignupPage() {
           </AuthCardContent>
           <AuthCardFooter>
             <p className="text-sm tablet:text-base">
-              이미 회원이신가요 ?{' '}
+              이미 회원이신가요 ?
               <Link className="text-primary-600 underline" href="/login">
                 로그인
               </Link>

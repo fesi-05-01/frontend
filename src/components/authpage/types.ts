@@ -19,8 +19,20 @@ export interface Signuptype {
   email: string;
   companyName: string;
   password: string;
+  confirmPassword: string;
 }
 
 export interface SuccessResponseData {
   message: string;
+}
+
+export interface User {
+  teamId: number;
+  id: string;
+  email: string;
+  name: string;
+  companyName: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
 }

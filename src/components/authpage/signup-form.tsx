@@ -1,9 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
 import { type z } from 'zod';
 
 import { signupSchema } from '~/src/components/authpage/validation/auth-schemas';
@@ -15,44 +13,9 @@ import {
   FormLabel,
 } from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
-import { post } from '~/src/services/api';
-
-import {
-  type ErrorResponseData,
-  type Signuptype,
-  type SuccessResponseData,
-} from './types';
+import { useSignup } from '~/src/services/auths/use-signup';
 
 export default function SignupForm() {
-  const router = useRouter();
-
-  const mutation = useMutation<
-    SuccessResponseData,
-    ErrorResponseData,
-    Signuptype
-  >({
-    mutationFn: (data) =>
-      post('auths/signup', {
-        name: data.name,
-        email: data.email,
-        companyName: data.companyName,
-        password: data.password,
-      }),
-    onSuccess: () => {
-      alert('회원가입이 완료되었습니다.');
-      router.push('/login');
-    },
-    onError: (error) => {
-      console.error(error);
-      console.log('회원가입 오류 데이터:', error?.data.message);
-
-      form.setError('email', {
-        type: 'manual',
-        message: error?.data.message,
-      });
-    },
-  });
-
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     mode: 'all',
@@ -65,6 +28,7 @@ export default function SignupForm() {
     },
   });
 
+  const mutation = useSignup(form);
   const { name, email, companyName, password, confirmPassword } = form.watch();
 
   const isFormFilled =
@@ -73,8 +37,6 @@ export default function SignupForm() {
   const onSubmit = (values: z.infer<typeof signupSchema>) => {
     mutation.mutate(values);
   };
-
-  console.log(form.formState.errors);
   return (
     <>
       <Form {...form}>

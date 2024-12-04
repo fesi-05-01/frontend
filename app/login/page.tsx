@@ -22,8 +22,8 @@ export default function LoginPage() {
             <LoginForm />
           </AuthCardContent>
           <AuthCardFooter>
-            <p>
-              같이 달램이 처음이신가요?{' '}
+            <p className="text-sm tablet:text-base">
+              같이 달램이 처음이신가요?
               <Link className="text-primary-600 underline" href="/signup">
                 회원가입
               </Link>
