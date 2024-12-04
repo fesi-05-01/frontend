@@ -1,6 +1,7 @@
 import {
   type GatheringLocation,
   type GatheringType,
+  type PageParam,
 } from '~/src/services/types';
 
 export interface Gathering {
@@ -22,3 +23,25 @@ export interface GetGatheringDetailRequest {
 }
 
 export type GetGatheringDetailResponse = Gathering[];
+
+export interface GetGatheringParticipantsRequest extends Partial<PageParam> {
+  gatheringId: number;
+}
+
+export type GetGatheringParticipantsResponse = GatheringParticipant[];
+
+interface User {
+  id: number;
+  email: string;
+  name: string;
+  companyName: string;
+  image: string | null;
+}
+
+interface GatheringParticipant {
+  teamId: string;
+  userId: number;
+  gatheringId: number;
+  joinedAt: string;
+  User: User;
+}

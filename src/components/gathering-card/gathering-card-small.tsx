@@ -12,7 +12,7 @@ import ClosedButton from '~/src/components/gathering-card/closed-button';
 import Confirmation from '~/src/components/gathering-card/confirmation';
 import JoinNowButton from '~/src/components/gathering-card/join-now-button';
 import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
-import useGatheringCard from '~/src/components/gathering-card/use-gathering-card';
+import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
 import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
 export default function GatheringCardSmall({ gathering }: GatheringCardProps) {

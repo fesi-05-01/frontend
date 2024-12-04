@@ -4,7 +4,8 @@ import Save from '~/src/assets/icons/save';
 import ProgressBar from '~/src/components/common/progress-bar';
 import ChipInfoContainer from '~/src/components/gathering-card/chip-info-container';
 import Confirmation from '~/src/components/gathering-card/confirmation';
-import useGatheringCard from '~/src/components/gathering-card/use-gathering-card';
+import GatheringProfileImages from '~/src/components/gathering-card/gathering-profile-images';
+import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
 import { type Gathering } from '~/src/services/gatherings/types';
 
 interface GatheringInfoProps {
@@ -12,8 +13,7 @@ interface GatheringInfoProps {
 }
 
 export default function GatheringInfo({ gathering }: GatheringInfoProps) {
-  const { isActive, handleSaveButton } = useGatheringCard({
-    initialState: false,
+  const { isSaved, handleSaveButton } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
   });
@@ -33,7 +33,7 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
             <ChipInfoContainer dateTime={gathering.dateTime ?? ''} />
           </div>
           <div className="">
-            <Save isActive={isActive} onClick={handleSaveButton} />
+            <Save isActive={isSaved} onClick={handleSaveButton} />
           </div>
         </div>
         <div className="mx-auto mb-6 mt-[43px] w-full border-t-2 border-dashed border-gray-200"></div>
@@ -45,7 +45,9 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
                 <span>모집 정원</span>
                 <span>{gathering.participantCount}명</span>
               </div>
-              <div className="wow">프로필이미지들</div>
+              <GatheringProfileImages
+                participantCount={gathering.participantCount}
+              />
             </div>
             {gathering.participantCount >= 5 && <Confirmation />}
           </div>
