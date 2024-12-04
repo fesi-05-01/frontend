@@ -1,6 +1,7 @@
 import {
   type GatheringLocation,
   type GatheringType,
+  type PageParam,
   type SortOrder,
 } from '~/src/services/types';
 
@@ -22,18 +23,18 @@ export interface CreateReviewResponse {
   createdAt: string;
 }
 
-export type GetReviewListRequest = Partial<{
-  gatheringId: number;
-  userId: number;
-  type: GatheringType;
-  location: GatheringLocation;
-  date: string;
-  registrationEnd: string;
-  sortBy: ReviewSortBy;
-  sortOrder: SortOrder;
-  limit: number;
-  offset: number;
-}>;
+export type GetReviewListRequest = Partial<
+  {
+    gatheringId: number;
+    userId: number;
+    type: GatheringType;
+    location: GatheringLocation;
+    date: string;
+    registrationEnd: string;
+    sortBy: ReviewSortBy;
+    sortOrder: SortOrder;
+  } & PageParam
+>;
 
 export type GetReviewListResponse = Array<{
   teamId: number;
@@ -70,9 +71,9 @@ export type GetReviewScoreResponse = [
     type: GatheringType;
     averageScore: number;
     oneStar: number;
-    twoStar: number;
-    threeStar: number;
-    fourStar: number;
-    fiveStar: number;
+    twoStars: number;
+    threeStars: number;
+    fourStars: number;
+    fiveStars: number;
   },
 ];
