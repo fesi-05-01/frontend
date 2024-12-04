@@ -1,7 +1,25 @@
 import { withSentryConfig } from '@sentry/nextjs';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  webpack: (config) => {
+  experimental: {
+    instrumentationHook: true,
+  },
+
+  webpack: (config, { isServer }) => {
+    /**
+     * 서버와 클라이언트 환경에 따라 MSW 모듈의 경로를 설정합니다.
+     *
+     * 서버 환경에서는 `msw/browser` 모듈을 사용하지 않도록 설정하고,
+     * 클라이언트 환경에서는 `msw/node` 모듈을 사용하지 않도록 설정합니다.
+     *
+     * 이 설정은 MSW가 서버와 클라이언트에서 각각 적절한 방식으로 동작하도록 보장합니다.
+     */
+    if (isServer) {
+      config.resolve.alias['msw/browser'] = false;
+    } else {
+      config.resolve.alias['msw/node'] = false;
+    }
+
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
