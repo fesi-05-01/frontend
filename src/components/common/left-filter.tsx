@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 
 import SortIcon from '~/src/assets/icons/sort.svg?url';
@@ -15,15 +15,11 @@ export default function LeftFilter({
   className,
   ...rest
 }: FilterProps) {
-  const [selected, setSelected] = useState(
-    options.length > 0 ? options[0] : '',
-  );
+  const [selected, setSelected] = useState(options[0] || '');
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-  };
-
+  const toggleDropdown = () => setIsOpen((prev) => !prev);
   const selectOption = (option: string) => {
     setSelected(option);
     setIsOpen(false);
@@ -32,6 +28,7 @@ export default function LeftFilter({
   return (
     <div className="relative whitespace-nowrap">
       <button
+        ref={triggerRef}
         {...rest}
         onClick={toggleDropdown}
         className={cn(
@@ -42,7 +39,6 @@ export default function LeftFilter({
         )}
       >
         <Image src={SortIcon} alt="sortIcon" width={24} height={24} />
-
         <div
           className={cn(
             'hidden flex-col items-center justify-center py-[2px] text-sm tablet:block',
@@ -60,6 +56,7 @@ export default function LeftFilter({
           version="Filter"
           selectedOption={selected}
           onClose={() => setIsOpen(false)}
+          filterRef={triggerRef}
         />
       )}
     </div>

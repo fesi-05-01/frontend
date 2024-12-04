@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useRef, useState } from 'react';
 
 import Button from '~/src/components/common/button';
@@ -11,6 +9,7 @@ interface CalendarDownProps {
   selectedDate: Date | undefined;
   onReset: () => void;
   onClose?: () => void;
+  filterRef?: React.RefObject<HTMLButtonElement>;
   className?: string;
 }
 
@@ -19,34 +18,47 @@ export default function CalendarDown({
   selectedDate,
   onReset,
   onClose,
+  filterRef,
   className,
 }: CalendarDownProps) {
   const [tempSelectedDate, setTempSelectedDate] = useState<Date | undefined>(
     selectedDate,
   );
   const calendarRef = useRef<HTMLDivElement>(null);
+
   const handleSelectDate = (date: Date | undefined) => {
     setTempSelectedDate(date);
   };
+
   const handleSubmit = () => {
     if (tempSelectedDate) {
       onDateSelect(tempSelectedDate);
     }
   };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
       if (
-        calendarRef.current &&
-        !calendarRef.current.contains(event.target as Node)
+        calendarRef.current?.contains(target) ||
+        filterRef?.current?.contains(target)
       ) {
-        onClose?.();
+        return;
       }
+
+      onClose?.();
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, filterRef]);
+
+  useEffect(() => {
+    setTempSelectedDate(selectedDate);
+  }, [selectedDate]);
 
   return (
     <div
@@ -60,7 +72,7 @@ export default function CalendarDown({
         mode="single"
         onSelect={handleSelectDate}
         selected={tempSelectedDate}
-        defaultMonth={tempSelectedDate ? tempSelectedDate : new Date()}
+        defaultMonth={tempSelectedDate || new Date()}
       />
 
       <span className="flex h-10 gap-2">

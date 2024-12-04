@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 
 import DownCaret from '~/src/assets/icons/caret-down.svg?url';
@@ -34,9 +34,10 @@ export default function RightFilter({
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
 
   const isClickedFirst = isOpen || selected !== placeholder;
+  const filterRef = useRef<HTMLButtonElement>(null);
 
   const toggleDropdown = () => {
-    setIsOpen(!isOpen);
+    setIsOpen((prev) => !prev);
   };
 
   const selectOption = (option: string) => {
@@ -58,6 +59,7 @@ export default function RightFilter({
   return (
     <div className="relative whitespace-nowrap">
       <button
+        ref={filterRef}
         {...rest}
         onClick={toggleDropdown}
         className={cn(
@@ -87,6 +89,7 @@ export default function RightFilter({
               selectedDate={selectedDate}
               onReset={handleReset}
               onClose={() => setIsOpen(false)}
+              filterRef={filterRef}
             />
           ) : (
             <Dropdown
@@ -95,6 +98,7 @@ export default function RightFilter({
               version="Filter"
               selectedOption={selected}
               onClose={() => setIsOpen(false)}
+              filterRef={filterRef}
             />
           )}
         </>

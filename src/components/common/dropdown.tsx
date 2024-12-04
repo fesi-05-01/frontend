@@ -8,10 +8,11 @@ interface DropdownProps
   onClick?: (option: string) => void;
   options: string[];
   onSelect: (option: string) => void;
-  version: 'Login' | 'Filter'; // width의 차이로 편의상 타입명을 지정하였습니다 기능과는 관련이 없습니다
+  version: 'Login' | 'Filter';
   selectedOption: string;
   className?: string;
   onClose?: () => void;
+  filterRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export default function Dropdown({
@@ -21,23 +22,30 @@ export default function Dropdown({
   selectedOption,
   className,
   onClose,
+  filterRef,
   ...rest
 }: DropdownProps) {
   const dropdownRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
+        dropdownRef.current?.contains(target) ||
+        filterRef?.current?.contains(target)
       ) {
-        onClose?.();
+        return;
       }
+
+      onClose?.();
     };
+
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [onClose]);
+  }, [onClose, filterRef]);
 
   const handleSelect = (option: string) => {
     onSelect(option);
@@ -47,7 +55,7 @@ export default function Dropdown({
     <div
       ref={dropdownRef}
       className={cn(
-        'absolute mt-2 rounded-xl bg-white shadow-lg',
+        'absolute z-50 mt-2 rounded-xl bg-white shadow-lg',
         version === 'Filter'
           ? 'w-full min-w-[120px]'
           : 'w-[110px] desktop:w-[142px]',
@@ -60,7 +68,7 @@ export default function Dropdown({
           key={option}
           onClick={() => handleSelect(option)}
           className={cn(
-            'z-50 m-1 block w-[calc(100%-8px)] rounded-xl px-2 py-2 text-left text-sm font-medium hover:bg-secondary-200',
+            'm-1 block w-[calc(100%-8px)] rounded-xl px-2 py-2 text-left text-sm font-medium hover:bg-secondary-200',
             version === 'Filter' ? '' : 'h-10 desktop:h-11',
             selectedOption === option ? 'bg-orange-100' : '',
             className,
