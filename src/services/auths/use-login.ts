@@ -3,13 +3,13 @@ import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
 
+import { post } from '~/src/services/api';
 import {
   type ErrorResponseData,
   type SigninData,
   type TokenResponseData,
-} from '~/src/components/authpage/types';
-import { post } from '~/src/services/api';
-import { setAccessTokenAtom } from '~/src/store/auth-store';
+} from '~/src/services/auths/types';
+import { setAccessTokenAtom } from '~/src/stores/auth-store';
 
 export function useLogin(form: UseFormReturn<SigninData>) {
   const setAccessToken = useSetAtom(setAccessTokenAtom);

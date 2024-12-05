@@ -3,7 +3,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
 
 import { post } from '~/src/services/api';
-import { setAccessTokenAtom } from '~/src/store/auth-store';
+import { setAccessTokenAtom } from '~/src/stores/auth-store';
 
 export function useLogout() {
   const router = useRouter();

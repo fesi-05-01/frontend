@@ -5,7 +5,7 @@ import { useAtom } from 'jotai';
 
 import Gnb from '~/src/components/common/gnb';
 import ProfileDropdown from '~/src/components/common/profile-dropdown';
-import { accessTokenAtom } from '~/src/store/auth-store';
+import { accessTokenAtom } from '~/src/stores/auth-store';
 import { cn } from '~/src/utils/class-name';
 
 export default function Header() {
