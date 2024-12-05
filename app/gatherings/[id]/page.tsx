@@ -29,7 +29,7 @@ export default function GatheringItemPage({ params }: Props) {
 
   return (
     <MainContainer className="flex flex-col">
-      <div className="mt-6 grid flex-1 grid-cols-1 grid-rows-[auto_1fr] gap-y-4 tablet:grid-cols-2 tablet:gap-x-[14px] tablet:gap-y-[21px] desktop:mt-10 desktop:gap-x-6">
+      <div className="mt-6 grid flex-1 grid-cols-1 grid-rows-[auto_auto_1fr] gap-y-4 tablet:grid-cols-2 tablet:grid-rows-[auto_1fr] tablet:gap-x-[14px] tablet:gap-y-[21px] desktop:mt-10 desktop:gap-x-6">
         <GatheringDetailImage
           image={data[0].image}
           className="h-[180px] tablet:h-60"
