@@ -1,10 +1,10 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { type z } from 'zod';
 
+import { signupSchema } from '~/src/components/authpage/validation/auth-schemas';
 import Button from '~/src/components/common/button';
 import {
   Form,
@@ -13,65 +13,30 @@ import {
   FormLabel,
 } from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
-
-const passwordRegex =
-  /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$&*?!%])[A-Za-z\d!@$%&*?]{8,15}$/;
-
-const formSchema = z
-  .object({
-    username: z
-      .string()
-      .min(2, {
-        message: '이름은 2글자 이상이어야 합니다.',
-      })
-      .nonempty({ message: '이름을 입력해주세요' }),
-    email: z
-      .string()
-      .email({ message: '이메일 형식이 아닙니다.' })
-      .nonempty({ message: '이메일을 입력해주세요' }),
-    company: z
-      .string()
-      .min(2, { message: '회사명을 정확히 입력해주세요' })
-      .nonempty({ message: '회사명을 입력해주세요' }),
-    password: z
-      .string()
-      .min(8, { message: '비밀번호는 8자리 이상이어야 합니다.' })
-      .regex(passwordRegex, {
-        message: '영문, 숫자, 특수문자(~!@#$%^&*)를 모두 조합해 주세요.',
-      })
-      .nonempty({ message: '비밀번호를 입력해주세요' }),
-    confirmPassword: z
-      .string()
-      .nonempty({ message: '비밀번호를 다시 입력해주세요' }),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    path: ['confirmPassword'],
-    message: '비밀번호가 일치하지 않습니다.',
-  });
+import { useSignup } from '~/src/services/auths/use-signup';
 
 export default function SignupForm() {
-  const router = useRouter();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    mode: 'onSubmit',
-    // 기능 요구 사항 검사 시점 버튼 클릭 후라서 'onSubmit' 으로 설정
+  const form = useForm<z.infer<typeof signupSchema>>({
+    resolver: zodResolver(signupSchema),
+    mode: 'all',
     defaultValues: {
-      username: '',
+      name: '',
       email: '',
-      company: '',
+      companyName: '',
       password: '',
       confirmPassword: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    alert('회원가입이 완료되었습니다.' + JSON.stringify(values));
-    router.push('/login');
-  }
+  const mutation = useSignup(form);
+  const { name, email, companyName, password, confirmPassword } = form.watch();
 
-  console.log(form.formState.errors);
+  const isFormFilled =
+    name && email && companyName && password && confirmPassword;
+
+  const onSubmit = (values: z.infer<typeof signupSchema>) => {
+    mutation.mutate(values);
+  };
   return (
     <>
       <Form {...form}>
@@ -81,12 +46,12 @@ export default function SignupForm() {
         >
           <FormField
             control={form.control}
-            name="username"
+            name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="username">이름</FormLabel>
+                <FormLabel htmlFor="name">이름</FormLabel>
                 <Input
-                  error={form.formState.errors.username?.message}
+                  error={form.formState.errors.name?.message}
                   type="text"
                   placeholder="이름을 입력해주세요"
                   {...field}
@@ -112,12 +77,12 @@ export default function SignupForm() {
           />
           <FormField
             control={form.control}
-            name="company"
+            name="companyName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel htmlFor="company">회사</FormLabel>
+                <FormLabel htmlFor="companyName">회사</FormLabel>
                 <Input
-                  error={form.formState.errors.company?.message}
+                  error={form.formState.errors.companyName?.message}
                   type="text"
                   placeholder="회사를 입력해주세요"
                   {...field}
@@ -155,7 +120,9 @@ export default function SignupForm() {
               </FormItem>
             )}
           />
-          <Button type="submit">회원가입</Button>
+          <Button type="submit" disabled={!isFormFilled}>
+            {mutation.isPending ? '회원가입 중...' : '회원가입'}
+          </Button>
         </form>
       </Form>
     </>

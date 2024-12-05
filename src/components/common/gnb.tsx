@@ -9,7 +9,13 @@ export default function Gnb() {
       <Logo />
 
       <ActiveLink href="/gatherings">모임 찾기</ActiveLink>
-      <ActiveLink href="/wishlist">찜한 모임</ActiveLink>
+      <ActiveLink
+        className="flex items-center gap-[5px]"
+        href="/wishlist"
+        badgeCount={1}
+      >
+        찜한 모임
+      </ActiveLink>
       <ActiveLink href="/all-reviews">모든 리뷰</ActiveLink>
     </nav>
   );
