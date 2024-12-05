@@ -42,7 +42,8 @@ export default function CreateGatheringModal() {
     },
   });
 
-  const { control, handleSubmit: onSubmit, reset } = form;
+  const { control, formState, handleSubmit: onSubmit, reset } = form;
+  const { isDirty, isValid, isSubmitting } = formState;
 
   const handleSubmit = (values: CreateGatheringForm) => {
     console.log(values);
@@ -123,7 +124,12 @@ export default function CreateGatheringModal() {
         </ScrollArea>
 
         <DialogFooter>
-          <Button type="submit" form="create-gathering-form" size="small">
+          <Button
+            type="submit"
+            form="create-gathering-form"
+            size="small"
+            disabled={!isDirty || !isValid || isSubmitting}
+          >
             확인
           </Button>
         </DialogFooter>

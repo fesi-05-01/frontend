@@ -19,7 +19,8 @@ export default function FormLocation({ field }: Props) {
         <Dropdown.Trigger asChild>
           <div
             className={cn(
-              'flex h-10 w-full cursor-pointer items-center justify-between rounded-xl bg-secondary-50 px-4 text-sm font-medium text-secondary-400 tablet:h-11',
+              'flex w-full cursor-pointer items-center justify-between rounded-xl bg-secondary-50 px-4 font-medium text-secondary-400',
+              'h-10 text-sm tablet:h-11 tablet:text-base',
               field.value && 'text-secondary-800',
             )}
           >
@@ -39,7 +40,7 @@ export default function FormLocation({ field }: Props) {
             {['건대입구', '을지로3가', '신림', '홍대입구'].map((location) => (
               <Dropdown.Item
                 key={location}
-                className="rounded-xl px-3 py-1.5 focus:bg-primary-100"
+                className="cursor-pointer rounded-xl px-3 py-1.5 focus:bg-primary-100"
                 onClick={() => field.onChange(location)}
               >
                 {location}

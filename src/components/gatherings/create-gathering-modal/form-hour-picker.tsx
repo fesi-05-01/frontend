@@ -39,6 +39,7 @@ export default function FormHourPicker({ field }: Props) {
                       ? 'active'
                       : 'inactive'
                 }
+                disabled={isToday && time <= nowTime}
                 onClick={() => field.onChange({ ...field.value, time })}
               >
                 {`${time.toString().padStart(2, '0')}:00`}
