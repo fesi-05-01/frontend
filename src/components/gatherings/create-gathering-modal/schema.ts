@@ -1,3 +1,4 @@
+import { File } from '@web-std/file';
 import { z } from 'zod';
 
 export const createGatheringSchema = z.object({
