@@ -10,7 +10,13 @@ export default function ReviewList() {
     <div className="flex grow flex-col">
       {/* 데이터 있을때 */}
       {data?.map((data) => (
-        <ReviewCardItem key={data.id} {...data} hasImage hasTypeDescription />
+        <ReviewCardItem
+          key={data.id}
+          {...data}
+          hasImage
+          hasTypeDescription
+          hasNameTag
+        />
       ))}
 
       {/* 첫 페칭이 끝나고 데이터 없을때 */}
