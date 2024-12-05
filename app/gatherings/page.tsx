@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-import Button from '~/src/components/common/button';
 // import Filter from '~/src/components/common/filter';
 import GatheringTab from '~/src/components/common/gathering-tab';
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import CardContainer from '~/src/components/gathering-card/card-container';
+import CreateGatheringModal from '~/src/components/gatherings/create-gathering-modal';
 import MainContainer from '~/src/components/layout/main-container';
 import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { type GatheringType } from '~/src/services/types';
@@ -39,7 +39,7 @@ export default function GatheringsPage() {
                 type={filter.type!}
                 onChangeFilter={handleChangeFilter}
               />
-              <Button className="w-[115px]">모임 만들기</Button>
+              <CreateGatheringModal />
             </div>
             <GatheringTab.Sub
               type={filter.type!}

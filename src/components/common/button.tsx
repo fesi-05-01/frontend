@@ -1,6 +1,10 @@
 'use client';
 
-import React, { type ComponentPropsWithoutRef } from 'react';
+import React, {
+  type ComponentPropsWithoutRef,
+  type ForwardedRef,
+  forwardRef,
+} from 'react';
 
 import { cn } from '~/src/utils/class-name';
 
@@ -9,18 +13,22 @@ interface ButtonProps extends ComponentPropsWithoutRef<'button'> {
   size?: 'small' | 'large';
 }
 
-export default function Button({
-  children,
-  variant,
-  disabled,
-  className,
-  size = 'large',
-  ...props
-}: ButtonProps) {
+export default forwardRef(function Button(
+  {
+    children,
+    variant,
+    disabled,
+    className,
+    size = 'large',
+    ...props
+  }: ButtonProps,
+  ref: ForwardedRef<HTMLButtonElement>,
+) {
   const sizeClass = size === 'small' ? 'h-[40px]' : 'h-[44px]';
 
   return (
     <button
+      ref={ref}
       {...props}
       disabled={disabled}
       className={cn(
@@ -40,4 +48,4 @@ export default function Button({
       {children}
     </button>
   );
-}
+});
