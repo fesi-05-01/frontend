@@ -9,7 +9,7 @@ const AuthCard = React.forwardRef<
   <div
     ref={ref}
     className={cn(
-      'flex w-full flex-col items-center justify-center gap-[10px] rounded-2xl bg-white px-[54px] py-[32px]',
+      'flex w-full flex-col items-center justify-center gap-[10px] rounded-2xl bg-white px-[16px] py-[32px] tablet:px-[54px] desktop:w-1/2',
       className,
     )}
     {...props}
@@ -23,7 +23,10 @@ const AuthCardTitle = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <div
     ref={ref}
-    className={cn('p-2 text-2xl font-semibold text-secondary-800', className)}
+    className={cn(
+      'text-xl font-semibold text-secondary-800 tablet:text-2xl',
+      className,
+    )}
     {...props}
   />
 ));

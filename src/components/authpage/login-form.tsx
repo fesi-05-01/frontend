@@ -1,9 +1,9 @@
 'use client';
 import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { type z } from 'zod';
 
+import { loginSchema } from '~/src/components/authpage/validation/auth-schemas';
 import Button from '~/src/components/common/button';
 import {
   Form,
@@ -12,28 +12,28 @@ import {
   FormLabel,
 } from '~/src/components/common/form';
 import Input from '~/src/components/common/input';
-
-const formSchema = z.object({
-  email: z.string().nonempty({ message: '이메일을 입력해주세요' }),
-  password: z.string().nonempty({ message: '비밀번호를 입력해주세요' }),
-});
+import { useLogin } from '~/src/services/auths/use-login';
 
 export default function LoginForm() {
-  const rotuer = useRouter();
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    mode: 'onSubmit',
+  const form = useForm<z.infer<typeof loginSchema>>({
+    resolver: zodResolver(loginSchema),
+    mode: 'all',
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    rotuer.push('/');
-    alert('로그인 성공' + JSON.stringify(values));
+  const mutation = useLogin(form);
+
+  const { email, password } = form.watch();
+
+  const isFormFilled = email && password;
+
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    mutation.mutate(values);
   }
+
   return (
     <Form {...form}>
       <form
@@ -70,7 +70,9 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">로그인</Button>
+        <Button type="submit" disabled={!isFormFilled}>
+          {mutation.isPending ? '로그인 중...' : '로그인'}
+        </Button>
       </form>
     </Form>
   );
