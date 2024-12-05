@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -27,12 +28,14 @@ import {
   type CreateGatheringForm,
   createGatheringSchema,
 } from '~/src/components/gatherings/create-gathering-modal/schema';
+import useCreateGathering from '~/src/services/gatherings/use-create-gathering';
 import { cn } from '~/src/utils/class-name';
 
 export default function CreateGatheringModal() {
+  const [open, setOpen] = useState(false);
+
   const form = useForm<CreateGatheringForm>({
     resolver: zodResolver(createGatheringSchema),
-    mode: 'onSubmit',
     defaultValues: {
       day: {
         date: new Date(),
@@ -45,12 +48,23 @@ export default function CreateGatheringModal() {
   const { control, formState, handleSubmit: onSubmit, reset } = form;
   const { isDirty, isValid, isSubmitting } = formState;
 
-  const handleSubmit = (values: CreateGatheringForm) => {
-    console.log(values);
+  const { mutate: createGathering, isPending } = useCreateGathering();
+
+  const handleSubmit = (form: CreateGatheringForm) => {
+    createGathering(form, {
+      onSuccess: () => {
+        handleOpenChange(false);
+      },
+    });
+  };
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) reset();
+    setOpen(open);
   };
 
   return (
-    <Dialog onOpenChange={(open) => !open && reset()}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button className="w-[115px]">모임 만들기</Button>
       </DialogTrigger>
@@ -73,24 +87,28 @@ export default function CreateGatheringModal() {
               onSubmit={onSubmit(handleSubmit)}
               className="space-y-6 pb-6"
             >
+              {/* 장소 폼 */}
               <FormField
                 control={control}
                 name="location"
                 render={({ field }) => <FormLocation field={field} />}
               />
 
+              {/* 이미지 폼 */}
               <FormField
                 control={control}
                 name="image"
                 render={({ field }) => <FormImage field={field} />}
               />
 
+              {/* 모임 타입 폼 */}
               <FormField
                 control={control}
                 name="type"
                 render={({ field }) => <FormGatheringType field={field} />}
               />
 
+              {/* 날짜 폼 */}
               <div>
                 <FormField
                   control={control}
@@ -105,6 +123,7 @@ export default function CreateGatheringModal() {
                 />
               </div>
 
+              {/* 모집 정원 폼 */}
               <FormField
                 control={control}
                 name="capacity"
@@ -123,12 +142,13 @@ export default function CreateGatheringModal() {
           </Form>
         </ScrollArea>
 
+        {/* 확인 버튼 */}
         <DialogFooter>
           <Button
             type="submit"
             form="create-gathering-form"
             size="small"
-            disabled={!isDirty || !isValid || isSubmitting}
+            disabled={!isDirty || !isValid || isSubmitting || isPending}
           >
             확인
           </Button>
