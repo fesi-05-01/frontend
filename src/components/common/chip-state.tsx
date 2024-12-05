@@ -18,13 +18,13 @@ export default function ChipState({ state, className }: ChipStateProps) {
     scheduled: 'bg-orange-100 text-orange-600',
     done: 'bg-gray-200 text-gray-500',
     confirmed: 'text-orange-600 border border-orange-100',
-    pending: 'border border-gray-200',
+    pending: 'border text-secondary-500 border-gray-200',
   };
 
   return (
     <span
       className={cn(
-        `inline-flex items-center gap-1 rounded-3xl px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
+        `inline-flex h-8 items-center gap-1 rounded-3xl px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
         className,
       )}
     >
