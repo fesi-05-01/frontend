@@ -8,7 +8,7 @@ export default function useGatheringDetail(id: number) {
   return useQuery({
     queryKey: gatheringsQueryKeys.gatheringDetail({ id }),
     queryFn: () => {
-      return get<GetGatheringDetailResponse>(`/gatherings`, { params: { id } });
+      return get<GetGatheringDetailResponse>(`/gatherings/${id}`);
     },
   });
 }

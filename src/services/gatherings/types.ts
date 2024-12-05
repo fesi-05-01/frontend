@@ -30,16 +30,17 @@ export interface GetGatheringParticipantsRequest extends Partial<PageParam> {
 
 export type GetGatheringParticipantsResponse = GatheringParticipant[];
 
-interface User {
+export interface User {
   id: number;
   email: string;
   name: string;
   companyName: string;
   image: string | null;
+  createdAt: string;
+  updatedAt: string;
 }
 
-interface GatheringParticipant {
-  teamId: string;
+export interface GatheringParticipant {
   userId: number;
   gatheringId: number;
   joinedAt: string;

@@ -46,6 +46,7 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
                 <span>{gathering.participantCount}명</span>
               </div>
               <GatheringProfileImages
+                gatheringId={gathering.id}
                 participantCount={gathering.participantCount}
               />
             </div>

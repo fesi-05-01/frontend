@@ -34,8 +34,10 @@ export default function GatheringItemPage({ params }: Props) {
           className="h-[180px] tablet:h-60"
         />
         <GatheringInfo gathering={data[0]} />
-        <div className="h-96 border-t-2 border-gray-200 bg-white tablet:col-span-2">
-          Reviews Gathering {params.id} Page 아 여기 페이지네이션 써야 하는데
+        <div className="h-96 border-t-2 border-gray-200 bg-white p-6 tablet:col-span-2">
+          <h3 className="text-lg font-semibold">
+            이용자들은 이 프로그램을 이렇게 느꼈어요!
+          </h3>
         </div>
       </div>
     </MainContainer>

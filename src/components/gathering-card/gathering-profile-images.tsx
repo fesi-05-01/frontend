@@ -7,9 +7,13 @@ import DefaultProfileImage from '~/src/assets/images/profile-large.png';
 import useGatheringParticipants from '~/src/services/gatherings/use-gathering-participants';
 
 interface Props {
+  gatheringId: number;
   participantCount: number;
 }
-export default function GatheringProfileImages({ participantCount }: Props) {
+export default function GatheringProfileImages({
+  gatheringId,
+  participantCount,
+}: Props) {
   const {
     data,
     isLoading,
@@ -18,7 +22,7 @@ export default function GatheringProfileImages({ participantCount }: Props) {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useGatheringParticipants(1112);
+  } = useGatheringParticipants(gatheringId);
 
   const [images, setImages] = useState<string[]>([]);
 
