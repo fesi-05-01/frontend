@@ -1,3 +1,4 @@
+import { type GetReviewListResponse } from '~/src/services/reviews/types';
 import {
   type GatheringLocation,
   type GatheringType,
@@ -46,3 +47,9 @@ export interface GatheringParticipant {
   joinedAt: string;
   User: User;
 }
+
+export interface GetGatheringReviewRequest {
+  gatheringId: number;
+}
+
+export type GetGatheringReviewResponse = GetReviewListResponse;

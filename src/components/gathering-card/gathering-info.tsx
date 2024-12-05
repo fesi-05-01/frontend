@@ -19,7 +19,7 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
   });
 
   return (
-    <div className="rounded-3xl border-2 border-gray-200 bg-white">
+    <div className="self-start rounded-3xl border-2 border-gray-200 bg-white">
       <div className="my-6 flex flex-col">
         {/* 위 */}
         <div className="flex justify-between px-6">

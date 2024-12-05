@@ -32,7 +32,7 @@ export default function makeFakeGatherings(count: number, id?: number) {
       '홍대입구',
     ]),
     participantCount: faker.number.int({ min: 1, max: 50 }),
-    capacity: faker.number.int({ min: 10, max: 100 }),
+    capacity: faker.number.int({ min: 10, max: 50 }),
     image: `https://picsum.photos/400`,
     createdBy: faker.number.int({ min: 1, max: 1000 }),
     canceledAt:
