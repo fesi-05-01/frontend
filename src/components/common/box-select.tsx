@@ -32,13 +32,16 @@ export default function BoxSelect({
         className,
       )}
     >
-      <Checkbox isChecked={checked} onClick={toggleChecked} />
+      <Checkbox
+        className="shrink-0"
+        isChecked={checked}
+        onClick={toggleChecked}
+      />
       <div className="flex-col gap-1 tablet:gap-[2px]">
         <span
           className={cn(
             `block text-sm font-semibold tablet:text-base`,
             checkedTitleClass,
-            className,
           )}
         >
           {title}
@@ -47,7 +50,6 @@ export default function BoxSelect({
           className={cn(
             `block break-keep text-xs font-medium`,
             checkedDescriptionClass,
-            className,
           )}
         >
           {description}
