@@ -1,11 +1,13 @@
 name: Synchronize forked repo
 
 on:
-  push:
+  pull_request:
+    types: [closed]
     branches: [main]
 
 jobs:
   sync:
+    if: github.event.pull_request.merged == true
     name: Sync forked repo
     runs-on: ubuntu-latest
 
