@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
 
 interface UseGatheringCardProps {
-  initialState?: boolean;
+  initialIsSaved?: boolean;
   participantCount: number;
   capacity: number;
 }
 
 export default function useGatheringCard({
-  initialState = false,
+  initialIsSaved = false,
   participantCount,
   capacity,
 }: UseGatheringCardProps) {
-  const [isActive, setIsActive] = useState<boolean>(initialState);
+  const [isSaved, setIsSaved] = useState<boolean>(initialIsSaved);
   const [cardState, setCardState] = useState<
     'ongoing' | 'confirmation' | 'closed'
   >('ongoing');
@@ -28,8 +28,8 @@ export default function useGatheringCard({
 
   const handleSaveButton = (event: React.MouseEvent<SVGSVGElement>) => {
     event.stopPropagation();
-    setIsActive((prev) => !prev);
+    setIsSaved((prev) => !prev);
   };
 
-  return { isActive, cardState, handleSaveButton };
+  return { isSaved, cardState, handleSaveButton };
 }
