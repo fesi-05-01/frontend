@@ -5,7 +5,11 @@ import { useQueryClient } from '@tanstack/react-query';
 import { type File } from '@web-std/file';
 
 import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
-import MyProfileEdit from '~/src/assets/images/mypage-profile-edit.png';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '~/src/components/common/avatar';
 import Button from '~/src/components/common/button';
 import {
   Form,
@@ -32,6 +36,7 @@ export default function ProfileEdit() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const { data: user } = useGetUserInfo();
+
   const form = useForm<UserEditType>({
     defaultValues: {
       companyName: user?.companyName || '',
@@ -40,18 +45,20 @@ export default function ProfileEdit() {
   });
 
   const {
+    setValue,
+    reset,
     formState: { isDirty },
   } = form;
 
   const handleCancel = () => {
     setIsModalOpen(false);
     form.reset();
-    setPreviewImage(user?.image || null);
     setImageFile(null);
   };
 
   const mutation = useEditUser();
   const queryClient = useQueryClient();
+
   const onSubmit = async (data: UserEditType) => {
     const formData = new FormData();
     formData.append('companyName', data.companyName || '');
@@ -60,6 +67,7 @@ export default function ProfileEdit() {
 
     mutation.mutate(formData, {
       onSuccess: () => {
+        reset({ companyName: data.companyName, image: data.image });
         queryClient.invalidateQueries({ queryKey: ['user'] });
         handleCancel();
       },
@@ -78,7 +86,9 @@ export default function ProfileEdit() {
       const reader = new FileReader();
 
       reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
+        const preview = reader.result as string;
+        setPreviewImage(preview);
+        setValue('image', preview, { shouldDirty: true });
       };
       reader.readAsDataURL(file);
     }
@@ -110,25 +120,28 @@ export default function ProfileEdit() {
               onSubmit={form.handleSubmit(onSubmit)}
               className="flex w-full flex-col gap-6"
             >
-              <div
+              <Avatar
                 className="relative h-14 w-14"
                 onClick={() => document.getElementById('fileInput')?.click()}
               >
+                <AvatarImage src={previewImage || user?.image}></AvatarImage>
+                <AvatarFallback />
                 <Image
-                  src={previewImage || user?.image || MyProfileEdit}
-                  alt="프로필 사진"
-                  width={56}
-                  height={56}
-                  className="cursor-pointer overflow-hidden rounded-full border object-cover"
+                  src={CircleEdit}
+                  width={18}
+                  height={18}
+                  alt="Edit-Icon"
+                  className="absolute bottom-0 right-0 z-10"
                 />
-                <input
-                  type="file"
-                  hidden
-                  id="fileInput"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                />
-              </div>
+              </Avatar>
+
+              <input
+                type="file"
+                hidden
+                id="fileInput"
+                accept="image/*"
+                onChange={handleImageChange}
+              />
 
               <FormField
                 control={form.control}

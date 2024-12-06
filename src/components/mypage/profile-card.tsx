@@ -1,9 +1,13 @@
 'use client';
 import Image from 'next/image';
 
+import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import bgimage from '~/src/assets/images/bg-profile.png';
-import MyProfile from '~/src/assets/images/mypage-profile.png';
-import MyProfileEdit from '~/src/assets/images/mypage-profile-edit.png';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '~/src/components/common/avatar';
 import ProfileEdit from '~/src/components/mypage/profile-edit';
 import { useGetUserInfo } from '~/src/services/auths/get-user';
 export default function ProfileCard() {
@@ -25,32 +29,17 @@ export default function ProfileCard() {
           <ProfileEdit />
         </div>
         <div className="absolute -bottom-10 left-4">
-          {user?.image ? (
+          <Avatar className="relative h-14 w-14">
+            <AvatarImage src={user?.image}></AvatarImage>
+            <AvatarFallback />
             <Image
-              src={user.image}
-              width={56}
-              height={56}
-              className="rounded-full"
-              alt="my-profile-edit"
+              src={CircleEdit}
+              width={18}
+              height={18}
+              alt="Edit-Icon"
+              className="absolute bottom-0 right-0 tablet:hidden"
             />
-          ) : (
-            <div>
-              <Image
-                src={MyProfile}
-                alt="my-profile"
-                width={56}
-                height={56}
-                className="hidden border-white mobile:block"
-              />
-              <Image
-                src={MyProfileEdit}
-                width={56}
-                height={56}
-                className="block border-white mobile:hidden"
-                alt="my-profile-edit"
-              />
-            </div>
-          )}
+          </Avatar>
         </div>
       </div>
 
