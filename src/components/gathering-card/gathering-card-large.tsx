@@ -12,14 +12,11 @@ import ClosedButton from '~/src/components/gathering-card/closed-button';
 import Confirmation from '~/src/components/gathering-card/confirmation';
 import JoinNowButton from '~/src/components/gathering-card/join-now-button';
 import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
-import useGatheringCard from '~/src/components/gathering-card/use-gathering-card';
+import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
+import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
-export default function GatheringCardLarge({
-  state,
-  gathering,
-}: GatheringCardProps) {
-  const { isActive, handleSaveButton, cardState } = useGatheringCard({
-    initialState: false,
+export default function GatheringCardLarge({ gathering }: GatheringCardProps) {
+  const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
   });
@@ -35,8 +32,7 @@ export default function GatheringCardLarge({
           <Image
             src={gathering.image}
             alt="cat"
-            layout="fill"
-            objectFit="fill"
+            fill
             className="rounded-l-3xl"
           />
         )}
@@ -66,7 +62,7 @@ export default function GatheringCardLarge({
         <div>
           <Save
             className="absolute right-4 top-4"
-            isActive={isActive}
+            isActive={isSaved}
             onClick={handleSaveButton}
           />
         </div>
@@ -101,7 +97,7 @@ export default function GatheringCardLarge({
         </div>
       </div>
 
-      {state === 'disabled' && (
+      {isRegistrationEnded(gathering.registrationEnd) && (
         <div
           onClick={(e) => e.stopPropagation()}
           className="absolute inset-0 z-0 flex cursor-not-allowed items-center justify-center overflow-hidden rounded-3xl bg-black bg-opacity-80"

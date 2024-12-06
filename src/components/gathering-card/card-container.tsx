@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import useBreakpoint from 'use-breakpoint';
 
 import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
@@ -16,35 +15,27 @@ const tmpVar: Gathering = {
   dateTime: '2024-07-31T09:06:16.184Z',
   participantCount: 5, // 20으로 채우면 cardState 변경
   capacity: 20,
+  type: 'DALLAEMFIT',
+  registrationEnd: '2024-07-25T09:06:16.184Z',
+  createdBy: 482,
+  canceledAt: null,
 };
 const BREAKPOINTS = getBreakpoints();
 
 export default function CardContainer() {
-  const [tmpState, setTmpState] = useState<'default' | 'disabled'>('default');
   const { breakpoint } = useBreakpoint(BREAKPOINTS, 'desktop');
-
-  const tmpFn = () => {
-    if (tmpState === 'disabled') {
-      setTmpState('default');
-    } else {
-      setTmpState('disabled');
-    }
-  };
 
   return (
     <div className="w-full">
       {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
         <div className="flex flex-col gap-6">
-          <GatheringCardLarge state={tmpState} gathering={tmpVar} />
+          <GatheringCardLarge gathering={tmpVar} />
         </div>
       ) : (
         <div className="flex flex-col items-center gap-6">
-          <GatheringCardSmall state={tmpState} gathering={tmpVar} />
+          <GatheringCardSmall gathering={tmpVar} />
         </div>
       )}
-      <button className="border border-black bg-gray-200 p-2" onClick={tmpFn}>
-        default | disabled
-      </button>
     </div>
   );
 }
