@@ -1,15 +1,19 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
-import profilelarge from '~/src/assets/images/profile-large.png';
-import profilesmall from '~/src/assets/images/profile-small.png';
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from '~/src/components/common/avatar';
 import Dropdown from '~/src/components/common/dropdown';
+import { useGetUserInfo } from '~/src/services/auths/get-user';
 import { useLogout } from '~/src/services/auths/use-logout';
 
 export default function ProfileDropdown() {
+  const { data: user } = useGetUserInfo();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');
@@ -31,20 +35,11 @@ export default function ProfileDropdown() {
 
   return (
     <div onClick={toggleDropdown} className="relative text-gray-800">
-      <Image
-        className="hidden tablet:block"
-        src={profilelarge}
-        alt="profile-large"
-        width={40}
-        height={40}
-      />
-      <Image
-        className="block tablet:hidden"
-        src={profilesmall}
-        alt="profile-small"
-        width={40}
-        height={40}
-      />
+      <Avatar size="medium">
+        <AvatarImage src={user?.image}></AvatarImage>
+        <AvatarFallback />
+      </Avatar>
+
       {isOpen && (
         <Dropdown
           className="right-0"
