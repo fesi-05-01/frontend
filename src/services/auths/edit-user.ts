@@ -4,23 +4,24 @@ import { put } from '~/src/services/api';
 import {
   type ErrorResponseData,
   type SuccessResponseData,
-  type UserEditType,
 } from '~/src/services/auths/types';
 
 export function useEditUser() {
-  return useMutation<SuccessResponseData, ErrorResponseData, UserEditType>({
-    mutationFn: (data) => {
-      return put<SuccessResponseData>('/auths/user', {
-        companyName: data?.companyName,
-        // image: data?.image,
+  return useMutation<SuccessResponseData, ErrorResponseData, FormData>({
+    mutationFn: (formData: FormData) => {
+      return put<SuccessResponseData>('/auths/user', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
     },
-    onSuccess: () => {
-      alert('수정완');
+    onSuccess: (data) => {
+      alert('수정완료');
+      console.log('수정완료', data);
     },
     onError: (error) => {
       console.error(error);
-      alert('오류');
+      alert('오류 발생');
     },
   });
 }
