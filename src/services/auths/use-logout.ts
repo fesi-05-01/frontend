@@ -1,13 +1,15 @@
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
 
 import { post } from '~/src/services/api';
-import { setAccessTokenAtom } from '~/src/store/auth-store';
+import { setAccessTokenAtom } from '~/src/stores/auth-store';
 
 export function useLogout() {
   const router = useRouter();
   const setAccessToken = useSetAtom(setAccessTokenAtom);
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
@@ -16,6 +18,7 @@ export function useLogout() {
     },
     onSuccess: () => {
       setAccessToken(null);
+      queryClient.invalidateQueries({ queryKey: ['user'] });
       alert('로그아웃 완료');
       router.push('/');
     },

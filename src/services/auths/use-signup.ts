@@ -2,12 +2,12 @@ import { type UseFormReturn } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 
+import { post } from '~/src/services/api';
 import {
   type ErrorResponseData,
   type Signuptype,
   type SuccessResponseData,
-} from '~/src/components/authpage/types';
-import { post } from '~/src/services/api';
+} from '~/src/services/auths/types';
 
 export function useSignup(form: UseFormReturn<Signuptype>) {
   const router = useRouter();

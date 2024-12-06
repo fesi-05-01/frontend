@@ -27,7 +27,6 @@ export interface SuccessResponseData {
 }
 
 export interface User {
-  teamId: number;
   id: string;
   email: string;
   name: string;
@@ -35,4 +34,9 @@ export interface User {
   image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface UserEditType {
+  companyName?: string;
+  image?: string;
 }
