@@ -1,0 +1,32 @@
+name: Synchronize forked repo
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  sync:
+    if: github.event.pull_request.merged == true
+    name: Sync forked repo
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.FORKED_REPO_TOKEN}}
+          fetch-depth: 0
+          ref: main
+
+      - name: Add remote-url
+        run: |
+          git remote add forked-repo https://devyouth94:${{ secrets.FORKED_REPO_TOKEN}}@github.com/devyouth94/rest-mate-client
+          git config user.name "devyouth94"
+          git config user.email "devyouth94@gmail.com"
+
+      - name: Push changes to forked-repo
+        run: git push -f forked-repo main
+
+      - name: Clean up
+        run: git remote remove forked-repo
