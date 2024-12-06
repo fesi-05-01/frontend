@@ -33,7 +33,7 @@ export default function makeFakeGatherings(count: number, id?: number) {
     ]),
     participantCount: faker.number.int({ min: 1, max: 50 }),
     capacity: faker.number.int({ min: 10, max: 50 }),
-    image: `https://picsum.photos/400`,
+    image: `https://picsum.photos/400?random=${faker.number.int({ min: 1, max: 1000 })}`,
     createdBy: faker.number.int({ min: 1, max: 1000 }),
     canceledAt:
       faker.helpers.maybe(() => faker.date.past().toISOString(), {

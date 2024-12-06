@@ -25,9 +25,11 @@ export const gatheringsHandlers = [
     return HttpResponse.json(gathering);
   }),
 
-  // 전체 모임 (수정 필요)
+  // 전체 모임
   http.get(baseUrl(`/gatherings`), () => {
-    console.log('Success');
-    return HttpResponse.json({ message: 'Success' });
+    const gatherings = Array.from({ length: 10 }, (_, i) =>
+      makeFakeGathering(1, i + 1),
+    );
+    return HttpResponse.json(gatherings);
   }),
 ];

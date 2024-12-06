@@ -8,7 +8,7 @@ export function generateFakeUsers(count: number): User[] {
     email: faker.internet.email(),
     name: faker.person.fullName(),
     companyName: faker.company.name(),
-    image: `https://picsum.photos/100`,
+    image: `https://picsum.photos/100?random=${faker.number.int({ min: 1, max: 1000 })}`,
     createdAt: faker.date.past().toISOString(),
     updatedAt: faker.date.recent().toISOString(),
   }));
