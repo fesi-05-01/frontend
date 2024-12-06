@@ -12,6 +12,7 @@ export default function ChipTime({
   children,
   state,
   className,
+  ...props
 }: ChipTimeProps) {
   const stateClasses = {
     active: 'bg-gray-900 text-white',
@@ -21,6 +22,7 @@ export default function ChipTime({
 
   return (
     <button
+      {...props}
       className={cn(
         `rounded-lg px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
         className,

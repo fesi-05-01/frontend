@@ -19,6 +19,20 @@ export interface Gathering {
   canceledAt: string | null;
 }
 
+export interface CreateGatheringResponse {
+  teamId: string;
+  id: number;
+  type: GatheringType;
+  name: string;
+  dateTime: string;
+  registrationEnd: string;
+  location: GatheringLocation;
+  participantCount: number;
+  capacity: number;
+  image: string;
+  createdBy: number;
+}
+
 export interface GetGatheringDetailRequest {
   id: number;
 }
