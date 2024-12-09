@@ -12,6 +12,13 @@ export default function MSWProvider({ children }: PropsWithChildren) {
   const isWorkerStarted = useRef(false);
 
   useEffect(() => {
+    // 환경이 production인 경우 무시
+    if (process.env.NODE_ENV === 'production') {
+      setIsReady(true);
+      return;
+    }
+
+    // 환경이 nodejs이거나 이미 시작된 경우 무시
     if (process.env.NEXT_RUNTIME === 'nodejs' || isWorkerStarted.current)
       return;
 
