@@ -25,7 +25,10 @@ export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="ko">
       <body
-        className={cn(pretendard.variable, 'bg-secondary-100 font-pretendard')}
+        className={cn(
+          pretendard.variable,
+          'bg-secondary-100 font-pretendard font-medium text-secondary-800',
+        )}
       >
         <MSWProvider>
           <JotaiProvider>
