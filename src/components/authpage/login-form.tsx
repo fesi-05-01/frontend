@@ -24,14 +24,14 @@ export default function LoginForm() {
     },
   });
 
-  const mutation = useLogin(form);
+  const { mutate: Login, isPending } = useLogin(form);
 
   const { email, password } = form.watch();
 
   const isFormFilled = email && password;
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
-    mutation.mutate(values);
+    Login(values);
   }
 
   return (
@@ -70,8 +70,8 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!isFormFilled}>
-          {mutation.isPending ? '로그인 중...' : '로그인'}
+        <Button type="submit" disabled={!isFormFilled || isPending}>
+          로그인
         </Button>
       </form>
     </Form>

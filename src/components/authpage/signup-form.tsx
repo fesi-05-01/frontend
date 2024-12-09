@@ -28,14 +28,14 @@ export default function SignupForm() {
     },
   });
 
-  const mutation = useSignup(form);
+  const { mutate: Signup, isPending } = useSignup(form);
   const { name, email, companyName, password, confirmPassword } = form.watch();
 
   const isFormFilled =
     name && email && companyName && password && confirmPassword;
 
   const onSubmit = (values: z.infer<typeof signupSchema>) => {
-    mutation.mutate(values);
+    Signup(values);
   };
   return (
     <>
@@ -120,8 +120,9 @@ export default function SignupForm() {
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={!isFormFilled}>
-            {mutation.isPending ? '회원가입 중...' : '회원가입'}
+
+          <Button type="submit" disabled={!isFormFilled || isPending}>
+            확인
           </Button>
         </form>
       </Form>

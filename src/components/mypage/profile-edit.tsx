@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
-import { type File } from '@web-std/file';
 
 import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import {
@@ -52,11 +51,16 @@ export default function ProfileEdit() {
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    form.reset();
+    form.reset({
+      companyName: user?.companyName || '',
+      image: user?.image || '',
+    });
+
     setImageFile(null);
+    setPreviewImage(user?.image || '');
   };
 
-  const mutation = useEditUser();
+  const { mutate: EditUser, isPending } = useEditUser();
   const queryClient = useQueryClient();
 
   const onSubmit = async (data: UserEditType) => {
@@ -65,11 +69,11 @@ export default function ProfileEdit() {
 
     formData.append('image', imageFile || user?.image || '');
 
-    mutation.mutate(formData, {
+    EditUser(formData, {
       onSuccess: () => {
         reset({ companyName: data.companyName, image: data.image });
         queryClient.invalidateQueries({ queryKey: ['user'] });
-        handleCancel();
+        setIsModalOpen(false);
       },
     });
   };
@@ -158,7 +162,7 @@ export default function ProfileEdit() {
                 <Button onClick={handleCancel} type="button" variant="outlined">
                   취소
                 </Button>
-                <Button type="submit" disabled={!isDirty}>
+                <Button type="submit" disabled={!isDirty || isPending}>
                   수정하기
                 </Button>
               </DialogFooter>

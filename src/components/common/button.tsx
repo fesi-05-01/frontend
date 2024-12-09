@@ -32,15 +32,15 @@ export default forwardRef(function Button(
       {...props}
       disabled={disabled}
       className={cn(
-        'w-full rounded-xl px-3 text-white',
+        'w-full rounded-xl px-3 text-white transition-colors duration-75',
         sizeClass,
         variant === 'outlined'
           ? disabled
             ? 'border border-secondary-400 bg-white text-secondary-400'
-            : 'border border-primary-600 bg-white text-primary-600'
+            : 'border border-primary-600 bg-white text-primary-600 hover:border-primary-700 hover:text-primary-700 active:border-primary-800 active:text-primary-800'
           : disabled
             ? 'bg-secondary-400'
-            : 'bg-primary-600',
+            : 'bg-primary-600 hover:bg-primary-700 active:bg-primary-800',
         disabled ? 'cursor-not-allowed' : 'cursor-pointer',
         className,
       )}
