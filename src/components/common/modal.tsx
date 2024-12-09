@@ -41,7 +41,7 @@ const DialogContent = React.forwardRef<
       ref={ref}
       className={cn(
         'fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2',
-        'grid w-full max-w-[520px] gap-6 rounded-xl bg-white p-6 shadow-lg duration-200',
+        'grid w-[calc(100dvw-32px)] gap-6 rounded-xl bg-white p-6 shadow-lg duration-200 tablet:w-full tablet:max-w-[520px]',
         'data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]',
         'data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%]',
         className,
