@@ -6,6 +6,7 @@ import { pretendard } from '~/src/fonts/fonts';
 import JotaiProvider from '~/src/providers/jotai-provider';
 import MSWProvider from '~/src/providers/msw-provider';
 import TanstackQueryProvider from '~/src/providers/tanstack-query-provider';
+import ToastProvider from '~/src/providers/toast-provider';
 import { cn } from '~/src/utils/class-name';
 
 import '~/src/styles/globals.css';
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
         <MSWProvider>
           <JotaiProvider>
             <TanstackQueryProvider>
+              <ToastProvider />
               <Header />
               {children}
             </TanstackQueryProvider>
