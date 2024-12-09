@@ -5,26 +5,30 @@ import {
   type GatheringType,
 } from '~/src/services/types';
 
-export default function makeFakeGatherings(count: number, id?: number) {
+export default function makeFakeGatherings(
+  count: number,
+  id?: number,
+  type?: GatheringType,
+) {
   return Array.from({ length: count }, () => ({
-    id: id ?? faker.number.int({ min: 1, max: 9999 }), // id가 주어지지 않으면 1~9999 범위에서 생성
-    type: faker.helpers.arrayElement<GatheringType>([
-      'DALLAEMFIT',
-      'OFFICE_STRETCHING',
-      'MINDFULNESS',
-      'WORKATION',
-    ]),
+    id: id ?? faker.number.int({ min: 1, max: 9999 }),
+    type:
+      type ??
+      faker.helpers.arrayElement<GatheringType>([
+        'DALLAEMFIT',
+        'OFFICE_STRETCHING',
+        'MINDFULNESS',
+        'WORKATION',
+      ]),
     name: faker.company.name(),
     dateTime:
-      faker.helpers.maybe(
-        () => faker.date.future({ years: 1 }).toISOString(), // 미래 날짜
-        { probability: 0.7 }, // 70% 확률로 미래 날짜
-      ) ?? faker.date.past({ years: 1 }).toISOString(), // 나머지는 과거 날짜
+      faker.helpers.maybe(() => faker.date.future({ years: 1 }).toISOString(), {
+        probability: 0.7,
+      }) ?? faker.date.past({ years: 1 }).toISOString(),
     registrationEnd:
-      faker.helpers.maybe(
-        () => faker.date.soon({ days: 28 }).toISOString(), // 가까운 미래 날짜
-        { probability: 0.8 }, // 80% 확률로 마감 전
-      ) ?? faker.date.past({ years: 1 }).toISOString(), // 나머지는 이미 마감된 날짜
+      faker.helpers.maybe(() => faker.date.soon({ days: 28 }).toISOString(), {
+        probability: 0.8,
+      }) ?? faker.date.past({ years: 1 }).toISOString(),
     location: faker.helpers.arrayElement<GatheringLocation>([
       '건대입구',
       '을지로3가',

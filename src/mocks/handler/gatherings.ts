@@ -1,8 +1,9 @@
 import { http, HttpResponse } from 'msw';
 
 import makeFakeParticipants from '~/src/mocks/faker/fake-gathering-participants';
-import makeFakeGathering from '~/src/mocks/faker/fake-gatherings';
+import makeFakeGatherings from '~/src/mocks/faker/fake-gatherings';
 import { baseUrl } from '~/src/mocks/utils';
+import { type GatheringType } from '~/src/services/types';
 
 export const gatheringsHandlers = [
   http.get(baseUrl(`/gatherings/:id/participants`), (req) => {
@@ -15,7 +16,7 @@ export const gatheringsHandlers = [
   // 특정 Gathering 상세정보 API
   http.get(baseUrl(`/gatherings/:id`), (req) => {
     const { id } = req.params;
-    const gathering = makeFakeGathering(1, Number(id));
+    const gathering = makeFakeGatherings(1, Number(id));
     if (!gathering) {
       return HttpResponse.json(
         { error: `Gathering with ID ${id} not found` },
@@ -26,10 +27,23 @@ export const gatheringsHandlers = [
   }),
 
   // 전체 모임
-  http.get(baseUrl(`/gatherings`), () => {
-    const gatherings = Array.from({ length: 10 }, (_, i) =>
-      makeFakeGathering(1, i + 1),
+  http.get(baseUrl(`/gatherings`), ({ request }) => {
+    const url = new URL(request.url);
+    const type = url.searchParams.get('type') as GatheringType;
+    const offset = Number(url.searchParams.get('offset')) || 0;
+    const limit = Number(url.searchParams.get('limit')) || 10;
+
+    const gatherings = Array.from(
+      { length: limit },
+      (_, i) => makeFakeGatherings(1, offset + i + 1, type)[0],
     );
+
+    if (type) {
+      return HttpResponse.json(
+        gatherings.filter((gathering) => gathering.type === type),
+      );
+    }
+
     return HttpResponse.json(gatherings);
   }),
 ];

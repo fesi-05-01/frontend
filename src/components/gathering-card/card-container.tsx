@@ -1,20 +1,44 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import useBreakpoint from 'use-breakpoint';
 
 import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
 import GatheringCardSmall from '~/src/components/gathering-card/gathering-card-small';
+import { useGatheringFilter } from '~/src/hooks/gatherings/use-gathering-filter';
 import useGatherings from '~/src/services/gatherings/use-gatherings';
 import { getBreakpoints } from '~/src/utils/breakpoints';
 
 const BREAKPOINTS = getBreakpoints();
 
 export default function CardContainer() {
+  const { type } = useGatheringFilter();
   const { breakpoint } = useBreakpoint(BREAKPOINTS, 'desktop');
-  const { data, isFetching } = useGatherings();
+  const observerRef = useRef<HTMLDivElement>(null);
+  const { data, isFetching, fetchNextPage, hasNextPage } = useGatherings({
+    type,
+  });
+
   const flattenedData = data?.flat() ?? [];
 
-  if (!isFetching && (!data || data.length === 0)) {
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 0.1 },
+    );
+
+    if (observerRef.current) {
+      observer.observe(observerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
+
+  if (!isFetching && (!data || flattenedData.length === 0)) {
     return (
       <div className="text-center text-sm font-medium text-gray-500">
         아직 모임이 없어요, <br />
@@ -38,6 +62,14 @@ export default function CardContainer() {
           ))}
         </div>
       )}
+
+      {isFetching && (
+        <div className="flex justify-center py-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-secondary-100 border-t-secondary-900" />
+        </div>
+      )}
+
+      {hasNextPage && <div ref={observerRef} className="h-4 w-full" />}
     </div>
   );
 }
