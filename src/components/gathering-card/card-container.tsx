@@ -6,20 +6,25 @@ import useBreakpoint from 'use-breakpoint';
 import GatheringCardLarge from '~/src/components/gathering-card/gathering-card-large';
 import GatheringCardSmall from '~/src/components/gathering-card/gathering-card-small';
 import { useGatheringFilter } from '~/src/hooks/gatherings/use-gathering-filter';
+import { type SortBy } from '~/src/services/gatherings/types';
 import useGatherings from '~/src/services/gatherings/use-gatherings';
 import { getBreakpoints } from '~/src/utils/breakpoints';
 
 const BREAKPOINTS = getBreakpoints();
 
 export default function CardContainer() {
-  const { type } = useGatheringFilter();
+  const { type, location, date, sortBy } = useGatheringFilter();
   const { breakpoint } = useBreakpoint(BREAKPOINTS, 'desktop');
   const observerRef = useRef<HTMLDivElement>(null);
   const { data, isFetching, fetchNextPage, hasNextPage } = useGatherings({
     type,
+    location,
+    date: (date as string) ?? undefined,
+    sortBy: sortBy as SortBy,
   });
 
   const flattenedData = data?.flat() ?? [];
+  console.log('flattenedData', flattenedData);
 
   useEffect(() => {
     const observer = new IntersectionObserver(

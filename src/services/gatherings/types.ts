@@ -96,3 +96,7 @@ export interface GetGatheringsRequest {
 }
 
 export type GetGatheringsResponse = Gathering[];
+
+export type SortBy = 'dateTime' | 'registrationEnd' | 'participantCount';
+
+export type SortOrder = 'asc' | 'desc';

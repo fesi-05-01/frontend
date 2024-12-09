@@ -3,7 +3,9 @@ import { http, HttpResponse } from 'msw';
 import makeFakeParticipants from '~/src/mocks/faker/fake-gathering-participants';
 import makeFakeGatherings from '~/src/mocks/faker/fake-gatherings';
 import { baseUrl } from '~/src/mocks/utils';
+import { type SortBy } from '~/src/services/gatherings/types';
 import { type GatheringType } from '~/src/services/types';
+import { type GatheringLocation } from '~/src/services/types';
 
 export const gatheringsHandlers = [
   http.get(baseUrl(`/gatherings/:id/participants`), (req) => {
@@ -30,18 +32,40 @@ export const gatheringsHandlers = [
   http.get(baseUrl(`/gatherings`), ({ request }) => {
     const url = new URL(request.url);
     const type = url.searchParams.get('type') as GatheringType;
+    const locationParam = url.searchParams.get('location');
+    const location =
+      locationParam === '지역 전체'
+        ? undefined
+        : (locationParam as GatheringLocation);
+    const date = url.searchParams.get('date') || undefined;
+    const sortBy = url.searchParams.get('sortBy') as SortBy;
     const offset = Number(url.searchParams.get('offset')) || 0;
     const limit = Number(url.searchParams.get('limit')) || 10;
 
     const gatherings = Array.from(
       { length: limit },
-      (_, i) => makeFakeGatherings(1, offset + i + 1, type)[0],
+      (_, i) => makeFakeGatherings(1, offset + i + 1, type, location, date)[0],
     );
 
-    if (type) {
-      return HttpResponse.json(
-        gatherings.filter((gathering) => gathering.type === type),
-      );
+    // 정렬 로직
+    if (sortBy) {
+      gatherings.sort((a, b) => {
+        switch (sortBy) {
+          case 'dateTime':
+            return (
+              new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
+            );
+          case 'registrationEnd':
+            return (
+              new Date(b.registrationEnd).getTime() -
+              new Date(a.registrationEnd).getTime()
+            );
+          case 'participantCount':
+            return b.participantCount - a.participantCount;
+          default:
+            return 0;
+        }
+      });
     }
 
     return HttpResponse.json(gatherings);

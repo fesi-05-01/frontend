@@ -8,11 +8,13 @@ import { cn } from '~/src/utils/class-name';
 interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   options: string[];
   className?: string;
+  onOptionSelect?: (option: string) => void;
 }
 
 export default function LeftFilter({
   options,
   className,
+  onOptionSelect,
   ...rest
 }: FilterProps) {
   const [selected, setSelected] = useState(options[0] || '');
@@ -23,6 +25,7 @@ export default function LeftFilter({
   const selectOption = (option: string) => {
     setSelected(option);
     setIsOpen(false);
+    onOptionSelect?.(option);
   };
 
   return (

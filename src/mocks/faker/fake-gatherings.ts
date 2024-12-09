@@ -9,7 +9,10 @@ export default function makeFakeGatherings(
   count: number,
   id?: number,
   type?: GatheringType,
+  location?: GatheringLocation,
+  date?: string,
 ) {
+  const capacity = faker.number.int({ min: 10, max: 50 });
   return Array.from({ length: count }, () => ({
     id: id ?? faker.number.int({ min: 1, max: 9999 }),
     type:
@@ -21,22 +24,28 @@ export default function makeFakeGatherings(
         'WORKATION',
       ]),
     name: faker.company.name(),
-    dateTime:
-      faker.helpers.maybe(() => faker.date.future({ years: 1 }).toISOString(), {
-        probability: 0.7,
-      }) ?? faker.date.past({ years: 1 }).toISOString(),
+    dateTime: date
+      ? `${date}T${faker.date.soon().toISOString().split('T')[1]}`
+      : (faker.helpers.maybe(
+          () => faker.date.future({ years: 1 }).toISOString(),
+          {
+            probability: 0.7,
+          },
+        ) ?? faker.date.past({ years: 1 }).toISOString()),
     registrationEnd:
       faker.helpers.maybe(() => faker.date.soon({ days: 28 }).toISOString(), {
         probability: 0.8,
       }) ?? faker.date.past({ years: 1 }).toISOString(),
-    location: faker.helpers.arrayElement<GatheringLocation>([
-      '건대입구',
-      '을지로3가',
-      '신림',
-      '홍대입구',
-    ]),
-    participantCount: faker.number.int({ min: 1, max: 50 }),
-    capacity: faker.number.int({ min: 10, max: 50 }),
+    location:
+      location ??
+      faker.helpers.arrayElement<GatheringLocation>([
+        '건대입구',
+        '을지로3가',
+        '신림',
+        '홍대입구',
+      ]),
+    capacity,
+    participantCount: faker.number.int({ min: 1, max: capacity }),
     image: `https://picsum.photos/400?random=${faker.number.int({ min: 1, max: 1000 })}`,
     createdBy: faker.number.int({ min: 1, max: 1000 }),
     canceledAt:
