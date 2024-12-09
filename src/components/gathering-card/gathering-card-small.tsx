@@ -108,13 +108,21 @@ export default function GatheringCardSmall({
       {isRegistrationEnded(gathering.registrationEnd) && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="absolute inset-0 z-0 flex cursor-not-allowed flex-col items-center justify-center gap-6 overflow-hidden rounded-3xl bg-black bg-opacity-80"
+          className="pointer-events-none absolute inset-0 z-0 flex flex-col items-center justify-center gap-6 overflow-hidden rounded-3xl bg-black bg-opacity-80"
         >
-          <div className="text-center text-sm font-medium text-white">
+          <div className="pointer-events-auto text-center text-sm font-medium text-white">
             마감된 챌린지예요, <br />
             다음 기회에 만나요🙏
           </div>
-          <RectangleBye />
+          {isSaved && (
+            <RectangleBye
+              className="pointer-events-auto cursor-pointer"
+              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
+                e.preventDefault();
+                handleSaveButton(gathering.id)(e);
+              }}
+            />
+          )}
         </div>
       )}
     </div>
