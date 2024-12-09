@@ -24,6 +24,7 @@ export default function GatheringCardLarge({
   const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
+    gatheringId: gathering.id,
   });
 
   const isEnded = isRegistrationEnded(gathering.registrationEnd);
@@ -78,7 +79,7 @@ export default function GatheringCardLarge({
           <Save
             className="absolute right-4 top-4"
             isActive={isSaved}
-            onClick={handleSaveButton}
+            onClick={handleSaveButton(gathering.id)}
           />
         </div>
 

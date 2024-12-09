@@ -1,17 +1,21 @@
 import { useEffect, useState } from 'react';
 
 interface UseGatheringCardProps {
-  initialIsSaved?: boolean;
+  gatheringId: number;
   participantCount: number;
   capacity: number;
 }
 
 export default function useGatheringCard({
-  initialIsSaved = false,
+  gatheringId,
   participantCount,
   capacity,
 }: UseGatheringCardProps) {
-  const [isSaved, setIsSaved] = useState<boolean>(initialIsSaved);
+  const [isSaved, setIsSaved] = useState<boolean>(() => {
+    if (typeof window === 'undefined') return false;
+    const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    return wishlist.includes(gatheringId);
+  });
   const [cardState, setCardState] = useState<
     'ongoing' | 'confirmation' | 'closed'
   >('ongoing');
@@ -26,10 +30,23 @@ export default function useGatheringCard({
     }
   }, [participantCount, capacity]);
 
-  const handleSaveButton = (event: React.MouseEvent<SVGSVGElement>) => {
-    event.stopPropagation();
-    setIsSaved((prev) => !prev);
-  };
+  const handleSaveButton =
+    (gatheringId: number) => (event: React.MouseEvent<SVGSVGElement>) => {
+      event.stopPropagation();
+      setIsSaved((prev) => !prev);
+      const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+      if (!isSaved) {
+        localStorage.setItem(
+          'wishlist',
+          JSON.stringify([...wishlist, gatheringId]),
+        );
+      } else {
+        localStorage.setItem(
+          'wishlist',
+          JSON.stringify(wishlist.filter((id: number) => id !== gatheringId)),
+        );
+      }
+    };
 
   return { isSaved, cardState, handleSaveButton };
 }
