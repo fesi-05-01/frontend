@@ -12,6 +12,8 @@ interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   className?: string;
   placeholder: string;
   calendar?: boolean;
+  onOptionSelect?: (option: string) => void;
+  onDateSelect?: (date: Date) => void;
 }
 
 function Yymmdd(date: Date) {
@@ -27,6 +29,8 @@ export default function RightFilter({
   options,
   className,
   calendar = false,
+  onOptionSelect,
+  onDateSelect,
   ...rest
 }: FilterProps) {
   const [selected, setSelected] = useState(placeholder);
@@ -43,12 +47,14 @@ export default function RightFilter({
   const selectOption = (option: string) => {
     setSelected(option);
     setIsOpen(false);
+    onOptionSelect?.(option);
   };
 
   const handleCalendarSelect = (date: Date | undefined) => {
     setSelected(Yymmdd(date!));
     setSelectedDate(date);
     setIsOpen(false);
+    onDateSelect?.(date!);
   };
 
   const handleReset = useCallback(() => {

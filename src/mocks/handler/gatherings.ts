@@ -1,8 +1,11 @@
 import { http, HttpResponse } from 'msw';
 
 import makeFakeParticipants from '~/src/mocks/faker/fake-gathering-participants';
-import makeFakeGathering from '~/src/mocks/faker/fake-gatherings';
+import makeFakeGatherings from '~/src/mocks/faker/fake-gatherings';
 import { baseUrl } from '~/src/mocks/utils';
+import { type SortBy } from '~/src/services/gatherings/types';
+import { type GatheringType } from '~/src/services/types';
+import { type GatheringLocation } from '~/src/services/types';
 
 export const gatheringsHandlers = [
   http.get(baseUrl(`/gatherings/:id/participants`), (req) => {
@@ -15,7 +18,7 @@ export const gatheringsHandlers = [
   // 특정 Gathering 상세정보 API
   http.get(baseUrl(`/gatherings/:id`), (req) => {
     const { id } = req.params;
-    const gathering = makeFakeGathering(1, Number(id));
+    const gathering = makeFakeGatherings(1, Number(id));
     if (!gathering) {
       return HttpResponse.json(
         { error: `Gathering with ID ${id} not found` },
@@ -25,9 +28,46 @@ export const gatheringsHandlers = [
     return HttpResponse.json(gathering);
   }),
 
-  // 전체 모임 (수정 필요)
-  http.get(baseUrl(`/gatherings`), () => {
-    console.log('Success');
-    return HttpResponse.json({ message: 'Success' });
+  // 전체 모임
+  http.get(baseUrl(`/gatherings`), ({ request }) => {
+    const url = new URL(request.url);
+    const type = url.searchParams.get('type') as GatheringType;
+    const locationParam = url.searchParams.get('location');
+    const location =
+      locationParam === '지역 전체'
+        ? undefined
+        : (locationParam as GatheringLocation);
+    const date = url.searchParams.get('date') || undefined;
+    const sortBy = url.searchParams.get('sortBy') as SortBy;
+    const offset = Number(url.searchParams.get('offset')) || 0;
+    const limit = Number(url.searchParams.get('limit')) || 10;
+
+    const gatherings = Array.from(
+      { length: limit },
+      (_, i) => makeFakeGatherings(1, offset + i + 1, type, location, date)[0],
+    );
+
+    // 정렬 로직
+    if (sortBy) {
+      gatherings.sort((a, b) => {
+        switch (sortBy) {
+          case 'dateTime':
+            return (
+              new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime()
+            );
+          case 'registrationEnd':
+            return (
+              new Date(b.registrationEnd).getTime() -
+              new Date(a.registrationEnd).getTime()
+            );
+          case 'participantCount':
+            return b.participantCount - a.participantCount;
+          default:
+            return 0;
+        }
+      });
+    }
+
+    return HttpResponse.json(gatherings);
   }),
 ];

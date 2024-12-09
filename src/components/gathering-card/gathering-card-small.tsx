@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import RectangleBye from '~/src/assets/icons/rectangle-bye.svg';
 import Save from '~/src/assets/icons/save';
@@ -15,14 +16,28 @@ import { type GatheringCardProps } from '~/src/components/gathering-card/type-pr
 import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
 import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
-export default function GatheringCardSmall({ gathering }: GatheringCardProps) {
+export default function GatheringCardSmall({
+  gathering,
+  ...props
+}: GatheringCardProps) {
+  const router = useRouter();
   const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
   });
 
+  const isEnded = isRegistrationEnded(gathering.registrationEnd);
+
+  const handleClick = () => {
+    if (!isEnded) {
+      router.push(`/gatherings/${gathering.id}`);
+    }
+  };
+
   return (
     <div
+      {...props}
+      onClick={handleClick}
       className={`relative flex w-full max-w-[343px] flex-col rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       {/* 이미지 */}
