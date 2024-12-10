@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
-import { useQueryClient } from '@tanstack/react-query';
+import { useAtom, useSetAtom } from 'jotai';
 
 import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import {
@@ -26,15 +26,15 @@ import {
   DialogTrigger,
 } from '~/src/components/common/modal';
 import { useEditUser } from '~/src/services/auths/edit-user';
-import { useGetUserInfo } from '~/src/services/auths/get-user';
-import { type UserEditType } from '~/src/services/auths/types';
+import { type User, type UserEditType } from '~/src/services/auths/types';
+import { setUserInfoAtom, userInfoAtom } from '~/src/stores/auth-store';
 
 export default function ProfileEdit() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
-  const { data: user } = useGetUserInfo();
+  const [user] = useAtom(userInfoAtom);
+  const setUser = useSetAtom(setUserInfoAtom);
 
   const form = useForm<UserEditType>({
     defaultValues: {
@@ -45,7 +45,7 @@ export default function ProfileEdit() {
 
   const {
     setValue,
-    reset,
+    // reset,
     formState: { isDirty },
   } = form;
 
@@ -61,19 +61,21 @@ export default function ProfileEdit() {
   };
 
   const { mutate: EditUser, isPending } = useEditUser();
-  const queryClient = useQueryClient();
 
   const onSubmit = async (data: UserEditType) => {
     const formData = new FormData();
     formData.append('companyName', data.companyName || '');
-
     formData.append('image', imageFile || user?.image || '');
 
     EditUser(formData, {
-      onSuccess: () => {
-        reset({ companyName: data.companyName, image: data.image });
-        queryClient.invalidateQueries({ queryKey: ['user'] });
+      onSuccess: (update) => {
+        setUser(update as unknown as User);
         setIsModalOpen(false);
+        alert('수정 완료!');
+      },
+      onError: (error) => {
+        alert('오류');
+        console.error('오류', error);
       },
     });
   };
