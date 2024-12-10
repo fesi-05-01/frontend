@@ -29,7 +29,7 @@ export default function RootLayout({ children }: Readonly<Props>) {
       <body
         className={cn(
           pretendard.variable,
-          'bg-secondary-100 font-pretendard font-medium text-secondary-800',
+          'cursor-default bg-secondary-100 font-pretendard font-medium text-secondary-800',
         )}
       >
         <MSWProvider>

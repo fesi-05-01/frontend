@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { useAtom, useSetAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import {
@@ -71,11 +72,10 @@ export default function ProfileEdit() {
       onSuccess: (update) => {
         setUser(update as unknown as User);
         setIsModalOpen(false);
-        alert('수정 완료!');
+        toast.success('수정되었습니다.');
       },
-      onError: (error) => {
-        alert('오류');
-        console.error('오류', error);
+      onError: () => {
+        toast.error('수정 중에 오류가 발생했습니다.');
       },
     });
   };

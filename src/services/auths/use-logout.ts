@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import { post } from '~/src/services/api';
 import { setAccessTokenAtom, setUserInfoAtom } from '~/src/stores/auth-store';
@@ -18,11 +19,11 @@ export function useLogout() {
     onSuccess: () => {
       setAccessToken(null);
       setUserInfo(null);
-      alert('로그아웃 완료');
       router.push('/');
+      toast.success('로그아웃 되었습니다.');
     },
     onError: (error) => {
-      console.error('로그아웃 실패:', error);
+      console.error('로그아웃 중 오류', error);
     },
   });
 }

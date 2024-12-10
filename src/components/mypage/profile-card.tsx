@@ -15,13 +15,13 @@ export default function ProfileCard() {
   const [user] = useAtom(userInfoAtom);
 
   return (
-    <div className="flex h-[178px] w-full flex-col overflow-hidden whitespace-nowrap rounded-3xl border-[2px] border-secondary-200 bg-white tablet:h-[172px]">
+    <div className="mb-6 flex h-[178px] w-full flex-col overflow-hidden whitespace-nowrap rounded-3xl border-[2px] border-secondary-200 bg-white tablet:h-[172px]">
       <div className="relative h-16 w-full bg-orange-400">
         <div className="relative left-0 top-0 h-14 w-full border-b-2 border-orange-600">
           <Image
             src={bgimage}
             alt="bg-profile"
-            className="absolute h-full w-full object-contain object-[50%] tablet:object-[80%]"
+            className="absolute h-full w-full object-contain object-[55%] tablet:object-[80%]"
           />
         </div>
         <div className="absolute left-0 top-0 flex w-full items-center justify-between p-4">
@@ -57,9 +57,7 @@ export default function ProfileCard() {
             </div>
             <div className="flex gap-[24px] text-sm">
               <span className="font-medium text-secondary-800">E-mail.</span>
-              <span className="font--normal text-secondary-700">
-                {user?.email}
-              </span>
+              <span className="text-secondary-700">{user?.email}</span>
             </div>
           </div>
         </div>

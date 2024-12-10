@@ -40,6 +40,7 @@ export default function ProfileDropdown() {
     }
     setIsOpen(false);
   };
+
   const handleLogoutConfirm = () => {
     logout();
     setIsDialogOpen(false);
@@ -63,16 +64,17 @@ export default function ProfileDropdown() {
           onSelect={handleSelect}
           version="Login"
           selectedOption={selectedOption}
+          onClose={() => setIsOpen(false)}
         />
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="flex h-[212px] flex-col items-center justify-between gap-0 p-6 text-center">
+        <DialogContent className="flex h-[199px] w-[300px] flex-col items-center justify-between gap-0 p-6 text-center tablet:h-[188px] tablet:w-[450px]">
           <DialogHeader>
             <DialogTitle></DialogTitle>
           </DialogHeader>
           <p>로그아웃 하시겠습니까?</p>
-          <DialogFooter className="flex w-[249px] gap-4">
+          <DialogFooter className="flex w-[249px] justify-end gap-4">
             <Button
               type="button"
               variant="outlined"

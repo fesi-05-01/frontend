@@ -2,6 +2,7 @@ import { type UseFormReturn } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import { post } from '~/src/services/api';
 import { useGetUserInfo } from '~/src/services/auths/get-user';
@@ -32,9 +33,10 @@ export function useLogin(form: UseFormReturn<SigninData>) {
         if (userData !== undefined) {
           setUserInfo(userData);
         }
+        toast.success(`${userData?.name}님, 환영합니다.`);
         router.push('/');
       } catch (error) {
-        console.error('에러', error);
+        console.error('로그인 중 오류', error);
       }
     },
 
