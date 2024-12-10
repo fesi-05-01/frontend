@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
-// import ReviewCardItem from '~/src/components/reviews/review-card-item';
+import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
 
 export default function ReviewList() {
@@ -24,7 +24,6 @@ export default function ReviewList() {
     <div className="flex grow flex-col">
       {/* 데이터 있을때 */}
       <div>
-        {/*
         {data?.map((data) => (
           <ReviewCardItem
             key={data.id}
@@ -34,9 +33,10 @@ export default function ReviewList() {
             hasNameTag
           />
         ))}
-        */}
 
-        {!isFetching && hasNextPage && <div ref={ref} className="h-10" />}
+        {!isFetching && hasNextPage && data && (
+          <div ref={ref} className="h-10" />
+        )}
       </div>
 
       {/* 첫 페칭이 끝나고 데이터 없을때 */}
