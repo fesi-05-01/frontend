@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 
@@ -5,6 +6,7 @@ import Header from '~/src/components/layout/header';
 import { pretendard } from '~/src/fonts/fonts';
 import JotaiProvider from '~/src/providers/jotai-provider';
 import MSWProvider from '~/src/providers/msw-provider';
+import NavigationProvider from '~/src/providers/navigation-provider';
 import TanstackQueryProvider from '~/src/providers/tanstack-query-provider';
 import ToastProvider from '~/src/providers/toast-provider';
 import { cn } from '~/src/utils/class-name';
@@ -31,14 +33,20 @@ export default function RootLayout({ children }: Readonly<Props>) {
         )}
       >
         <MSWProvider>
-          <JotaiProvider>
-            <TanstackQueryProvider>
+          <TanstackQueryProvider>
+            <JotaiProvider>
+              <Suspense fallback={null}>
+                <NavigationProvider />
+              </Suspense>
+
               <ToastProvider />
+
               <Header />
               {children}
-            </TanstackQueryProvider>
-          </JotaiProvider>
+            </JotaiProvider>
+          </TanstackQueryProvider>
         </MSWProvider>
+
         <SpeedInsights />
       </body>
     </html>

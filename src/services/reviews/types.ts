@@ -5,7 +5,7 @@ import {
   type SortOrder,
 } from '~/src/services/types';
 
-type ReviewSortBy = 'createdAt' | 'score' | 'participantCount';
+export type ReviewSortBy = 'createdAt' | 'score' | 'participantCount';
 
 export interface CreateReviewRequest {
   gatheringId: number;
@@ -14,7 +14,7 @@ export interface CreateReviewRequest {
 }
 
 export interface CreateReviewResponse {
-  teamId: number;
+  teamId: string;
   id: number;
   userId: number;
   gatheringId: number;
@@ -37,13 +37,13 @@ export type GetReviewListRequest = Partial<
 >;
 
 export type GetReviewListResponse = Array<{
-  teamId: number;
+  teamId: string;
   id: number;
   score: number;
   comment: string;
   createdAt: string;
   Gathering: {
-    teamId: number;
+    teamId: string;
     id: number;
     type: string;
     name: string;
@@ -52,7 +52,7 @@ export type GetReviewListResponse = Array<{
     image: string;
   };
   User: {
-    teamId: number;
+    teamId: string;
     id: number;
     name: string;
     image: string;
@@ -66,7 +66,7 @@ export type GetReviewScoreRequest = Partial<{
 
 export type GetReviewScoreResponse = [
   {
-    teamId: number;
+    teamId: string;
     gatheringId: number;
     type: GatheringType;
     averageScore: number;
