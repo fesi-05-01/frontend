@@ -5,7 +5,7 @@ import { gatheringsQueryKeys } from '~/src/services/gatherings/queryKey';
 import { type GetGatheringDetailResponse } from '~/src/services/gatherings/types';
 
 export default function useGatheringDetail(id: number) {
-  return useQuery({
+  return useQuery<GetGatheringDetailResponse>({
     queryKey: gatheringsQueryKeys.gatheringDetail({ id }),
     queryFn: () => {
       return get<GetGatheringDetailResponse>(`/gatherings/${id}`);

@@ -93,7 +93,12 @@ export const reviewsHandlers = [
       parsedOffset + parsedLimit,
     );
 
-    return HttpResponse.json(paginatedReviews);
+    return HttpResponse.json({
+      data: paginatedReviews,
+      totalItemCount: reviews.length,
+      currentPage: Math.floor(parsedOffset / parsedLimit) + 1,
+      totalPages: Math.ceil(reviews.length / parsedLimit),
+    });
   }),
 
   http.get(baseUrl('/reviews/scores'), ({ request }) => {
