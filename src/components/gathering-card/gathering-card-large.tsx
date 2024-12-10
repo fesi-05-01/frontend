@@ -24,6 +24,7 @@ export default function GatheringCardLarge({
   const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
+    gatheringId: gathering.id,
   });
 
   const isEnded = isRegistrationEnded(gathering.registrationEnd);
@@ -88,7 +89,7 @@ export default function GatheringCardLarge({
           <Save
             className="absolute right-4 top-4"
             isActive={isSaved}
-            onClick={handleSaveButton}
+            onClick={handleSaveButton(gathering.id)}
           />
         </div>
 
@@ -125,13 +126,21 @@ export default function GatheringCardLarge({
       {isRegistrationEnded(gathering.registrationEnd) && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="absolute inset-0 z-0 flex cursor-not-allowed items-center justify-center overflow-hidden rounded-3xl bg-black bg-opacity-80"
+          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden rounded-3xl bg-black bg-opacity-80"
         >
-          <div className="text-center text-sm font-medium text-white">
+          <div className="pointer-events-auto text-center text-sm font-medium text-white">
             마감된 챌린지예요, <br />
             다음 기회에 만나요🙏
           </div>
-          <SaveBye className="absolute right-4 top-4" />
+          {isSaved && (
+            <SaveBye
+              className="pointer-events-auto absolute right-4 top-4 cursor-pointer"
+              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
+                e.preventDefault();
+                handleSaveButton(gathering.id)(e);
+              }}
+            />
+          )}
         </div>
       )}
     </div>

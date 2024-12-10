@@ -1,4 +1,4 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 
 import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { get } from '~/src/services/api';
@@ -16,6 +16,7 @@ export default function useGetReviewInfiniteList() {
       get<GetReviewListResponse>('/reviews', {
         params: { ...params, ...pageParam },
       }),
+    placeholderData: keepPreviousData,
     select: ({ pages }) => {
       return pages.flatMap((data) => data);
     },

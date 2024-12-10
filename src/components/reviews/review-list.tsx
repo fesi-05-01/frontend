@@ -1,23 +1,41 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
+
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
 
 export default function ReviewList() {
-  const { data, isFetching } = useGetReviewInfiniteList();
+  const { ref, inView } = useInView();
+
+  const { data, hasNextPage, isFetching, fetchNextPage } =
+    useGetReviewInfiniteList();
+
+  useEffect(() => {
+    if (!inView) return;
+
+    if (!isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [fetchNextPage, hasNextPage, inView, isFetching]);
 
   return (
     <div className="flex grow flex-col">
       {/* 데이터 있을때 */}
-      {data?.map((data) => (
-        <ReviewCardItem
-          key={data.id}
-          {...data}
-          hasImage
-          hasTypeDescription
-          hasNameTag
-        />
-      ))}
+      <div>
+        {data?.map((data) => (
+          <ReviewCardItem
+            key={data.id}
+            {...data}
+            hasImage
+            hasTypeDescription
+            hasNameTag
+          />
+        ))}
+
+        {!isFetching && hasNextPage && <div ref={ref} className="h-10" />}
+      </div>
 
       {/* 첫 페칭이 끝나고 데이터 없을때 */}
       {!isFetching && data?.length === 0 && (

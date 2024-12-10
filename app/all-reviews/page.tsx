@@ -1,6 +1,7 @@
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import MainContainer from '~/src/components/layout/main-container';
 import ReviewContainer from '~/src/components/reviews/review-container';
+import ReviewFilter from '~/src/components/reviews/review-filter';
 import ReviewGatheringTab from '~/src/components/reviews/review-gathering-tab';
 import ReviewList from '~/src/components/reviews/review-list';
 import ReviewScore from '~/src/components/reviews/review-score';
@@ -30,6 +31,8 @@ export default async function AllReviewsPage() {
       <ReviewScore />
 
       <ReviewContainer>
+        <ReviewFilter />
+
         <Hydration state={state}>
           <ReviewList />
         </Hydration>

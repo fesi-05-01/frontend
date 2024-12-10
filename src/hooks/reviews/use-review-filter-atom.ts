@@ -1,4 +1,6 @@
+import { useCallback } from 'react';
 import { useAtom } from 'jotai';
+import { useResetAtom } from 'jotai/utils';
 
 import {
   type ReviewFilter,
@@ -7,10 +9,14 @@ import {
 
 export default function useReviewFilterAtom() {
   const [filter, setFilter] = useAtom(reviewFilterAtom);
+  const onResetFilter = useResetAtom(reviewFilterAtom);
 
-  const onChangeFilter = (filter: ReviewFilter) => {
-    setFilter((prev) => ({ ...prev, ...filter }));
-  };
+  const onChangeFilter = useCallback(
+    (filter: ReviewFilter) => {
+      setFilter((prev) => ({ ...prev, ...filter }));
+    },
+    [setFilter],
+  );
 
-  return { filter, onChangeFilter };
+  return { filter, onChangeFilter, onResetFilter };
 }

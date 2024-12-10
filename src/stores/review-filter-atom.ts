@@ -1,9 +1,10 @@
-import { atom } from 'jotai';
+import { atomWithReset } from 'jotai/utils';
 
 import { type GetReviewListRequest } from '~/src/services/reviews/types';
+import { type PageParam } from '~/src/services/types';
 
-export type ReviewFilter = Omit<GetReviewListRequest, 'limit' | 'offset'>;
+export type ReviewFilter = Omit<GetReviewListRequest, keyof PageParam>;
 
-export const reviewFilterAtom = atom<ReviewFilter>({
+export const reviewFilterAtom = atomWithReset<ReviewFilter>({
   type: 'DALLAEMFIT',
 });

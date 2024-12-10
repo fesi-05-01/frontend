@@ -31,6 +31,7 @@ export const gatheringsHandlers = [
   // 전체 모임
   http.get(baseUrl(`/gatherings`), ({ request }) => {
     const url = new URL(request.url);
+    const ids = url.searchParams.get('id')?.split(',').map(Number);
     const type = url.searchParams.get('type') as GatheringType;
     const locationParam = url.searchParams.get('location');
     const location =
@@ -41,6 +42,12 @@ export const gatheringsHandlers = [
     const sortBy = url.searchParams.get('sortBy') as SortBy;
     const offset = Number(url.searchParams.get('offset')) || 0;
     const limit = Number(url.searchParams.get('limit')) || 10;
+
+    // id 파라미터가 있는 경우 해당 id들의 모임만 반환
+    if (ids?.length) {
+      const gatherings = ids.map((id) => makeFakeGatherings(1, id, type)[0]);
+      return HttpResponse.json(gatherings);
+    }
 
     const gatherings = Array.from(
       { length: limit },
