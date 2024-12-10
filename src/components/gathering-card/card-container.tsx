@@ -14,7 +14,7 @@ const BREAKPOINTS = getBreakpoints();
 
 export default function CardContainer() {
   const { type, location, date, sortBy } = useGatheringFilter();
-  const { breakpoint } = useBreakpoint(BREAKPOINTS, 'desktop');
+  const { breakpoint } = useBreakpoint(BREAKPOINTS, 'mobile');
   const observerRef = useRef<HTMLDivElement>(null);
   const { data, isFetching, fetchNextPage, hasNextPage } = useGatherings({
     type,

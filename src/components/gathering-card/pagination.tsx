@@ -67,7 +67,6 @@ const PaginationPrevious = ({
   >
     <CaretLeftIcon
       className={cn(
-        props.size === 'large' ? 'h-6 w-6' : 'h-4 w-4',
         isFirstPage
           ? 'cursor-default text-neutral-400'
           : 'cursor-pointer text-neutral-800',
@@ -88,7 +87,6 @@ const PaginationNext = ({
   >
     <CaretRightIcon
       className={cn(
-        props.size === 'large' ? 'h-6 w-6' : 'h-4 w-4',
         isLastPage
           ? 'cursor-default text-neutral-400'
           : 'cursor-pointer text-neutral-800',
@@ -132,9 +130,20 @@ const Pagination = ({
   size = 'small',
   className,
 }: PaginationProps) => {
-  const pageNumbers = size === 'large' ? [1, 2, 3, 4, 5] : [1, 2, 3];
+  const range = size === 'large' ? 2 : 1;
   const isFirstPage = currentPage === 1;
   const isLastPage = currentPage === totalPages;
+
+  // 현재 페이지를 기준으로 앞뒤로 페이지 번호를 생성
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, i) => i + 1,
+  ).filter(
+    (page) =>
+      page === 1 ||
+      page === totalPages ||
+      (page >= currentPage - range && page <= currentPage + range),
+  );
 
   return (
     <nav
@@ -153,31 +162,24 @@ const Pagination = ({
           />
         </PaginationItem>
 
-        {pageNumbers.map((page) => (
-          <PaginationItem key={page}>
-            <PaginationLink
-              size={size}
-              isActive={currentPage === page}
-              onClick={() => onPageChange(page)}
-            >
-              {page}
-            </PaginationLink>
-          </PaginationItem>
+        {pageNumbers.map((page, index) => (
+          <React.Fragment key={page}>
+            {index > 0 && pageNumbers[index - 1] !== page - 1 && (
+              <PaginationItem>
+                <PaginationEllipsis size={size} />
+              </PaginationItem>
+            )}
+            <PaginationItem>
+              <PaginationLink
+                size={size}
+                isActive={currentPage === page}
+                onClick={() => onPageChange(page)}
+              >
+                {page}
+              </PaginationLink>
+            </PaginationItem>
+          </React.Fragment>
         ))}
-
-        <PaginationItem>
-          <PaginationEllipsis size={size} />
-        </PaginationItem>
-
-        <PaginationItem>
-          <PaginationLink
-            size={size}
-            isActive={currentPage === totalPages}
-            onClick={() => onPageChange(totalPages)}
-          >
-            {totalPages}
-          </PaginationLink>
-        </PaginationItem>
 
         <PaginationItem>
           <PaginationNext

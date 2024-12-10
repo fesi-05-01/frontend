@@ -1,14 +1,20 @@
 'use client';
 
+import { useBreakpoint } from 'use-breakpoint';
+
 import Pagination from '~/src/components/gathering-card/pagination';
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGatheringReview from '~/src/services/gatherings/use-gathering-review';
+import { getBreakpoints } from '~/src/utils/breakpoints';
 
 interface Props {
   gatheringId: number;
 }
 
+const BREAKPOINTS = getBreakpoints();
+
 export default function GatheringReviewList({ gatheringId }: Props) {
+  const { breakpoint } = useBreakpoint(BREAKPOINTS, 'mobile');
   const { data, isLoading, isError, error, currentPage, setCurrentPage } =
     useGatheringReview({
       gatheringId: Number(gatheringId),
@@ -54,7 +60,12 @@ export default function GatheringReviewList({ gatheringId }: Props) {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          className="mt-4"
+          className="mb-4"
+          size={
+            breakpoint === 'tablet' || breakpoint === 'desktop'
+              ? 'large'
+              : 'small'
+          }
         />
       )}
     </div>
