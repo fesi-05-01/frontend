@@ -52,14 +52,14 @@ export default function ProfileDropdown() {
 
   return (
     <div onClick={toggleDropdown} className="relative text-gray-800">
-      <Avatar size="medium">
+      <Avatar className="cursor-pointer" size="medium">
         <AvatarImage src={user?.image}></AvatarImage>
         <AvatarFallback />
       </Avatar>
 
       {isOpen && (
         <Dropdown
-          className="right-0"
+          className="right-0 desktop:left-0"
           options={['마이페이지', '로그아웃']}
           onSelect={handleSelect}
           version="Login"

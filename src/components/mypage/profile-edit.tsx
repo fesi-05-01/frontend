@@ -127,7 +127,7 @@ export default function ProfileEdit() {
               className="flex w-full flex-col gap-6"
             >
               <Avatar
-                className="relative h-14 w-14"
+                className="relative h-14 w-14 cursor-pointer"
                 onClick={() => document.getElementById('fileInput')?.click()}
               >
                 <AvatarImage src={previewImage || user?.image}></AvatarImage>
