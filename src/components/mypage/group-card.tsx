@@ -14,7 +14,7 @@ export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
   const isConfirmed = (joinedGathering.participantCount ?? 0) >= 5;
 
   return (
-    <div className="relative flex h-[308px] w-[311px] flex-col gap-4 border-b-[2px] border-dashed border-secondary-200 pb-6 tablet:h-[180px] tablet:w-full tablet:flex-row">
+    <div className="relative mt-6 flex h-[308px] w-[311px] flex-col gap-4 border-b-[2px] border-dashed border-secondary-200 pb-6 tablet:h-[180px] tablet:w-full tablet:flex-row">
       <Image
         src={NoImage}
         alt="no-image"
