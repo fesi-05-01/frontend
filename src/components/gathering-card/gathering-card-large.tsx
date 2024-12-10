@@ -53,9 +53,19 @@ export default function GatheringCardLarge({
           />
         )}
 
-        <Tag size="large" className="absolute right-0 top-0">
-          오늘 21시 마감
-        </Tag>
+        {/* 오늘이 마감일인 경우에만 Tag 표시 */}
+        {new Date(gathering.registrationEnd).toDateString() ===
+          new Date().toDateString() && (
+          <Tag size="large" className="absolute right-0 top-0">
+            오늘{' '}
+            {new Date(gathering.registrationEnd).toLocaleTimeString('ko-KR', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}{' '}
+            마감
+          </Tag>
+        )}
       </div>
 
       {/* 이미지 빼고 */}
