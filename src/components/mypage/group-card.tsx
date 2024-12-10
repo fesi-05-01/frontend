@@ -6,6 +6,7 @@ import NoImage from '~/src/assets/images/bg-login.png';
 import ChipState from '~/src/components/common/chip-state';
 import MemberCountChip from '~/src/components/common/member-count-chip';
 import { type GroupCardProps } from '~/src/components/mypage/type';
+import CreateReviewModal from '~/src/components/reviews/create-review-modal';
 import formatDateTime from '~/src/utils/format-date-time';
 
 export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
@@ -65,9 +66,8 @@ export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
             예약 취소하기
           </button>
         ) : (
-          <button className="w-120 h-10 rounded-xl bg-orange-600 px-[22px] py-[10px] text-sm font-semibold text-white">
-            리뷰 작성하기
-          </button>
+          // gatheringId 임시 값으로 넣어놨습니다. 추후에 모임 id 넣어주는걸로 수정해주세요!
+          <CreateReviewModal gatheringId={1} />
         )}
       </div>
       {state === 'disabled' && (
