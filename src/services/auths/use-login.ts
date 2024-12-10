@@ -4,27 +4,40 @@ import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
 
 import { post } from '~/src/services/api';
+import { useGetUserInfo } from '~/src/services/auths/get-user';
 import {
   type ErrorResponseData,
   type SigninData,
   type TokenResponseData,
+  type User,
 } from '~/src/services/auths/types';
-import { setAccessTokenAtom } from '~/src/stores/auth-store';
+
+import { setAccessTokenAtom, setUserInfoAtom } from './../../stores/auth-store';
 
 export function useLogin(form: UseFormReturn<SigninData>) {
-  const setAccessToken = useSetAtom(setAccessTokenAtom);
   const router = useRouter();
-
-  return useMutation<TokenResponseData, ErrorResponseData, SigninData>({
+  const setAccessToken = useSetAtom(setAccessTokenAtom);
+  const setUserInfo = useSetAtom(setUserInfoAtom);
+  const { refetchUser } = useGetUserInfo();
+  return useMutation<TokenResponseData, ErrorResponseData, SigninData, User>({
     mutationFn: (data) =>
       post<TokenResponseData>('/auths/signin', {
         email: data.email,
         password: data.password,
       }),
-    onSuccess: (data: TokenResponseData) => {
+    onSuccess: async (data) => {
       setAccessToken(data.token);
-      router.push('/');
+      try {
+        const userData = await refetchUser();
+        if (userData !== undefined) {
+          setUserInfo(userData);
+        }
+        router.push('/');
+      } catch (error) {
+        console.error('에러', error);
+      }
     },
+
     onError: (error) => {
       if (error?.data?.code === 'INVALID_CREDENTIALS') {
         form.setError('password', {

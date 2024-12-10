@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAtom } from 'jotai';
 
 import {
   Avatar,
@@ -17,11 +18,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '~/src/components/common/modal';
-import { useGetUserInfo } from '~/src/services/auths/get-user';
 import { useLogout } from '~/src/services/auths/use-logout';
-
+import { userInfoAtom } from '~/src/stores/auth-store';
 export default function ProfileDropdown() {
-  const { data: user } = useGetUserInfo();
+  const [user] = useAtom(userInfoAtom);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState('');

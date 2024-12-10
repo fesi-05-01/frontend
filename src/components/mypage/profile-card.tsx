@@ -1,5 +1,6 @@
 'use client';
 import Image from 'next/image';
+import { useAtom } from 'jotai';
 
 import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import bgimage from '~/src/assets/images/bg-profile.png';
@@ -9,9 +10,10 @@ import {
   AvatarImage,
 } from '~/src/components/common/avatar';
 import ProfileEdit from '~/src/components/mypage/profile-edit';
-import { useGetUserInfo } from '~/src/services/auths/get-user';
+import { userInfoAtom } from '~/src/stores/auth-store';
 export default function ProfileCard() {
-  const { data: user } = useGetUserInfo();
+  const [user] = useAtom(userInfoAtom);
+
   return (
     <div className="flex h-[178px] w-full flex-col overflow-hidden whitespace-nowrap rounded-3xl border-[2px] border-secondary-200 bg-white tablet:h-[172px]">
       <div className="relative h-16 w-full bg-orange-400">
