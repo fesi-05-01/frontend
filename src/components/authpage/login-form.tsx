@@ -17,7 +17,7 @@ import { useLogin } from '~/src/services/auths/use-login';
 export default function LoginForm() {
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       email: '',
       password: '',
@@ -25,10 +25,6 @@ export default function LoginForm() {
   });
 
   const { mutate: Login, isPending } = useLogin(form);
-
-  const { email, password } = form.watch();
-
-  const isFormFilled = email && password;
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     Login(values);
@@ -70,7 +66,7 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={!isFormFilled || isPending}>
+        <Button type="submit" disabled={!form.formState.isDirty || isPending}>
           로그인
         </Button>
       </form>

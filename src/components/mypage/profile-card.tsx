@@ -2,7 +2,6 @@
 import Image from 'next/image';
 import { useAtom } from 'jotai';
 
-import CircleEdit from '~/src/assets/icons/circle-edit.svg?url';
 import bgimage from '~/src/assets/images/bg-profile.png';
 import {
   Avatar,
@@ -15,7 +14,7 @@ export default function ProfileCard() {
   const [user] = useAtom(userInfoAtom);
 
   return (
-    <div className="mb-6 flex h-[178px] w-full flex-col overflow-hidden whitespace-nowrap rounded-3xl border-[2px] border-secondary-200 bg-white tablet:h-[172px]">
+    <div className="mb-6 flex h-[178px] w-full flex-col overflow-hidden whitespace-nowrap rounded-3xl border-[2px] border-secondary-200 bg-white shadow-sm tablet:h-[172px]">
       <div className="relative h-16 w-full bg-orange-400">
         <div className="relative left-0 top-0 h-14 w-full border-b-2 border-orange-600">
           <Image
@@ -31,16 +30,9 @@ export default function ProfileCard() {
           <ProfileEdit />
         </div>
         <div className="absolute -bottom-10 left-4">
-          <Avatar className="relative h-14 w-14">
+          <Avatar className="h-14 w-14">
             <AvatarImage src={user?.image}></AvatarImage>
             <AvatarFallback />
-            <Image
-              src={CircleEdit}
-              width={18}
-              height={18}
-              alt="Edit-Icon"
-              className="absolute bottom-0 right-0 tablet:hidden"
-            />
           </Avatar>
         </div>
       </div>
