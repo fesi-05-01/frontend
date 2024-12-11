@@ -17,12 +17,6 @@ export default function NotFound() {
       <Button className="w-[136px]">
         <Link href="/">홈으로 돌아가기</Link>
       </Button>
-      <div className="flex items-center gap-2">
-        <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-600 border-t-secondary-200">
-          {' '}
-        </div>
-        <p className="text-lg text-secondary-500"> Loading ... </p>
-      </div>
     </div>
   );
 }
