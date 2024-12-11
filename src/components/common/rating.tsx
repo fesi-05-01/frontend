@@ -27,6 +27,7 @@ export default function Rating({
         <HeartIcon
           key={index}
           isActive={index < value}
+          isAnimate={!!onScoreChange || !!onClick}
           onClick={(e) => handleClick(e, index + 1)}
           {...props}
         />
