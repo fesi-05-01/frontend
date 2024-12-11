@@ -2,6 +2,7 @@
 
 import { useBreakpoint } from 'use-breakpoint';
 
+import Loading from '~/app/loading';
 import Pagination from '~/src/components/gathering-card/pagination';
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGatheringReview from '~/src/services/gatherings/use-gathering-review';
@@ -20,7 +21,7 @@ export default function GatheringReviewList({ gatheringId }: Props) {
       gatheringId: Number(gatheringId),
     });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loading />;
   if (isError) {
     console.error('Error fetching data: ', error);
     return <div>Error loading data</div>;
@@ -44,7 +45,7 @@ export default function GatheringReviewList({ gatheringId }: Props) {
   }
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="mb-32 flex flex-col gap-4 tablet:mb-20">
       {reviews.map((review) => (
         <ReviewCardItem
           key={review.id}
@@ -60,7 +61,6 @@ export default function GatheringReviewList({ gatheringId }: Props) {
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          className="mb-4"
           size={
             breakpoint === 'tablet' || breakpoint === 'desktop'
               ? 'large'
