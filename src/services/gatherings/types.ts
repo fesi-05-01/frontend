@@ -1,3 +1,4 @@
+import { type User } from '~/src/services/auths/types';
 import { type GetReviewListResponse } from '~/src/services/reviews/types';
 import {
   type GatheringLocation,
@@ -62,16 +63,6 @@ export interface GetGatheringParticipantsRequest extends Partial<PageParam> {
 }
 
 export type GetGatheringParticipantsResponse = GatheringParticipant[];
-
-export interface User {
-  id: number;
-  email: string;
-  name: string;
-  companyName: string;
-  image: string | null;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export interface GatheringParticipant {
   userId: number;

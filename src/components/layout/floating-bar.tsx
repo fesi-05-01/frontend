@@ -1,6 +1,7 @@
 'use client';
 
 import { useAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import Button from '~/src/components/common/button';
 import { userInfoAtom } from '~/src/stores/auth-store';
@@ -13,6 +14,14 @@ interface FloatingBarProps {
 export default function FloatingBar({ createdById }: FloatingBarProps) {
   const [user] = useAtom(userInfoAtom);
   const isCreator = user?.id === createdById;
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      const currentUrl = window.location.href;
+      void navigator.clipboard.writeText(currentUrl);
+      toast.success('링크가 복사되었습니다.');
+    }
+  };
 
   return (
     <footer className="fixed inset-x-0 bottom-0 z-10 flex min-h-floatingBar items-center border-t-2 border-secondary-900 bg-white py-5">
@@ -47,7 +56,9 @@ export default function FloatingBar({ createdById }: FloatingBarProps) {
               <Button variant="outlined" type="button">
                 취소하기
               </Button>
-              <Button type="button"> 공유하기 </Button>
+              <Button type="button" onClick={handleShare}>
+                공유하기
+              </Button>
             </div>
           </div>
         )}
