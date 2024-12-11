@@ -10,6 +10,10 @@ const protectedRoutes = ['/login', '/signup'];
 export default async function middleware(req: NextRequest) {
   const path = req.nextUrl.pathname;
 
+  if (path === '/') {
+    return NextResponse.redirect(new URL('/gatherings', req.nextUrl));
+  }
+
   const accessToken = cookies().get('accessToken');
 
   // 로그인 된 상태에서 접근 시 홈으로
