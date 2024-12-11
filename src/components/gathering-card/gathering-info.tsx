@@ -47,10 +47,12 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
         {/* 아래 */}
         <div className="flex flex-col px-6">
           <div className="flex justify-between">
-            <div className="flex gap-3">
+            <div className="relative flex gap-3">
               <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-900">
-                <span>모집 정원</span>
-                <span>{gathering.participantCount}명</span>
+                <span className="whitespace-nowrap">모집 정원</span>
+                <span className="whitespace-nowrap">
+                  {gathering.participantCount}명
+                </span>
               </div>
               <GatheringProfileImages
                 gatheringId={gathering.id}
