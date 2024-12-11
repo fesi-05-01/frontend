@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 import {
   AuthCard,
   AuthCardContent,
@@ -8,6 +6,7 @@ import {
 } from '~/src/components/authpage/auth-formcard';
 import AuthPageBg from '~/src/components/authpage/authpage-bg';
 import SignupForm from '~/src/components/authpage/signup-form';
+import SwitchAuthPage from '~/src/components/authpage/switch-auth-page';
 import MainContainer from '~/src/components/layout/main-container';
 
 export default function SignupPage() {
@@ -23,9 +22,7 @@ export default function SignupPage() {
           <AuthCardFooter>
             <p className="text-sm tablet:text-base">
               이미 회원이신가요 ?
-              <Link className="text-primary-600 underline" href="/login">
-                로그인
-              </Link>
+              <SwitchAuthPage />
             </p>
           </AuthCardFooter>
         </AuthCard>

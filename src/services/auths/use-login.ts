@@ -4,6 +4,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
 import { toast } from 'sonner';
 
+import useCustomParams from '~/src/hooks/use-custom-params';
 import { post } from '~/src/services/api';
 import { useGetUserInfo } from '~/src/services/auths/get-user';
 import {
@@ -17,9 +18,14 @@ import { setAccessTokenAtom, setUserInfoAtom } from './../../stores/auth-store';
 
 export function useLogin(form: UseFormReturn<SigninData>) {
   const router = useRouter();
+
+  const { createUrl, getParams } = useCustomParams();
+  const params = getParams(['callback', 'open']);
+
   const setAccessToken = useSetAtom(setAccessTokenAtom);
   const setUserInfo = useSetAtom(setUserInfoAtom);
   const { refetchUser } = useGetUserInfo();
+
   return useMutation<TokenResponseData, ErrorResponseData, SigninData, User>({
     mutationFn: (data) =>
       post<TokenResponseData>('/auths/signin', {
@@ -33,8 +39,14 @@ export function useLogin(form: UseFormReturn<SigninData>) {
         if (userData !== undefined) {
           setUserInfo(userData);
         }
+
         toast.success(`${userData?.name}님, 환영합니다.`);
-        router.push('/');
+
+        if (params.callback) {
+          router.push(createUrl(`/${params.callback}`, { open: params.open }));
+        } else {
+          router.push('/');
+        }
       } catch (error) {
         console.error('로그인 중 오류', error);
       }
