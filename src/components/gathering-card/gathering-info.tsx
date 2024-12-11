@@ -5,6 +5,7 @@ import ProgressBar from '~/src/components/common/progress-bar';
 import ChipInfoContainer from '~/src/components/gathering-card/chip-info-container';
 import Confirmation from '~/src/components/gathering-card/confirmation';
 import GatheringProfileImages from '~/src/components/gathering-card/gathering-profile-images';
+import { useCountAnimation } from '~/src/hooks/gatherings/use-count-animation';
 import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
 import { type Gathering } from '~/src/services/gatherings/types';
 
@@ -18,6 +19,10 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
     capacity: gathering.capacity ?? 20,
     gatheringId: gathering.id,
   });
+
+  const animatedParticipantCount = useCountAnimation(
+    gathering.participantCount,
+  );
 
   return (
     <div className="self-start rounded-3xl border-2 border-gray-200 bg-white">
@@ -51,7 +56,7 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
               <div className="flex items-center gap-1.5 text-sm font-semibold text-gray-900">
                 <span className="whitespace-nowrap">모집 정원</span>
                 <span className="whitespace-nowrap">
-                  {gathering.participantCount}명
+                  {animatedParticipantCount}명
                 </span>
               </div>
               <GatheringProfileImages
