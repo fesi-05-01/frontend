@@ -2,29 +2,44 @@ import { type UseFormReturn } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useMutation } from '@tanstack/react-query';
 import { useSetAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import { post } from '~/src/services/api';
+import { useGetUserInfo } from '~/src/services/auths/get-user';
 import {
   type ErrorResponseData,
   type SigninData,
   type TokenResponseData,
+  type User,
 } from '~/src/services/auths/types';
-import { setAccessTokenAtom } from '~/src/stores/auth-store';
+
+import { setAccessTokenAtom, setUserInfoAtom } from './../../stores/auth-store';
 
 export function useLogin(form: UseFormReturn<SigninData>) {
-  const setAccessToken = useSetAtom(setAccessTokenAtom);
   const router = useRouter();
-
-  return useMutation<TokenResponseData, ErrorResponseData, SigninData>({
+  const setAccessToken = useSetAtom(setAccessTokenAtom);
+  const setUserInfo = useSetAtom(setUserInfoAtom);
+  const { refetchUser } = useGetUserInfo();
+  return useMutation<TokenResponseData, ErrorResponseData, SigninData, User>({
     mutationFn: (data) =>
       post<TokenResponseData>('/auths/signin', {
         email: data.email,
         password: data.password,
       }),
-    onSuccess: (data: TokenResponseData) => {
+    onSuccess: async (data) => {
       setAccessToken(data.token);
-      router.push('/');
+      try {
+        const userData = await refetchUser();
+        if (userData !== undefined) {
+          setUserInfo(userData);
+        }
+        toast.success(`${userData?.name}님, 환영합니다.`);
+        router.push('/');
+      } catch (error) {
+        console.error('로그인 중 오류', error);
+      }
     },
+
     onError: (error) => {
       if (error?.data?.code === 'INVALID_CREDENTIALS') {
         form.setError('password', {

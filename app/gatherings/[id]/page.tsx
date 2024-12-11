@@ -3,6 +3,7 @@
 import GatheringDetailImage from '~/src/components/gathering-card/gathering-detail-image';
 import GatheringInfo from '~/src/components/gathering-card/gathering-info';
 import GatheringReviewList from '~/src/components/gathering-card/gathering-review-list';
+import FloatingBar from '~/src/components/layout/floating-bar';
 import MainContainer from '~/src/components/layout/main-container';
 import useGatheringDetail from '~/src/services/gatherings/use-gathering-detail';
 
@@ -26,7 +27,7 @@ export default function GatheringItemPage({ params }: Props) {
     }
     return <MainContainer>Error loading data</MainContainer>;
   }
-
+  const gathering = data[0];
   return (
     <MainContainer className="flex flex-col">
       <div className="mt-6 grid flex-1 grid-cols-1 grid-rows-[auto_auto_1fr] gap-y-4 tablet:grid-cols-2 tablet:grid-rows-[auto_1fr] tablet:gap-x-[14px] tablet:gap-y-[21px] desktop:mt-10 desktop:gap-x-6">
@@ -42,6 +43,7 @@ export default function GatheringItemPage({ params }: Props) {
           <GatheringReviewList gatheringId={Number(params.id)} />
         </div>
       </div>
+      <FloatingBar createdById={gathering.createdBy} />
     </MainContainer>
   );
 }
