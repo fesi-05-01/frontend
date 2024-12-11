@@ -67,9 +67,9 @@ export default function CreateReviewModal({ gatheringId }: Props) {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <button className="w-120 h-10 rounded-xl bg-orange-600 px-[22px] py-[10px] text-sm font-semibold text-white">
+        <Button size="small" className="w-[120px]">
           리뷰 작성하기
-        </button>
+        </Button>
       </DialogTrigger>
 
       <DialogContent aria-describedby="리뷰 작성 폼" className="flex flex-col">
