@@ -3,30 +3,30 @@ import { type ComponentPropsWithoutRef } from 'react';
 import { cn } from '~/src/utils/class-name';
 
 interface ChipTimeProps extends ComponentPropsWithoutRef<'button'> {
-  children: React.ReactNode;
-  state: 'active' | 'inactive' | 'disabled';
-  className?: string;
+  state: 'active' | 'inactive';
 }
 
 export default function ChipTime({
   children,
   state,
   className,
+  disabled,
   ...props
 }: ChipTimeProps) {
   const stateClasses = {
     active: 'bg-gray-900 text-white',
     inactive: 'bg-gray-50 text-gray-900 border border-gray-200',
-    disabled: 'bg-gray-200 text-gray-400 cursor-not-allowed',
   };
 
   return (
     <button
-      {...props}
       className={cn(
-        `rounded-lg px-3 py-1.5 text-sm font-medium ${stateClasses[state]}`,
+        `flex h-8 w-[60px] items-center justify-center rounded-lg text-sm ${stateClasses[state]}`,
+        'disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-400',
         className,
       )}
+      disabled={disabled}
+      {...props}
     >
       {children}
     </button>
