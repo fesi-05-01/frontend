@@ -18,13 +18,15 @@ export default function useGetReviewInfiniteList() {
       }),
     placeholderData: keepPreviousData,
     select: ({ pages }) => {
-      return pages.flatMap((data) => data);
+      return pages.flatMap(({ data }) => data);
     },
     initialPageParam: { limit: LIMIT, offset: 0 },
     getNextPageParam: (lastPage, _, lastPageParam) => {
-      return lastPage.length < LIMIT
+      const nextOffset = lastPageParam.offset + LIMIT;
+
+      return nextOffset >= lastPage.totalItemCount
         ? undefined
-        : { limit: LIMIT, offset: lastPageParam.offset + LIMIT };
+        : { limit: LIMIT, offset: nextOffset };
     },
   });
 }

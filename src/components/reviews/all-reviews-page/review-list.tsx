@@ -34,7 +34,9 @@ export default function ReviewList() {
           />
         ))}
 
-        {!isFetching && hasNextPage && <div ref={ref} className="h-10" />}
+        {!isFetching && hasNextPage && data && (
+          <div ref={ref} className="h-10" />
+        )}
       </div>
 
       {/* 첫 페칭이 끝나고 데이터 없을때 */}

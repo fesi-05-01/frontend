@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
+import Loading from '~/app/loading';
 import DefaultProfileImage from '~/src/assets/images/profile-large.png';
 import useGatheringParticipants from '~/src/services/gatherings/use-gathering-participants';
 
@@ -42,7 +43,7 @@ export default function GatheringProfileImages({
     }
   }, [data?.pages, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
-  if (isLoading) return <div>프로필 이미지 로딩중</div>;
+  if (isLoading) return <Loading />;
   if (isError) {
     console.error('Error fetching gathering details:', error);
     return <div>프로필 이미지 로드 에러</div>;
