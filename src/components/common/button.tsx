@@ -32,7 +32,7 @@ export default forwardRef(function Button(
       {...props}
       disabled={disabled}
       className={cn(
-        'w-full rounded-xl px-3 text-white transition-colors duration-75',
+        'w-full rounded-xl px-3 text-white shadow-sm transition-colors duration-75 hover:shadow-md',
         sizeClass,
         variant === 'outlined'
           ? disabled

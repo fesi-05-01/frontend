@@ -19,7 +19,7 @@ export default function Calender({
         className={cn('w-full, p-2, box-border', className)}
         classNames={{
           outside: 'text-gray-400',
-          disabled: 'text-gray-400',
+          disabled: 'text-gray-400 cursor-not-allowed',
           month: 'flex flex-col',
           months: 'flex flex-col relative',
           week: 'text-center h-[32px]',

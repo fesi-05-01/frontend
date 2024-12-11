@@ -18,7 +18,7 @@ import { useSignup } from '~/src/services/auths/use-signup';
 export default function SignupForm() {
   const form = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
-    mode: 'all',
+    mode: 'onChange',
     defaultValues: {
       name: '',
       email: '',
@@ -29,10 +29,6 @@ export default function SignupForm() {
   });
 
   const { mutate: Signup, isPending } = useSignup(form);
-  const { name, email, companyName, password, confirmPassword } = form.watch();
-
-  const isFormFilled =
-    name && email && companyName && password && confirmPassword;
 
   const onSubmit = (values: z.infer<typeof signupSchema>) => {
     Signup(values);
@@ -121,7 +117,7 @@ export default function SignupForm() {
             )}
           />
 
-          <Button type="submit" disabled={!isFormFilled || isPending}>
+          <Button type="submit" disabled={!form.formState.isDirty || isPending}>
             확인
           </Button>
         </form>
