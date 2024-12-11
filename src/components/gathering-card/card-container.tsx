@@ -16,6 +16,7 @@ export default function CardContainer() {
   const { type, location, date, sortBy } = useGatheringFilter();
   const { breakpoint } = useBreakpoint(BREAKPOINTS, 'mobile');
   const observerRef = useRef<HTMLDivElement>(null);
+
   const { data, isFetching, fetchNextPage, hasNextPage } = useGatherings({
     type,
     location,
@@ -23,8 +24,8 @@ export default function CardContainer() {
     sortBy: sortBy as SortBy,
   });
 
-  const flattenedData = data?.flat() ?? [];
-  console.log('flattenedData', flattenedData);
+  const flattenedData =
+    data?.flat().filter((gathering) => gathering.canceledAt === null) ?? [];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -67,14 +68,12 @@ export default function CardContainer() {
           ))}
         </div>
       )}
-
       {isFetching && (
         <div className="flex justify-center py-4">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-secondary-100 border-t-secondary-900" />
         </div>
       )}
-
-      {hasNextPage && <div ref={observerRef} className="h-4 w-full" />}
+      {hasNextPage && <div ref={observerRef} className="h-8 w-full" />}
     </div>
   );
 }
