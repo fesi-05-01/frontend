@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import SaveBye from '~/src/assets/icons/circle-bye.svg';
 import Save from '~/src/assets/icons/save';
@@ -15,14 +16,29 @@ import { type GatheringCardProps } from '~/src/components/gathering-card/type-pr
 import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
 import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
-export default function GatheringCardLarge({ gathering }: GatheringCardProps) {
+export default function GatheringCardLarge({
+  gathering,
+  ...props
+}: GatheringCardProps) {
+  const router = useRouter();
   const { isSaved, handleSaveButton, cardState } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
+    gatheringId: gathering.id,
   });
+
+  const isEnded = isRegistrationEnded(gathering.registrationEnd);
+
+  const handleClick = () => {
+    if (!isEnded) {
+      router.push(`/gatherings/${gathering.id}`);
+    }
+  };
 
   return (
     <div
+      {...props}
+      onClick={handleClick}
       className={`relative flex rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       {/* 이미지 */}
@@ -37,9 +53,19 @@ export default function GatheringCardLarge({ gathering }: GatheringCardProps) {
           />
         )}
 
-        <Tag size="large" className="absolute right-0 top-0">
-          오늘 21시 마감
-        </Tag>
+        {/* 오늘이 마감일인 경우에만 Tag 표시 */}
+        {new Date(gathering.registrationEnd).toDateString() ===
+          new Date().toDateString() && (
+          <Tag size="large" className="absolute right-0 top-0">
+            오늘{' '}
+            {new Date(gathering.registrationEnd).toLocaleTimeString('ko-KR', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}{' '}
+            마감
+          </Tag>
+        )}
       </div>
 
       {/* 이미지 빼고 */}
@@ -63,7 +89,7 @@ export default function GatheringCardLarge({ gathering }: GatheringCardProps) {
           <Save
             className="absolute right-4 top-4"
             isActive={isSaved}
-            onClick={handleSaveButton}
+            onClick={handleSaveButton(gathering.id)}
           />
         </div>
 
@@ -100,13 +126,21 @@ export default function GatheringCardLarge({ gathering }: GatheringCardProps) {
       {isRegistrationEnded(gathering.registrationEnd) && (
         <div
           onClick={(e) => e.stopPropagation()}
-          className="absolute inset-0 z-0 flex cursor-not-allowed items-center justify-center overflow-hidden rounded-3xl bg-black bg-opacity-80"
+          className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center overflow-hidden rounded-3xl bg-black bg-opacity-80"
         >
-          <div className="text-center text-sm font-medium text-white">
+          <div className="pointer-events-auto text-center text-sm font-medium text-white">
             마감된 챌린지예요, <br />
             다음 기회에 만나요🙏
           </div>
-          <SaveBye className="absolute right-4 top-4" />
+          {isSaved && (
+            <SaveBye
+              className="pointer-events-auto absolute right-4 top-4 cursor-pointer"
+              onClick={(e: React.MouseEvent<SVGSVGElement>) => {
+                e.preventDefault();
+                handleSaveButton(gathering.id)(e);
+              }}
+            />
+          )}
         </div>
       )}
     </div>

@@ -75,7 +75,7 @@ export default function CreateGatheringModal() {
         aria-describedby="모임 만들기 폼"
         className={cn(
           'flex h-dvh flex-col tablet:h-[calc(100dvh-48px)] desktop:h-dvh',
-          'max-tablet:max-w-full max-tablet:rounded-none max-tablet:px-4 max-tablet:pb-3',
+          'w-full max-tablet:rounded-none max-tablet:px-4 max-tablet:pb-3',
         )}
       >
         <DialogHeader>

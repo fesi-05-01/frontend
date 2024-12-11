@@ -1,9 +1,10 @@
 import PageTitleWithImage from '~/src/components/common/page-title-with-image';
 import MainContainer from '~/src/components/layout/main-container';
-import ReviewContainer from '~/src/components/reviews/review-container';
-import ReviewGatheringTab from '~/src/components/reviews/review-gathering-tab';
-import ReviewList from '~/src/components/reviews/review-list';
-import ReviewScore from '~/src/components/reviews/review-score';
+import ReviewContainer from '~/src/components/reviews/all-reviews-page/review-container';
+import ReviewFilter from '~/src/components/reviews/all-reviews-page/review-filter';
+import ReviewGatheringTab from '~/src/components/reviews/all-reviews-page/review-gathering-tab';
+import ReviewList from '~/src/components/reviews/all-reviews-page/review-list';
+import ReviewScore from '~/src/components/reviews/all-reviews-page/review-score';
 import { get } from '~/src/services/api';
 import { reviewsQueryKeys } from '~/src/services/reviews/queryKey';
 import { type GetReviewListResponse } from '~/src/services/reviews/types';
@@ -30,6 +31,8 @@ export default async function AllReviewsPage() {
       <ReviewScore />
 
       <ReviewContainer>
+        <ReviewFilter />
+
         <Hydration state={state}>
           <ReviewList />
         </Hydration>

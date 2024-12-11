@@ -9,7 +9,7 @@ type Props = {
   hasImage?: boolean;
   hasTypeDescription?: boolean;
   hasNameTag?: boolean;
-} & GetReviewListResponse[0];
+} & GetReviewListResponse['data'][0];
 
 export default function ReviewCardItem({
   hasNameTag = false,

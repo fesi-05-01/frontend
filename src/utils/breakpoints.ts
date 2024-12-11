@@ -6,8 +6,8 @@ const fullConfig = resolveConfig(tailwindConfig);
 
 export function getBreakpoints(): Record<string, number> {
   const screens = fullConfig.theme?.screens || {};
-  const customScreens = ['mobile', 'tablet', 'desktop']; // 필요한 브레이크포인트만 추출
-  const breakpoints: Record<string, number> = { mobile: 0 }; // 기본값 추가 (375px 미만 처리)
+  const customScreens = ['mobile', 'tablet', 'desktop'];
+  const breakpoints: Record<string, number> = {};
 
   Object.entries(screens).forEach(([key, value]) => {
     if (customScreens.includes(key)) {
@@ -17,6 +17,8 @@ export function getBreakpoints(): Record<string, number> {
       }
     }
   });
+
+  breakpoints['mobile'] = 0;
 
   return breakpoints;
 }

@@ -3,8 +3,13 @@ import { http, HttpResponse } from 'msw';
 import { baseUrl, getQueryParams } from '~/src/mocks/utils';
 
 export const reviewsHandlers = [
-  http.get(baseUrl('/reviews'), () => {
-    return HttpResponse.json([
+  http.get(baseUrl('/reviews'), ({ request }) => {
+    const { limit, offset } = getQueryParams(request.url, [
+      'limit',
+      'offset',
+    ] as const);
+
+    const baseReviews = [
       {
         teamId: 1,
         id: 1,
@@ -18,13 +23,13 @@ export const reviewsHandlers = [
           name: '달램핏 오피스 스트레칭',
           dateTime: '2024-03-19T15:00:00Z',
           location: '건대입구',
-          image: '/IMG_1190.jpg',
+          image: '/IMG_1053.jpg',
         },
         User: {
           teamId: 1,
           id: 201,
           name: '김철수',
-          image: '/IMG_1053.jpg',
+          image: '/IMG_1190.jpg',
         },
       },
       {
@@ -49,7 +54,51 @@ export const reviewsHandlers = [
           image: '/IMG_1053.jpg',
         },
       },
-    ]);
+    ];
+
+    const reviews = Array.from({ length: 13 }, (_, index) => {
+      const multiplier = index * 2;
+      return [
+        {
+          ...baseReviews[0],
+          id: multiplier + 1,
+          User: {
+            ...baseReviews[0].User,
+            id: baseReviews[0].User.id + multiplier,
+          },
+          Gathering: {
+            ...baseReviews[0].Gathering,
+            id: baseReviews[0].Gathering.id + multiplier,
+          },
+        },
+        {
+          ...baseReviews[1],
+          id: multiplier + 2,
+          User: {
+            ...baseReviews[1].User,
+            id: baseReviews[1].User.id + multiplier,
+          },
+          Gathering: {
+            ...baseReviews[1].Gathering,
+            id: baseReviews[1].Gathering.id + multiplier,
+          },
+        },
+      ];
+    }).flat();
+
+    const parsedOffset = offset ? parseInt(offset) : 0;
+    const parsedLimit = limit ? parseInt(limit) : 10;
+    const paginatedReviews = reviews.slice(
+      parsedOffset,
+      parsedOffset + parsedLimit,
+    );
+
+    return HttpResponse.json({
+      data: paginatedReviews,
+      totalItemCount: reviews.length,
+      currentPage: Math.floor(parsedOffset / parsedLimit) + 1,
+      totalPages: Math.ceil(reviews.length / parsedLimit),
+    });
   }),
 
   http.get(baseUrl('/reviews/scores'), ({ request }) => {

@@ -85,3 +85,18 @@ export interface GetGatheringReviewRequest {
 }
 
 export type GetGatheringReviewResponse = GetReviewListResponse;
+
+export interface GetGatheringsRequest {
+  limit?: number;
+  offset?: number;
+  type?: GatheringType;
+  location?: GatheringLocation;
+  date?: string;
+  createdBy?: number;
+}
+
+export type GetGatheringsResponse = Gathering[];
+
+export type SortBy = 'dateTime' | 'registrationEnd' | 'participantCount';
+
+export type SortOrder = 'asc' | 'desc';

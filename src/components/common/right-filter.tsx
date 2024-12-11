@@ -1,3 +1,5 @@
+'use client';
+
 import { useCallback, useRef, useState } from 'react';
 import Image from 'next/image';
 
@@ -12,6 +14,9 @@ interface FilterProps extends React.ComponentPropsWithoutRef<'button'> {
   className?: string;
   placeholder: string;
   calendar?: boolean;
+  onOptionSelect?: (option: string) => void;
+  onDateSelect?: (date: Date) => void;
+  onDateReset?: () => void;
 }
 
 function Yymmdd(date: Date) {
@@ -27,6 +32,9 @@ export default function RightFilter({
   options,
   className,
   calendar = false,
+  onOptionSelect,
+  onDateSelect,
+  onDateReset,
   ...rest
 }: FilterProps) {
   const [selected, setSelected] = useState(placeholder);
@@ -43,18 +51,21 @@ export default function RightFilter({
   const selectOption = (option: string) => {
     setSelected(option);
     setIsOpen(false);
+    onOptionSelect?.(option);
   };
 
   const handleCalendarSelect = (date: Date | undefined) => {
     setSelected(Yymmdd(date!));
     setSelectedDate(date);
     setIsOpen(false);
+    onDateSelect?.(date!);
   };
 
   const handleReset = useCallback(() => {
     setSelected(placeholder);
     setSelectedDate(undefined);
-  }, [placeholder]);
+    onDateReset?.();
+  }, [placeholder, onDateReset]);
 
   return (
     <div className="relative whitespace-nowrap">

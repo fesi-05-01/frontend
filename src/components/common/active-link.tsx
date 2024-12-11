@@ -23,7 +23,7 @@ export default function ActiveLink({
 
   const linkClassName = cn(
     'link',
-    { 'text-secondary-900': pathname === href },
+    { 'text-secondary-900 font-semibold ': pathname === href },
     className,
   );
   return (

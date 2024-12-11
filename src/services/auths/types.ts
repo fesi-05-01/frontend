@@ -10,10 +10,6 @@ export interface SigninData {
   password: string;
 }
 
-export interface TokenResponseData {
-  token: string;
-}
-
 export interface Signuptype {
   name: string;
   email: string;
@@ -24,16 +20,21 @@ export interface Signuptype {
 
 export interface SuccessResponseData {
   message: string;
+  user: User;
 }
 
 export interface User {
-  id: string;
+  id: number;
   email: string;
   name: string;
   companyName: string;
   image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface TokenResponseData {
+  token: string;
 }
 
 export interface UserEditType {

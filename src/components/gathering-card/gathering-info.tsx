@@ -16,6 +16,7 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
   const { isSaved, handleSaveButton } = useGatheringCard({
     participantCount: gathering.participantCount ?? 5,
     capacity: gathering.capacity ?? 20,
+    gatheringId: gathering.id,
   });
 
   return (
@@ -33,7 +34,13 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
             <ChipInfoContainer dateTime={gathering.dateTime ?? ''} />
           </div>
           <div className="">
-            <Save isActive={isSaved} onClick={handleSaveButton} />
+            <Save
+              isActive={isSaved}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleSaveButton(gathering.id)(e);
+              }}
+            />
           </div>
         </div>
         <div className="mx-auto mb-3 mt-[25px] w-full border-t-2 border-dashed border-gray-200"></div>

@@ -5,7 +5,7 @@ import {
   type SortOrder,
 } from '~/src/services/types';
 
-type ReviewSortBy = 'createdAt' | 'score' | 'participantCount';
+export type ReviewSortBy = 'createdAt' | 'score' | 'participantCount';
 
 export interface CreateReviewRequest {
   gatheringId: number;
@@ -14,7 +14,7 @@ export interface CreateReviewRequest {
 }
 
 export interface CreateReviewResponse {
-  teamId: number;
+  teamId: string;
   id: number;
   userId: number;
   gatheringId: number;
@@ -36,28 +36,33 @@ export type GetReviewListRequest = Partial<
   } & PageParam
 >;
 
-export type GetReviewListResponse = Array<{
-  teamId: number;
-  id: number;
-  score: number;
-  comment: string;
-  createdAt: string;
-  Gathering: {
-    teamId: number;
+export interface GetReviewListResponse {
+  data: Array<{
+    teamId: string;
     id: number;
-    type: string;
-    name: string;
-    dateTime: string;
-    location: string;
-    image: string;
-  };
-  User: {
-    teamId: number;
-    id: number;
-    name: string;
-    image: string;
-  };
-}>;
+    score: number;
+    comment: string;
+    createdAt: string;
+    Gathering: {
+      teamId: string;
+      id: number;
+      type: string;
+      name: string;
+      dateTime: string;
+      location: string;
+      image: string;
+    };
+    User: {
+      teamId: string;
+      id: number;
+      name: string;
+      image: string;
+    };
+  }>;
+  totalItemCount: number;
+  currentPage: number;
+  totalPages: number;
+}
 
 export type GetReviewScoreRequest = Partial<{
   gatheringId: string;
@@ -66,7 +71,7 @@ export type GetReviewScoreRequest = Partial<{
 
 export type GetReviewScoreResponse = [
   {
-    teamId: number;
+    teamId: string;
     gatheringId: number;
     type: GatheringType;
     averageScore: number;
