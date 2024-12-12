@@ -16,9 +16,11 @@ export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
   return (
     <div className="relative mt-6 flex h-[308px] w-[311px] flex-col gap-4 border-b-[2px] border-dashed border-secondary-200 pb-6 tablet:h-[180px] tablet:w-full tablet:flex-row">
       <Image
-        src={NoImage}
+        src={joinedGathering.image ? joinedGathering.image : NoImage}
         alt="no-image"
         className="h-[156px] w-[311px] rounded-3xl mobile:w-[280px]"
+        width={280}
+        height={156}
       />
       <div className="flex h-[156px] w-auto flex-col justify-between">
         <span

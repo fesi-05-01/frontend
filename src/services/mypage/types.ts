@@ -2,14 +2,12 @@ import {
   type GatheringLocation,
   type GatheringType,
   type PageParam,
-  type SortOrder,
 } from '~/src/services/types';
 
 export interface GetJoinedGatheringsRequest extends Partial<PageParam> {
   isCompleted?: boolean;
   isReviewed?: boolean;
   createdby?: number;
-  sortOrder?: SortOrder;
 }
 
 export type GetJoinedGatheringsResponse = Array<{
