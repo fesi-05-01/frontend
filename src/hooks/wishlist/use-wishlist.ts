@@ -7,7 +7,7 @@ import { wishListTypeAtom } from '~/src/stores/wishlist-atom';
 
 export function useWishList() {
   const [type, setType] = useAtom(wishListTypeAtom);
-  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[1]');
+  const wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
 
   const { data } = useQuery({
     queryKey: ['gatherings', wishlist, type],
