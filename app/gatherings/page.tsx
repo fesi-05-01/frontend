@@ -25,11 +25,9 @@ export default async function GatheringsPage() {
       <PageTitleWithImage />
       <div className="flex flex-1 flex-col gap-6">
         <GatheringPanel />
-        <div className="flex flex-1 items-center justify-center">
-          <Hydration state={state}>
-            <CardContainer />
-          </Hydration>
-        </div>
+        <Hydration state={state}>
+          <CardContainer />
+        </Hydration>
       </div>
     </MainContainer>
   );

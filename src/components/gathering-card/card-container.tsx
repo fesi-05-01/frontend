@@ -47,15 +47,17 @@ export default function CardContainer() {
 
   if (!isFetching && (!data || flattenedData.length === 0)) {
     return (
-      <div className="text-center text-sm font-medium text-gray-500">
-        아직 모임이 없어요, <br />
-        지금 바로 모임을 만들어보세요!
+      <div className="flex flex-1 items-center justify-center">
+        <div className="text-center text-sm font-medium text-gray-500">
+          아직 모임이 없어요, <br />
+          지금 바로 모임을 만들어보세요!
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full pb-10">
       {breakpoint === 'tablet' || breakpoint === 'desktop' ? (
         <div className="flex flex-col gap-6">
           {flattenedData?.map((gathering) => (

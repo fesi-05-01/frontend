@@ -17,8 +17,10 @@ export default function WishlistContainer() {
 
   if (!data || flattenedData.length === 0) {
     return (
-      <div className="text-center text-sm font-medium text-gray-500">
-        아직 찜한 모임이 없어요
+      <div className="flex flex-1 items-center justify-center pb-10">
+        <div className="text-center text-sm font-medium text-gray-500">
+          아직 찜한 모임이 없어요
+        </div>
       </div>
     );
   }

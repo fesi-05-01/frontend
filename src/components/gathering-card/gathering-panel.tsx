@@ -20,8 +20,11 @@ export default function GatheringPanel() {
   };
 
   const handleLocationSelect = (option: string) => {
-    console.log('Location selected:', option);
-    setLocation(option as GatheringLocation);
+    if (option === '지역 전체') {
+      setLocation(undefined);
+    } else {
+      setLocation(option as GatheringLocation);
+    }
   };
 
   const handleDateSelect = (date: Date) => {
@@ -41,6 +44,9 @@ export default function GatheringPanel() {
         break;
       case '참여 인원 순':
         sortOption = 'participantCount';
+        break;
+      case '최신 순':
+        sortOption = 'dateTime';
         break;
       default:
         return;
@@ -75,7 +81,7 @@ export default function GatheringPanel() {
           />
         </div>
         <LeftFilter
-          options={['마감 임박', '참여 인원 순']}
+          options={['마감 임박', '참여 인원 순', '최신 순']}
           onOptionSelect={(option) => handleSortBySelect(option)}
         />
       </div>

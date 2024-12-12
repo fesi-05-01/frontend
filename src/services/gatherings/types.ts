@@ -44,8 +44,6 @@ export interface GetGatheringDetailRequest {
   id: number;
 }
 
-export type GetGatheringDetailResponse = Gathering[];
-
 export interface GetGatheringParticipantsRequest extends Partial<PageParam> {
   gatheringId: number;
 }

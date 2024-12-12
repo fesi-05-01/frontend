@@ -4,7 +4,7 @@ import MainContainer from '~/src/components/layout/main-container';
 import { get } from '~/src/services/api';
 import { gatheringsQueryKeys } from '~/src/services/gatherings/queryKey';
 import {
-  type GetGatheringDetailResponse,
+  type Gathering,
   type GetGatheringReviewResponse,
 } from '~/src/services/gatherings/types';
 import { getDehydratedQuery, Hydration } from '~/src/services/tanstack-query';
@@ -18,7 +18,7 @@ interface Props {
 export default async function GatheringItemPage({ params }: Props) {
   const detailState = await getDehydratedQuery({
     queryKey: gatheringsQueryKeys.gatheringDetail({ id: Number(params.id) }),
-    queryFn: () => get<GetGatheringDetailResponse>(`/gatherings/${params.id}`),
+    queryFn: () => get<Gathering>(`/gatherings/${params.id}`),
   });
 
   const reviewState = await getDehydratedQuery({
