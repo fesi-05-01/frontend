@@ -56,7 +56,7 @@ export default function ReviewCardItem({
         {/* 모임 주제 및 장소 */}
         {hasTypeDescription && (
           <p className="mt-2.5 space-x-1 text-xs">
-            <span>{data.Gathering.name}</span>
+            <span>{data.Gathering.name} 이용</span>
             <span>·</span>
             <span>{data.Gathering.location}</span>
           </p>

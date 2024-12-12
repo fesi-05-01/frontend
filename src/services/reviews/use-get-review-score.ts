@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import useReviewFilterAtom from '~/src/hooks/reviews/use-review-filter-atom';
 import { get } from '~/src/services/api';
@@ -13,6 +13,7 @@ export default function useGetReviewScore() {
     queryKey: reviewsQueryKeys.reviewScore({ type }),
     queryFn: () =>
       get<GetReviewScoreResponse>(`/reviews/scores`, { params: { type } }),
+    placeholderData: keepPreviousData,
     select: (data) => {
       const {
         averageScore,

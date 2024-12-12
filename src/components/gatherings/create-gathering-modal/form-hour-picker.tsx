@@ -32,13 +32,7 @@ export default function FormHourPicker({ field }: Props) {
               <ChipTime
                 key={time}
                 type="button"
-                state={
-                  isToday && time <= nowTime
-                    ? 'disabled'
-                    : time === field.value.time
-                      ? 'active'
-                      : 'inactive'
-                }
+                state={time === field.value.time ? 'active' : 'inactive'}
                 disabled={isToday && time <= nowTime}
                 onClick={() => field.onChange({ ...field.value, time })}
               >

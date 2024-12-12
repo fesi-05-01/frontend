@@ -7,12 +7,6 @@ import { type ReviewSortBy } from '~/src/services/reviews/types';
 import { type GatheringLocation } from '~/src/services/types';
 import { getDateForFormData } from '~/src/utils/date';
 
-const SORT_OPTIONS: Record<string, ReviewSortBy> = {
-  최신순: 'createdAt',
-  '리뷰 높은 순': 'score',
-  '참여 인원 순': 'participantCount',
-};
-
 export default function ReviewFilter() {
   const { onChangeFilter } = useReviewFilterAtom();
 
@@ -60,3 +54,9 @@ export default function ReviewFilter() {
     </div>
   );
 }
+
+const SORT_OPTIONS: Record<string, ReviewSortBy> = {
+  최신순: 'createdAt',
+  '리뷰 높은 순': 'score',
+  '참여 인원 순': 'participantCount',
+};

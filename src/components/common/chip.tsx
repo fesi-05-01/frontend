@@ -3,16 +3,14 @@ import { type ComponentPropsWithoutRef } from 'react';
 import { cn } from '~/src/utils/class-name';
 
 interface ChipProps extends ComponentPropsWithoutRef<'button'> {
-  children: React.ReactNode;
-  size: 'small' | 'large';
+  size?: 'small' | 'large';
   state: 'active' | 'default';
-  className?: string;
 }
 
 export default function Chip({
-  children,
   size,
   state,
+  children,
   className,
   ...props
 }: ChipProps) {
@@ -23,13 +21,16 @@ export default function Chip({
 
   const stateClasses = {
     active: 'bg-gray-900 text-white',
-    default: 'bg-gray-200 text-black',
+    default: 'bg-gray-200',
   };
 
   return (
     <button
       className={cn(
-        `rounded-xl text-sm font-medium ${sizeClasses[size]} ${stateClasses[state]}`,
+        'rounded-xl text-sm',
+        stateClasses[state],
+        size && sizeClasses[size],
+        !size && 'px-3 py-2 tablet:px-4 tablet:py-2.5',
         className,
       )}
       {...props}
