@@ -14,7 +14,7 @@ export default function Gnb() {
       <ActiveLink
         className="flex items-center gap-[5px]"
         href="/wishlist"
-        badgeCount={wishlist.length}
+        badgeCount={wishlist.length > 0 ? wishlist.length : undefined}
       >
         찜한 모임
       </ActiveLink>
