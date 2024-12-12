@@ -26,7 +26,7 @@ export default function Header() {
           ) : (
             <Link
               href="/login"
-              className="whitespace-nowrap text-sm font-semibold tablet:text-base"
+              className="whitespace-nowrap text-sm font-semibold hover:text-secondary-900 tablet:text-base"
             >
               로그인
             </Link>

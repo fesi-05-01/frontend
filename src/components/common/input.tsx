@@ -24,8 +24,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             {...props}
             ref={ref}
             className={cn(
-              'w-full rounded-xl border-2 border-secondary-50 bg-gray-50 px-[16px] py-[10px] outline-2 transition-colors duration-75 hover:border-primary-300 focus:outline-primary-600',
+              'w-full rounded-xl border-2 border-secondary-50 bg-gray-50 px-[16px] py-[10px] shadow-sm outline-2 transition-colors duration-75 hover:border-primary-300 focus:outline-primary-600',
               error && 'border-2 border-red-600',
+              props.value && 'border-2 border-secondary-50',
               className,
             )}
             type={showPassword && type === 'password' ? 'text' : type}

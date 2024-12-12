@@ -109,7 +109,7 @@ export default function ProfileEdit() {
             alt="circle-edit"
             width={32}
             height={32}
-            className="cursor-pointer rounded-2xl"
+            className="cursor-pointer rounded-2xl shadow-sm hover:shadow-md"
           />
         </DialogTrigger>
 
