@@ -41,7 +41,7 @@ export default function ReviewList() {
 
       {/* 첫 페칭이 끝나고 데이터 없을때 */}
       {!isFetching && data?.length === 0 && (
-        <div className="flex grow items-center justify-center">
+        <div className="flex grow items-center justify-center py-5">
           <p className="text-sm text-secondary-500">아직 리뷰가 없어요</p>
         </div>
       )}
