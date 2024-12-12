@@ -59,7 +59,7 @@ export default function ProfileDropdown() {
 
       {isOpen && (
         <Dropdown
-          className="right-0 desktop:left-0"
+          className="right-0"
           options={['마이페이지', '로그아웃']}
           onSelect={handleSelect}
           version="Login"
