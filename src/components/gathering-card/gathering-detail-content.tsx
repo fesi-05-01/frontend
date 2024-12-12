@@ -20,11 +20,12 @@ export default function GatheringDetailContent({ gatheringId }: Props) {
   return (
     <>
       <GatheringDetailImage
-        image={data[0].image}
+        image={data.image}
         className="h-[180px] tablet:h-60"
+        registrationEnd={data.registrationEnd}
       />
-      <GatheringInfo gathering={data[0]} />
-      <FloatingBar createdById={data[0].createdBy} />
+      <GatheringInfo gathering={data} />
+      <FloatingBar createdById={data.createdBy} />
     </>
   );
 }

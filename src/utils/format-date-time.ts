@@ -2,7 +2,12 @@ export default function formatDateTime(dateTime: string): {
   date: string;
   time: string;
 } {
-  const dateObj = new Date(dateTime);
+  // 시간이 없는 경우 '00:00:00'을 추가
+  const fullDateTime = dateTime.includes('T')
+    ? dateTime
+    : `${dateTime}T00:00:00`;
+
+  const dateObj = new Date(fullDateTime);
 
   const month = dateObj.getMonth() + 1;
   const day = dateObj.getDate();

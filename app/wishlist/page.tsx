@@ -9,9 +9,7 @@ export default function WishlistPage() {
       <PageTitleWithImage />
       <div className="flex flex-1 flex-col gap-6">
         <WishlistPanel />
-        <div className="flex flex-1 items-center justify-center">
-          <WishlistContainer />
-        </div>
+        <WishlistContainer />
       </div>
     </MainContainer>
   );

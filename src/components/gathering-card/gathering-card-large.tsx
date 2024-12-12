@@ -22,8 +22,8 @@ export default function GatheringCardLarge({
 }: GatheringCardProps) {
   const router = useRouter();
   const { isSaved, handleSaveButton, cardState } = useGatheringCard({
-    participantCount: gathering.participantCount ?? 5,
-    capacity: gathering.capacity ?? 20,
+    participantCount: gathering.participantCount,
+    capacity: gathering.capacity,
     gatheringId: gathering.id,
   });
 
@@ -101,8 +101,8 @@ export default function GatheringCardLarge({
             {/* 인원수랑 개설확정 */}
             <div className="flex gap-2">
               <MemberCountChip
-                current={gathering.participantCount || 5}
-                capacity={gathering.capacity || 20}
+                current={gathering.participantCount}
+                capacity={gathering.capacity}
                 className={cardState === 'closed' ? 'text-orange-400' : ''}
               />
               {cardState === 'confirmation' && <Confirmation />}
@@ -134,6 +134,8 @@ export default function GatheringCardLarge({
           </div>
           {isSaved && (
             <SaveBye
+              role="button"
+              aria-label="save-bye"
               className="pointer-events-auto absolute right-4 top-4 cursor-pointer"
               onClick={(e: React.MouseEvent<SVGSVGElement>) => {
                 e.preventDefault();

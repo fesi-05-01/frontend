@@ -19,7 +19,7 @@ export default function ReviewScore() {
       {/* 별점 총점 표시 */}
       <div className="flex shrink-0 flex-col items-center gap-2">
         <p className="text-xl font-semibold">
-          <span>{(data?.average || 0).toFixed(1)}</span>
+          <span>{data?.average.toFixed(1) || 0}</span>
           <span className="ml-0.5 text-secondary-400">{`/5`}</span>
         </p>
         <Rating value={data?.average || 0} />
@@ -30,7 +30,7 @@ export default function ReviewScore() {
         {Array.from({ length: 5 }).map((_, index) => (
           <div
             key={index}
-            className="grid grid-cols-[23px_auto_16px] items-center gap-3 text-sm font-medium"
+            className="grid grid-cols-[23px_auto_16px] items-center gap-3 text-sm"
           >
             <span className="text-end tabular-nums">{5 - index}점</span>
             <ProgressBar

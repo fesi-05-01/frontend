@@ -11,31 +11,26 @@ interface Props {
 
 export default function Main({ type, onChangeFilter, className }: Props) {
   return (
-    <div className={cn('relative w-fit', className)}>
-      <section className="flex gap-3 text-secondary-400">
-        <div
-          className={cn(
-            'flex w-[83px] cursor-pointer items-center gap-1 transition-colors duration-300',
-            type !== 'WORKATION' && 'text-secondary-900',
-          )}
-          onClick={() => onChangeFilter('DALLAEMFIT')}
-        >
-          <span className="text-lg font-semibold">달램핏</span>
-          <DalaemfitIcon />
-        </div>
+    <section className={cn('relative w-fit', className)}>
+      {/* 탭 버튼 */}
+      <div className="flex gap-3">
+        {GATHERING_TAB.map((tab) => (
+          <div
+            key={tab.type}
+            className={cn(
+              'flex w-[83px] cursor-pointer items-center gap-1 transition-colors duration-300',
+              tab.width,
+              !tab.name.includes(type) && 'text-secondary-400',
+            )}
+            onClick={() => onChangeFilter(tab.type as GatheringType)}
+          >
+            <span className="text-lg font-semibold">{tab.label}</span>
+            <tab.icon />
+          </div>
+        ))}
+      </div>
 
-        <div
-          className={cn(
-            'flex w-[99px] cursor-pointer items-center gap-1 transition-colors duration-300',
-            type === 'WORKATION' && 'text-secondary-900',
-          )}
-          onClick={() => onChangeFilter('WORKATION')}
-        >
-          <span className="text-lg font-semibold">워케이션</span>
-          <WorkationIcon />
-        </div>
-      </section>
-
+      {/* 하단 바 */}
       <div
         className={cn(
           'absolute top-9 h-0.5 bg-secondary-900 transition-transform duration-300',
@@ -44,6 +39,23 @@ export default function Main({ type, onChangeFilter, className }: Props) {
             : 'w-[83px] translate-x-0',
         )}
       />
-    </div>
+    </section>
   );
 }
+
+const GATHERING_TAB = [
+  {
+    type: 'DALLAEMFIT',
+    name: ['DALLAEMFIT', 'OFFICE_STRETCHING', 'MINDFULNESS'],
+    label: '달램핏',
+    width: 'w-[83px]',
+    icon: DalaemfitIcon,
+  },
+  {
+    type: 'WORKATION',
+    name: ['WORKATION'],
+    label: '워케이션',
+    width: 'w-[99px]',
+    icon: WorkationIcon,
+  },
+];

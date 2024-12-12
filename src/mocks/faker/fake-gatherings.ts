@@ -34,13 +34,20 @@ export default function makeFakeGatherings(
         ]),
       name: faker.company.name(),
       dateTime: date
-        ? `${date}T${faker.date.soon().toISOString().split('T')[1]}`
-        : (faker.helpers.maybe(
-            () => faker.date.future({ years: 1 }).toISOString(),
-            {
-              probability: 0.7,
-            },
-          ) ?? faker.date.past({ years: 1 }).toISOString()),
+        ? `${date}T${faker.number.int({ min: 0, max: 23 }).toString().padStart(2, '0')}:00:00`
+        : (() => {
+            const randomDate =
+              faker.helpers.maybe(() => faker.date.future({ years: 1 }), {
+                probability: 0.7,
+              }) ?? faker.date.past({ years: 1 });
+
+            const year = randomDate.getFullYear();
+            const month = String(randomDate.getMonth() + 1).padStart(2, '0');
+            const day = String(randomDate.getDate()).padStart(2, '0');
+            const hour = String(randomDate.getHours()).padStart(2, '0');
+
+            return `${year}-${month}-${day}T${hour}:00:00`;
+          })(),
       // 20% 확률로 오늘 마감이게 함
       registrationEnd:
         currentId % 5 === 0

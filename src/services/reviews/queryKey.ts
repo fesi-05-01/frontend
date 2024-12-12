@@ -5,7 +5,9 @@ import {
 
 export const reviewsQueryKeys = {
   reviewInfiniteList: (params?: GetReviewListRequest) =>
-    ['reviewInfiniteList', params] as const,
+    params
+      ? (['reviewInfiniteList', params] as const)
+      : (['reviewInfiniteList'] as const),
   reviewScore: (params?: GetReviewScoreRequest) =>
-    ['reviewScore', params] as const,
+    params ? (['reviewScore', params] as const) : (['reviewScore'] as const),
 };

@@ -1,4 +1,7 @@
+'use client';
+
 import PersonIcon from '~/src/assets/icons/person.svg';
+import { useCountAnimation } from '~/src/hooks/gatherings/use-count-animation';
 import { cn } from '~/src/utils/class-name';
 
 interface MemberCountChipProps {
@@ -12,6 +15,8 @@ export default function MemberCountChip({
   capacity,
   className,
 }: MemberCountChipProps) {
+  const animatedCurrent = useCountAnimation(current);
+
   return (
     <span
       className={cn(
@@ -20,9 +25,8 @@ export default function MemberCountChip({
       )}
     >
       <PersonIcon className={className} />
-
-      <span className="d">
-        {current}/{capacity}
+      <span className="duration-1000">
+        {animatedCurrent}/{capacity}
       </span>
     </span>
   );

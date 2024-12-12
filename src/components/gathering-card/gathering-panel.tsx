@@ -20,13 +20,20 @@ export default function GatheringPanel() {
   };
 
   const handleLocationSelect = (option: string) => {
-    console.log('Location selected:', option);
-    setLocation(option as GatheringLocation);
+    if (option === '지역 전체') {
+      setLocation(undefined);
+    } else {
+      setLocation(option as GatheringLocation);
+    }
   };
 
   const handleDateSelect = (date: Date) => {
     const formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     setDate(formattedDate);
+  };
+
+  const handleDateReset = () => {
+    setDate(undefined);
   };
 
   const handleSortBySelect = (option: string) => {
@@ -38,11 +45,12 @@ export default function GatheringPanel() {
       case '참여 인원 순':
         sortOption = 'participantCount';
         break;
+      case '최신 순':
+        sortOption = 'dateTime';
+        break;
       default:
         return;
     }
-    console.log('Selected sort option:', option);
-    console.log('sortOption', sortOption);
     setSortBy(sortOption);
   };
 
@@ -69,10 +77,11 @@ export default function GatheringPanel() {
             options={[]}
             placeholder="날짜 전체"
             onDateSelect={(date) => handleDateSelect(date)}
+            onDateReset={handleDateReset}
           />
         </div>
         <LeftFilter
-          options={['마감 임박', '참여 인원 순']}
+          options={['마감 임박', '참여 인원 순', '최신 순']}
           onOptionSelect={(option) => handleSortBySelect(option)}
         />
       </div>

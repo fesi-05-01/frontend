@@ -22,7 +22,7 @@ export default function ActiveLink({
   const pathname = usePathname();
 
   const linkClassName = cn(
-    'link',
+    'link hover:text-secondary-900 transition-colors duration-100',
     { 'text-secondary-900 font-semibold ': pathname === href },
     className,
   );
