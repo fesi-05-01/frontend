@@ -29,6 +29,10 @@ export default function GatheringPanel() {
     setDate(formattedDate);
   };
 
+  const handleDateReset = () => {
+    setDate(undefined);
+  };
+
   const handleSortBySelect = (option: string) => {
     let sortOption: SortBy;
     switch (option) {
@@ -41,8 +45,6 @@ export default function GatheringPanel() {
       default:
         return;
     }
-    console.log('Selected sort option:', option);
-    console.log('sortOption', sortOption);
     setSortBy(sortOption);
   };
 
@@ -69,6 +71,7 @@ export default function GatheringPanel() {
             options={[]}
             placeholder="날짜 전체"
             onDateSelect={(date) => handleDateSelect(date)}
+            onDateReset={handleDateReset}
           />
         </div>
         <LeftFilter

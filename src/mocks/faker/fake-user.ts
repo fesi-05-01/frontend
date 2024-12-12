@@ -1,6 +1,6 @@
 import { fakerKO as faker } from '@faker-js/faker';
 
-import { type User } from '~/src/services/gatherings/types';
+import { type User } from '~/src/services/auths/types';
 
 export function generateFakeUsers(count: number): User[] {
   return Array.from({ length: count }, () => ({

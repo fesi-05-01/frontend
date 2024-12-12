@@ -11,7 +11,7 @@ export const gatheringsHandlers = [
   http.get(baseUrl(`/gatherings/:id/participants`), (req) => {
     const { id } = req.params;
     // 아 참가자 수를 못 가져오네
-    const participants = makeFakeParticipants(Number(id), 10);
+    const participants = makeFakeParticipants(Number(id), 50);
     return HttpResponse.json(participants);
   }),
 
