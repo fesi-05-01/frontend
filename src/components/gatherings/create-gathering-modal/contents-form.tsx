@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
 
 import Button from '~/src/components/common/button';
 import {
@@ -62,6 +63,7 @@ export default function ContentsForm({ onOpenChange }: Props) {
   const handleSubmit = (form: CreateGatheringForm) => {
     createGathering(form, {
       onSuccess: () => {
+        toast.success('모임이 생성되었습니다.');
         reset();
         onOpenChange(false);
       },
