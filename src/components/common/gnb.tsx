@@ -2,8 +2,10 @@
 
 import ActiveLink from '~/src/components/common/active-link';
 import Logo from '~/src/components/common/logo';
+import { useWishList } from '~/src/hooks/wishlist/use-wishlist';
 
 export default function Gnb() {
+  const { wishlist } = useWishList();
   return (
     <nav className="flex items-center justify-center gap-4 whitespace-nowrap text-sm tablet:text-base">
       <Logo />
@@ -12,7 +14,7 @@ export default function Gnb() {
       <ActiveLink
         className="flex items-center gap-[5px]"
         href="/wishlist"
-        badgeCount={1}
+        badgeCount={wishlist.length}
       >
         찜한 모임
       </ActiveLink>
