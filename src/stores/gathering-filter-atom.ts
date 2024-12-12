@@ -1,5 +1,6 @@
 import { atom } from 'jotai';
 
+import { type SortBy } from '~/src/services/gatherings/types';
 import {
   type GatheringLocation,
   type GatheringType,
@@ -11,4 +12,4 @@ export const gatheringLocationAtom = atom<GatheringLocation | undefined>();
 
 export const gatheringDateAtom = atom();
 
-export const gatheringSortByAtom = atom();
+export const gatheringSortByAtom = atom<SortBy>();

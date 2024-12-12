@@ -37,6 +37,10 @@ export default function ProgressBar({
 
   return (
     <div
+      role="progressbar"
+      aria-valuenow={progressPercentage}
+      aria-valuemin={0}
+      aria-valuemax={100}
       className={cn(`relative h-1 w-full rounded-md bg-orange-50`, className)}
     >
       <div

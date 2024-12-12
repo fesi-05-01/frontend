@@ -54,6 +54,7 @@ export default function LeftFilter({
 
       {isOpen && (
         <Dropdown
+          className="right-0"
           options={options}
           onSelect={selectOption}
           version="Filter"
