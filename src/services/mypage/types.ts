@@ -6,10 +6,9 @@ import {
 } from '~/src/services/types';
 
 export interface GetJoinedGatheringsRequest extends Partial<PageParam> {
-  teamId: string;
-  completed?: boolean;
-  reviewed?: boolean;
-  sortBy?: 'dateTime' | 'registrationEnd' | 'joinedAt';
+  isCompleted?: boolean;
+  isReviewed?: boolean;
+  createdby?: number;
   sortOrder?: SortOrder;
 }
 

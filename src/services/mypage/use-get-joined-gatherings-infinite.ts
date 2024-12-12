@@ -6,7 +6,6 @@ import {
   type GetJoinedGatheringsRequest,
   type GetJoinedGatheringsResponse,
 } from '~/src/services/mypage/types';
-
 const LIMIT = 10;
 
 export default function useGetJoinedGatheringsInfinite(
@@ -15,15 +14,13 @@ export default function useGetJoinedGatheringsInfinite(
   return useInfiniteQuery({
     queryKey: gatheringsQueryKeys.joinedInfiniteList(params),
     queryFn: ({ pageParam }) =>
-      get<GetJoinedGatheringsResponse>(`/${params.teamId}/gatherings/joined`, {
+      get<GetJoinedGatheringsResponse>(`/gatherings/joined`, {
         params: { ...params, ...pageParam },
       }),
     initialPageParam: { limit: LIMIT, offset: 0 },
-    getNextPageParam: (lastPage, _, lastPageParam) => {
-      return lastPage.length < LIMIT
+    getNextPageParam: (lastPage, _, lastPageParam) =>
+      lastPage.length < LIMIT
         ? undefined
-        : { limit: LIMIT, offset: lastPageParam.offset + LIMIT };
-    },
-    select: ({ pages }) => pages.flatMap((data) => data),
+        : { limit: LIMIT, offset: lastPageParam.offset + LIMIT },
   });
 }
