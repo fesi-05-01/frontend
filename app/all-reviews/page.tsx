@@ -16,10 +16,17 @@ import { type PageParam } from '~/src/services/types';
 
 export default async function AllReviewsPage() {
   const state = await getDehydratedInfiniteQuery({
-    queryKey: reviewsQueryKeys.reviewInfiniteList({ type: 'DALLAEMFIT' }),
+    queryKey: reviewsQueryKeys.reviewInfiniteList({
+      type: 'DALLAEMFIT',
+      sortBy: 'createdAt',
+    }),
     queryFn: ({ pageParam }) =>
       get<GetReviewListResponse>('/reviews', {
-        params: { type: 'DALLAEMFIT', ...(pageParam as PageParam) },
+        params: {
+          type: 'DALLAEMFIT',
+          sortBy: 'createdAt',
+          ...(pageParam as PageParam),
+        },
       }),
     initialPageParam: { limit: 10, offset: 0 },
   });

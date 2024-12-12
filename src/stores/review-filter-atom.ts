@@ -7,4 +7,5 @@ export type ReviewFilter = Omit<GetReviewListRequest, keyof PageParam>;
 
 export const reviewFilterAtom = atomWithReset<ReviewFilter>({
   type: 'DALLAEMFIT',
+  sortBy: 'createdAt',
 });
