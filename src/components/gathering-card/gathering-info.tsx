@@ -15,8 +15,8 @@ interface GatheringInfoProps {
 
 export default function GatheringInfo({ gathering }: GatheringInfoProps) {
   const { isSaved, handleSaveButton } = useGatheringCard({
-    participantCount: gathering.participantCount ?? 5,
-    capacity: gathering.capacity ?? 20,
+    participantCount: gathering.participantCount,
+    capacity: gathering.capacity,
     gatheringId: gathering.id,
   });
 
@@ -30,13 +30,11 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
         {/* 위 */}
         <div className="flex justify-between px-6">
           <div className="flex flex-col">
-            <span className="text-lg font-semibold">
-              {gathering.name ?? '모임제목정도는좀써주지'}
-            </span>
+            <span className="text-lg font-semibold">{gathering.name}</span>
             <span className="mb-3 mt-0.5 text-sm font-medium text-gray-700">
               {gathering.location}
             </span>
-            <ChipInfoContainer dateTime={gathering.dateTime ?? ''} />
+            <ChipInfoContainer dateTime={gathering.dateTime} />
           </div>
           <div className="">
             <Save
@@ -67,8 +65,8 @@ export default function GatheringInfo({ gathering }: GatheringInfoProps) {
             {gathering.participantCount >= 5 && <Confirmation />}
           </div>
           <ProgressBar
-            current={gathering.participantCount || 5}
-            capacity={gathering.capacity || 20}
+            current={gathering.participantCount}
+            capacity={gathering.capacity}
             className="mb-2 mt-3"
             barClassName={`${gathering.participantCount >= gathering.capacity && 'bg-orange-400'}`}
           />
