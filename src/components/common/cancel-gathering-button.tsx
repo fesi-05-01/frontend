@@ -31,11 +31,11 @@ export default function CancelGatheringButton({
   return (
     <>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="flex h-[212px] flex-col items-center justify-between gap-0 p-6 text-center">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle></DialogTitle>
+            <DialogTitle className="opacity-0"> 모임 취소하기 </DialogTitle>
           </DialogHeader>
-          <p>정말 모임을 취소하시겠습니까?</p>
+          <p className="flex justify-center">정말 모임을 취소하시겠습니까?</p>
 
           <DialogFooter className="flex w-full justify-end">
             <Button
@@ -48,11 +48,10 @@ export default function CancelGatheringButton({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
       <Button
-        onClick={() => setIsDialogOpen(true)}
         type="button"
         variant="outlined"
+        onClick={() => setIsDialogOpen(true)}
       >
         취소하기
       </Button>

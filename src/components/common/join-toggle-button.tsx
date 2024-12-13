@@ -9,7 +9,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '~/src/components/common/modal';
 import { useJoinGathering } from '~/src/services/gatherings/use-join-gathering';
 import { useLeaveGathering } from '~/src/services/gatherings/use-leave-gathering';
@@ -43,12 +42,13 @@ export default function JoinButton({
   return (
     <>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger> </DialogTrigger>
-        <DialogContent className="flex h-[212px] flex-col items-center justify-between gap-0 p-6 text-center">
+        <DialogContent>
           <DialogHeader>
-            <DialogTitle></DialogTitle>
+            <DialogTitle className="opacity-0"> 모임 나가기 </DialogTitle>
           </DialogHeader>
-          <p>정말 모임 참여를 취소하시겠습니까?</p>
+          <p className="flex justify-center">
+            정말 모임 참여를 취소하시겠습니까?
+          </p>
 
           <DialogFooter className="flex w-full justify-end">
             <Button
@@ -61,7 +61,6 @@ export default function JoinButton({
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
       <Button className="w-[115px]" type="button" onClick={handleJoinToggle}>
         {isParticipant ? '취소하기' : '참여하기'}
       </Button>
