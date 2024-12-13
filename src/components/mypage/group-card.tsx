@@ -1,4 +1,5 @@
 'use client';
+import { useState } from 'react';
 import Image from 'next/image';
 
 import SaveBye from '~/src/assets/icons/circle-bye.svg';
@@ -6,12 +7,19 @@ import NoImage from '~/src/assets/images/bg-login.png';
 import ChipState from '~/src/components/common/chip-state';
 import MemberCountChip from '~/src/components/common/member-count-chip';
 import { type GroupCardProps } from '~/src/components/mypage/type';
-import CreateReviewModal from '~/src/components/reviews/create-review-modal';
 import formatDateTime from '~/src/utils/format-date-time';
 
-export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
+export default function GroupCard({
+  joinedGathering,
+  state: initialState,
+}: GroupCardProps) {
+  const [state, setState] = useState(initialState);
   const { date, time } = formatDateTime(joinedGathering.dateTime ?? '');
   const isConfirmed = (joinedGathering.participantCount ?? 0) >= 5;
+
+  const handleCancelReservation = () => {
+    setState('disabled');
+  };
 
   return (
     <div className="relative mt-6 flex h-[308px] w-[311px] flex-col gap-4 border-b-[2px] border-dashed border-secondary-200 pb-6 tablet:h-[180px] tablet:w-full tablet:flex-row">
@@ -68,8 +76,12 @@ export default function GroupCard({ joinedGathering, state }: GroupCardProps) {
             예약 취소하기
           </button>
         ) : (
-          // gatheringId 임시 값으로 넣어놨습니다. 추후에 모임 id 넣어주는걸로 수정해주세요!
-          <CreateReviewModal gatheringId={1} />
+          <button
+            onClick={handleCancelReservation}
+            className="w-120 h-10 rounded-xl border-[1px] border-orange-600 bg-white px-[22px] py-[10px] text-sm font-semibold text-orange-600"
+          >
+            예약 취소하기
+          </button>
         )}
       </div>
       {state === 'disabled' && (

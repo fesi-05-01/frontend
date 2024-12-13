@@ -7,22 +7,24 @@ import TabTop from '~/src/components/mypage/tab-top';
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGetJoinedGatheringsInfinite from '~/src/services/mypage/use-get-joined-gatherings-infinite';
 import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
+import { userInfoAtom } from '~/src/stores/auth-store';
 import { activeTabAtom, reviewSubTabAtom } from '~/src/stores/my-page-atoms';
 
 export default function DataRenderer() {
   const [activeTab] = useAtom(activeTabAtom);
   const [reviewSubTab] = useAtom(reviewSubTabAtom);
+  const [user] = useAtom(userInfoAtom);
 
   const { data: groupData } = useGetJoinedGatheringsInfinite({
     ...(activeTab === 'myReviews' &&
       reviewSubTab === 'writableReviews' && { isReviewed: false }),
-    ...(activeTab === 'createdGroups' && { createdBy: 1 }),
+    ...(activeTab === 'createdGroups' && { createdBy: user?.id }),
   });
   const flattenedGroupData = groupData?.pages.flatMap((page) => page) || [];
 
   const { data: reviewData } = useGetReviewInfiniteList();
 
-  // **임시 상태 관리**
+  // 임시버튼 상태 관리
   const [forceEmpty, setForceEmpty] = useState(false);
 
   // 데이터 없을 때의 메세지 함수
@@ -44,7 +46,7 @@ export default function DataRenderer() {
       : !flattenedGroupData.length);
 
   return (
-    <div className="mt-4 border-t-2 border-secondary-900 px-4 py-6 tablet:p-6 desktop:mt-[30px]">
+    <div className="mt-4 flex grow flex-col border-t-2 border-secondary-900 px-4 py-6 tablet:p-6 desktop:mt-[30px]">
       <TabTop />
       {activeTab === 'myReviews' && <TabBottom />}
 
@@ -59,17 +61,25 @@ export default function DataRenderer() {
       </div>
 
       {isEmpty ? (
-        <div className="flex h-screen items-center justify-center text-secondary-500">
-          <p className="text-sm font-medium">{getEmptyMessage()}</p>
+        <div className="flex grow items-center justify-center">
+          <p className="text-sm font-medium text-secondary-500">
+            {getEmptyMessage()}
+          </p>
         </div>
-      ) : activeTab === 'myReviews' && reviewSubTab === 'writtenReviews' ? (
-        reviewData?.map((data) => (
-          <ReviewCardItem key={data.id} {...data} hasNameTag={false} />
-        ))
       ) : (
-        flattenedGroupData.map((data) => (
-          <GroupCard key={data.id} joinedGathering={data} state="default" />
-        ))
+        <div className="flex w-full flex-col gap-4">
+          {activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
+            ? reviewData?.map((data) => (
+                <ReviewCardItem key={data.id} {...data} hasNameTag={false} />
+              ))
+            : flattenedGroupData.map((data) => (
+                <GroupCard
+                  key={data.id}
+                  joinedGathering={data}
+                  state="default"
+                />
+              ))}
+        </div>
       )}
     </div>
   );
