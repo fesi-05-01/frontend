@@ -33,4 +33,15 @@ describe('formatDateTime', () => {
     const result = formatDateTime(input);
     expect(result).toEqual(expectedOutput);
   });
+
+  it('시간대 정보가 없는 날짜와 시간을 한국 날짜 및 시간 형식으로 변환해야 합니다', () => {
+    const input = '2024-12-15T12:00:00'; // 시간대 정보 없음
+    const expectedOutput = {
+      date: '12월 15일',
+      time: '12:00', // 한국 시간으로 간주
+    };
+
+    const result = formatDateTime(input);
+    expect(result).toEqual(expectedOutput);
+  });
 });

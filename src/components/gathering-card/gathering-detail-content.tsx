@@ -16,7 +16,6 @@ export default function GatheringDetailContent({ gatheringId }: Props) {
   if (isLoading) return <Loading />;
   if (isError) return <div>에러가 발생했습니다.</div>;
   if (!data) return null;
-  console.log(data);
 
   return (
     <>

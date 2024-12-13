@@ -1,23 +1,36 @@
-// dateTime 형식: "2024-12-15T12:00:00.000Z"
-// 한국 시간대로 변환 후 date와 time 형식 변환
+/**
+ * dateTime 형식이 "2024-12-15T12:00:00.000Z" 일 때도 있고
+ * "2024-12-15T12:00:00" 일 때도 있는 것 같은데
+ * 후자처럼 시간대 정보가 없으면 한국 시간대라고 간주하고
+ * 전자처럼 시간대 정보가 있으면 한국 시간대로 변환
+ * 그 후에 date와 time 형식 분리
+ */
+
+import { parseISO } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 export default function formatDateTime(dateTime: string): {
   date: string;
   time: string;
 } {
-  // 한국 시간대로 변환
-  const dateObj = new Date(dateTime); // dateTime을 Date 객체로 변환
+  const timeZone = 'Asia/Seoul';
+  let parsedDate = parseISO(dateTime);
 
-  // 한국 시간으로 변환하기 위해 UTC 시간에 9시간을 더함
-  const koreaTimeOffset = 9 * 60; // 9시간을 분으로 변환
-  const localDateObj = new Date(
-    dateObj.getTime() + koreaTimeOffset * 60 * 1000,
-  );
+  // dateTime에 시간대 정보가 없을 경우 한국 시간대로 간주
+  if (
+    !dateTime.includes('Z') &&
+    !dateTime.includes('+') &&
+    !dateTime.includes('-')
+  ) {
+    parsedDate = new Date(`${dateTime}Z`); // 한국 시간대로 간주하여 UTC로 변환
+  }
 
-  const month = localDateObj.getUTCMonth() + 1;
-  const day = localDateObj.getUTCDate();
-  const hours = localDateObj.getUTCHours();
-  const minutes = localDateObj.getUTCMinutes();
+  const localDateObj = toZonedTime(parsedDate, timeZone);
+
+  const month = localDateObj.getMonth() + 1;
+  const day = localDateObj.getDate();
+  const hours = localDateObj.getHours();
+  const minutes = localDateObj.getMinutes();
 
   // "1월 7일" 형식으로 변환
   const date = `${month}월 ${day}일`;

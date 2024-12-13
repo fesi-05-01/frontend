@@ -1,4 +1,4 @@
-import { isRegistrationEnded } from './is-registration-ended';
+import { isRegistrationEnded } from '~/src/utils/is-registration-ended';
 
 describe('isRegistrationEnded', () => {
   beforeEach(() => {
