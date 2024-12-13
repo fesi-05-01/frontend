@@ -1,19 +1,27 @@
-'use client';
-
 import { useAtom } from 'jotai';
 import { toast } from 'sonner';
 
 import Button from '~/src/components/common/button';
+import CancelGatheringButton from '~/src/components/common/cancel-gathering-button';
+import JoinButton from '~/src/components/common/join-toggle-button';
+import { type Gathering } from '~/src/services/gatherings/types';
+import useJoinedGathering from '~/src/services/gatherings/use-joined-gathering';
 import { userInfoAtom } from '~/src/stores/auth-store';
 import { cn } from '~/src/utils/class-name';
 
 interface FloatingBarProps {
-  createdById: number;
+  gathering: Gathering;
 }
 
-export default function FloatingBar({ createdById }: FloatingBarProps) {
+export default function FloatingBar({ gathering }: FloatingBarProps) {
   const [user] = useAtom(userInfoAtom);
-  const isCreator = user?.id === createdById;
+  const { data: joinedGathering } = useJoinedGathering();
+
+  const isCreator = user?.id === gathering.createdBy;
+  const isParticipant =
+    joinedGathering?.some(
+      (joined: { id: number }) => joined.id === gathering.id,
+    ) ?? false;
 
   const handleShare = () => {
     if (typeof window !== 'undefined') {
@@ -40,9 +48,7 @@ export default function FloatingBar({ createdById }: FloatingBarProps) {
               </p>
             </div>
             <div className="flex w-full gap-2 tablet:w-[238px]">
-              <Button variant="outlined" type="button">
-                취소하기
-              </Button>
+              <CancelGatheringButton gatheringId={gathering.id} />
               <Button type="button" onClick={handleShare}>
                 공유하기
               </Button>
@@ -57,9 +63,10 @@ export default function FloatingBar({ createdById }: FloatingBarProps) {
                 회복해봐요
               </p>
             </div>
-            <Button className="w-[115px]" type="button">
-              참여하기
-            </Button>
+            <JoinButton
+              gatheringId={gathering.id}
+              isParticipant={isParticipant}
+            />
           </div>
         )}
       </section>
