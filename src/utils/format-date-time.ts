@@ -22,7 +22,7 @@ export default function formatDateTime(dateTime: string): {
     !dateTime.includes('+') &&
     !dateTime.includes('-')
   ) {
-    parsedDate = new Date(`${dateTime}Z`); // 한국 시간대로 간주하여 UTC로 변환
+    parsedDate = new Date(parsedDate.getTime() - 9 * 60 * 60 * 1000);
   }
 
   const localDateObj = toZonedTime(parsedDate, timeZone);
