@@ -5,9 +5,8 @@ import {
 } from '~/src/services/types';
 
 export interface GetJoinedGatheringsRequest extends Partial<PageParam> {
-  isCompleted?: boolean;
-  isReviewed?: boolean;
-  createdby?: number;
+  completed?: boolean;
+  reviewed?: boolean;
 }
 
 export type GetJoinedGatheringsResponse = Array<{

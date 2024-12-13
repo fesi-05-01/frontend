@@ -17,10 +17,23 @@ export default function DataRenderer() {
 
   const { data: groupData } = useGetJoinedGatheringsInfinite({
     ...(activeTab === 'myReviews' &&
-      reviewSubTab === 'writableReviews' && { isReviewed: false }),
-    ...(activeTab === 'createdGroups' && { createdBy: user?.id }),
+      reviewSubTab === 'writableReviews' && {
+        reviewed: false,
+        completed: true,
+      }),
   });
-  const flattenedGroupData = groupData?.pages.flatMap((page) => page) || [];
+  const flattenedGroupData = (
+    groupData?.pages.flatMap((page) => page) || []
+  ).filter((item) => {
+    const currentTime = new Date();
+    const startTime = new Date(item.dateTime);
+    return startTime > currentTime;
+  });
+  // `createdBy`를 클라이언트 측에서 필터링
+  const filteredGroupData =
+    activeTab === 'createdGroups'
+      ? flattenedGroupData.filter((item) => item.createdBy === user?.id)
+      : flattenedGroupData;
 
   const { data: reviewData } = useGetReviewInfiniteList();
 
@@ -43,7 +56,7 @@ export default function DataRenderer() {
     forceEmpty ||
     (activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
       ? !reviewData?.length
-      : !flattenedGroupData.length);
+      : !filteredGroupData.length);
 
   return (
     <div className="mt-4 flex grow flex-col border-t-2 border-secondary-900 px-4 py-6 tablet:p-6 desktop:mt-[30px]">
@@ -70,9 +83,15 @@ export default function DataRenderer() {
         <div className="flex w-full flex-col gap-4">
           {activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
             ? reviewData?.map((data) => (
-                <ReviewCardItem key={data.id} {...data} hasNameTag={false} />
+                <ReviewCardItem
+                  key={data.id}
+                  {...data}
+                  hasNameTag={false}
+                  hasImage={true}
+                  hasTypeDescription={true}
+                />
               ))
-            : flattenedGroupData.map((data) => (
+            : filteredGroupData.map((data) => (
                 <GroupCard
                   key={data.id}
                   joinedGathering={data}
