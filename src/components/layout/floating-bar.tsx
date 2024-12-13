@@ -49,7 +49,7 @@ export default function FloatingBar({ gathering }: FloatingBarProps) {
             </div>
             <div className="flex w-full gap-2 tablet:w-[238px]">
               <CancelGatheringButton gatheringId={gathering.id} />
-              <Button type="button" onClick={handleShare}>
+              <Button type="button" onClick={handleShare} className="w-full">
                 공유하기
               </Button>
             </div>

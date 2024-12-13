@@ -9,6 +9,7 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '~/src/components/common/modal';
 import { useJoinGathering } from '~/src/services/gatherings/use-join-gathering';
 import { useLeaveGathering } from '~/src/services/gatherings/use-leave-gathering';
@@ -24,46 +25,47 @@ export default function JoinButton({
 }: JoinButtonProps) {
   const { mutate: joinGathering } = useJoinGathering();
   const { mutate: leaveGathering } = useLeaveGathering();
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleJoinToggle = () => {
-    if (isParticipant) {
-      setIsDialogOpen(true);
-    } else {
-      joinGathering(gatheringId);
-    }
+  const handleJoin = () => {
+    joinGathering(gatheringId);
   };
 
-  const handleDialogConfirm = () => {
+  const handleConfirmCancel = () => {
     leaveGathering(gatheringId);
-    setIsDialogOpen(false);
+    setOpen(false);
   };
 
   return (
     <>
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="opacity-0"> 모임 나가기 </DialogTitle>
-          </DialogHeader>
-          <p className="flex justify-center">
-            정말 모임 참여를 취소하시겠습니까?
-          </p>
-
-          <DialogFooter className="flex w-full justify-end">
-            <Button
-              className="w-[120px]"
-              type="button"
-              onClick={handleDialogConfirm}
-            >
-              확인
+      {isParticipant ? (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outlined" className="w-[115px]" type="button">
+              취소하기
             </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-      <Button className="w-[115px]" type="button" onClick={handleJoinToggle}>
-        {isParticipant ? '취소하기' : '참여하기'}
-      </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle className="opacity-0">모임 취소하기</DialogTitle>
+            </DialogHeader>
+            <p className="flex justify-center">정말 모임을 취소하시겠습니까?</p>
+            <DialogFooter className="flex w-full justify-end">
+              <Button
+                className="w-[120px]"
+                type="button"
+                onClick={handleConfirmCancel}
+              >
+                확인
+              </Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Button className="w-[115px]" type="button" onClick={handleJoin}>
+          참여하기
+        </Button>
+      )}
     </>
   );
 }

@@ -3,5 +3,5 @@
 import { Toaster } from 'sonner';
 
 export default function ToastProvider() {
-  return <Toaster richColors className="z-[100]" />;
+  return <Toaster position="top-right" richColors className="z-[100]" />;
 }

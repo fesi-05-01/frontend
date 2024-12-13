@@ -15,7 +15,8 @@ export function useCancelGathering() {
     onSuccess: (data) => {
       console.log(data);
       toast.success('모임이 취소되었습니다.');
-      queryClient.invalidateQueries();
+      queryClient.invalidateQueries({ queryKey: ['gathering'] });
+      queryClient.invalidateQueries({ queryKey: ['joinedGathering'] });
       router.push('/');
     },
     onError: (error) => {
