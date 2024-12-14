@@ -65,6 +65,8 @@ export default function CalendarDown({
       ref={calendarRef}
       className={cn(
         'absolute z-50 mt-2 flex w-[336px] flex-col gap-3 rounded-xl border-[1px] border-secondary-200 bg-white px-[43px] py-6 shadow-xl',
+        'tablet:left-auto',
+        'left-1/2 -translate-x-[calc(50%+4px)] transform tablet:transform-none',
         className,
       )}
     >

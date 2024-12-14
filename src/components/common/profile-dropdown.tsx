@@ -24,7 +24,7 @@ export default function ProfileDropdown() {
   const [user] = useAtom(userInfoAtom);
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState('');
+  // const [selectedOption, setSelectedOption] = useState('');
   const { mutate: logout } = useLogout();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const toggleDropdown = () => {
@@ -32,7 +32,7 @@ export default function ProfileDropdown() {
   };
 
   const handleSelect = (option: string) => {
-    setSelectedOption(option);
+    // setSelectedOption(option);
     if (option === '로그아웃') {
       setIsDialogOpen(true);
     } else if (option === '마이페이지') {
@@ -63,7 +63,7 @@ export default function ProfileDropdown() {
           options={['마이페이지', '로그아웃']}
           onSelect={handleSelect}
           version="Login"
-          selectedOption={selectedOption}
+          selectedOption=""
           onClose={() => setIsOpen(false)}
         />
       )}
