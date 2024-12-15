@@ -63,6 +63,7 @@ export default function FloatingBar({ gathering }: FloatingBarProps) {
                 회복해봐요
               </p>
             </div>
+
             <JoinButton
               gatheringId={gathering.id}
               isParticipant={isParticipant}

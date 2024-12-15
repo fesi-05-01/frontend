@@ -3,19 +3,25 @@ import { toast } from 'sonner';
 
 import { post } from '~/src/services/api';
 import { type ErrorResponseData } from '~/src/services/auths/types';
+import { gatheringsQueryKeys } from '~/src/services/gatherings/queryKey';
 import { type JoinedGathering } from '~/src/services/gatherings/types';
-
 export function useJoinGathering() {
   const queryClient = useQueryClient();
 
   return useMutation<JoinedGathering, ErrorResponseData, number>({
     mutationFn: (gatheringId: number) =>
       post<JoinedGathering>(`/gatherings/${gatheringId}/join`),
-    onSuccess: () => {
+    onSuccess: (_data, gatheringId) => {
       toast.success('모임에 참여했습니다.');
 
-      queryClient.invalidateQueries({ queryKey: ['gathering'] });
       queryClient.invalidateQueries({ queryKey: ['joinedGathering'] });
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringParticipants({ gatheringId }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringDetail({ id: gatheringId }),
+      });
     },
     onError: (error) => {
       switch (error.data.code) {

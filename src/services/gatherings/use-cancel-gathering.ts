@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 
 import { put } from '~/src/services/api';
 import { type ErrorResponseData } from '~/src/services/auths/types';
+import { gatheringsQueryKeys } from '~/src/services/gatherings/queryKey';
 import { type JoinedGathering } from '~/src/services/gatherings/types';
 
 export function useCancelGathering() {
@@ -12,11 +13,16 @@ export function useCancelGathering() {
   return useMutation<JoinedGathering, ErrorResponseData, number>({
     mutationFn: (gatheringId: number) =>
       put<JoinedGathering>(`/gatherings/${gatheringId}/cancel`),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (_data, gatheringId) => {
       toast.success('모임이 취소되었습니다.');
-      queryClient.invalidateQueries({ queryKey: ['gathering'] });
       queryClient.invalidateQueries({ queryKey: ['joinedGathering'] });
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringParticipants({ gatheringId }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringDetail({ id: gatheringId }),
+      });
       router.push('/');
     },
     onError: (error) => {

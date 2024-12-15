@@ -31,6 +31,7 @@ export default function JoinButton({
   const [open, setOpen] = useState(false);
   const [user] = useAtom(userInfoAtom);
   const router = useRouter();
+
   const handleJoin = () => {
     joinGathering(gatheringId);
   };
@@ -51,6 +52,7 @@ export default function JoinButton({
           <Button
             className="w-[115px]"
             type="button"
+            variant="outlined"
             onClick={handleConfirmCancel}
           >
             취소하기

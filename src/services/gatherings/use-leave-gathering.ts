@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 
 import { del } from '~/src/services/api';
 import { type ErrorResponseData } from '~/src/services/auths/types';
+import { gatheringsQueryKeys } from '~/src/services/gatherings/queryKey';
 import { type JoinedGathering } from '~/src/services/gatherings/types';
 
 export function useLeaveGathering() {
@@ -10,11 +11,16 @@ export function useLeaveGathering() {
   return useMutation<JoinedGathering, ErrorResponseData, number>({
     mutationFn: (gatheringId: number) =>
       del<JoinedGathering>(`/gatherings/${gatheringId}/leave`),
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: (_data, gatheringId) => {
       toast.success('모임 참여를 취소했습니다.');
-      queryClient.invalidateQueries({ queryKey: ['gathering'] });
       queryClient.invalidateQueries({ queryKey: ['joinedGathering'] });
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringParticipants({ gatheringId }),
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: gatheringsQueryKeys.gatheringDetail({ id: gatheringId }),
+      });
     },
     onError: (error) => {
       switch (error.data.code) {
