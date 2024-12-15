@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '~/src/components/common/modal';
+import useCustomParams from '~/src/hooks/use-custom-params';
 import { useJoinGathering } from '~/src/services/gatherings/use-join-gathering';
 import { useLeaveGathering } from '~/src/services/gatherings/use-leave-gathering';
 import { userInfoAtom } from '~/src/stores/auth-store';
@@ -32,6 +33,16 @@ export default function JoinButton({
   const [user] = useAtom(userInfoAtom);
   const router = useRouter();
 
+  const { createUrl } = useCustomParams();
+
+  const handleClickLogin = () => {
+    router.push(
+      createUrl('/login', {
+        callback: `gatherings/${gatheringId}`,
+        open: 'true',
+      }),
+    );
+  };
   const handleJoin = () => {
     joinGathering(gatheringId);
   };
@@ -41,10 +52,6 @@ export default function JoinButton({
     setOpen(false);
   };
 
-  const handleLoginSuccess = () => {
-    setOpen(false);
-    router.push('/login');
-  };
   return (
     <>
       {user ? (
@@ -73,12 +80,12 @@ export default function JoinButton({
             <DialogHeader>
               <DialogTitle className="opacity-0">로그인</DialogTitle>
             </DialogHeader>
-            <p className="flex justify-center">로그인이 필요합니다.</p>
+            <p className="flex justify-center">로그인이 필요해요.</p>
             <DialogFooter className="flex w-full justify-end">
               <Button
                 className="w-[120px]"
                 type="button"
-                onClick={handleLoginSuccess}
+                onClick={handleClickLogin}
               >
                 확인
               </Button>
