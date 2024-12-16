@@ -19,9 +19,13 @@ export default function useCreateGathering() {
 
       const appendDateTime = (dateObj: typeof date.gathering) => {
         const adjustedHour =
-          dateObj.hour < 12 && dateObj.ampm === 'PM'
-            ? dateObj.hour + 12
-            : dateObj.hour;
+          dateObj.ampm === 'AM'
+            ? dateObj.hour === 12
+              ? 0 // AM 12시는 00시로 변환
+              : dateObj.hour
+            : dateObj.hour === 12
+              ? 12 // PM 12시는 그대로 12시
+              : dateObj.hour + 12;
 
         return getDateForFormData(dateObj.date, adjustedHour, dateObj.minutes);
       };
