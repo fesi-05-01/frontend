@@ -4,11 +4,14 @@ import { toast } from 'sonner';
 import { type CreateGatheringForm } from '~/src/components/gatherings/create-gathering-modal/schema';
 import { post } from '~/src/services/api';
 import { type CreateGatheringResponse } from '~/src/services/gatherings/types';
+import { useJoinGathering } from '~/src/services/gatherings/use-join-gathering';
 import { type GatheringType } from '~/src/services/types';
 import { getDateForFormData } from '~/src/utils/date';
 
 export default function useCreateGathering() {
   const queryClient = useQueryClient();
+
+  const { mutate: joinGathering } = useJoinGathering();
 
   return useMutation({
     mutationFn: (form: CreateGatheringForm) => {
@@ -40,25 +43,29 @@ export default function useCreateGathering() {
         },
       });
     },
-    onSuccess: (_, request) => {
-      toast.success('모임이 생성되었습니다.');
+    onSuccess: (response, request) => {
+      joinGathering(response.id, {
+        onSettled: () => {
+          toast.success('모임이 생성되었습니다.');
 
-      // post 요청 후 쿼리 무효화
-      // 해당하는 타입만 최신화 하도록 작성
-      queryClient.invalidateQueries({
-        predicate: ({ queryKey }) => {
-          if (queryKey[0] !== 'gatherings') return false;
+          // post 요청 후 쿼리 무효화
+          // 해당하는 타입만 최신화 하도록 작성
+          queryClient.invalidateQueries({
+            predicate: ({ queryKey }) => {
+              if (queryKey[0] !== 'gatherings') return false;
 
-          const { type } = queryKey[1] as { type?: GatheringType };
+              const { type } = queryKey[1] as { type?: GatheringType };
 
-          if (
-            request.type === 'MINDFULNESS' ||
-            request.type === 'OFFICE_STRETCHING'
-          ) {
-            return type === request.type || type === 'DALLAEMFIT';
-          }
+              if (
+                request.type === 'MINDFULNESS' ||
+                request.type === 'OFFICE_STRETCHING'
+              ) {
+                return type === request.type || type === 'DALLAEMFIT';
+              }
 
-          return type === request.type;
+              return type === request.type;
+            },
+          });
         },
       });
     },

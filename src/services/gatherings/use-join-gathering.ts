@@ -12,8 +12,6 @@ export function useJoinGathering() {
     mutationFn: (gatheringId: number) =>
       post<JoinedGathering>(`/gatherings/${gatheringId}/join`),
     onSuccess: (_data, gatheringId) => {
-      toast.success('모임에 참여했습니다.');
-
       queryClient.invalidateQueries({ queryKey: ['joinedGathering'] });
       queryClient.invalidateQueries({
         queryKey: gatheringsQueryKeys.gatheringParticipants({ gatheringId }),
