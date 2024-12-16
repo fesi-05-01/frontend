@@ -69,20 +69,25 @@ export default function ProfileDropdown() {
       )}
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="flex h-[199px] w-[300px] flex-col items-center justify-between gap-0 p-6 text-center tablet:h-[188px] tablet:w-[450px]">
+        <DialogContent className="h-[199px] w-[300px] tablet:h-[188px] tablet:w-[450px]">
           <DialogHeader>
-            <DialogTitle></DialogTitle>
+            <DialogTitle className="opacity-0"> 로그아웃 </DialogTitle>
           </DialogHeader>
-          <p>로그아웃 하시겠습니까?</p>
-          <DialogFooter className="flex w-[249px] justify-end gap-4">
+          <p className="flex justify-center">로그아웃 하시겠습니까?</p>
+          <DialogFooter className="flex w-full justify-center gap-4">
             <Button
+              className="w-[120px]"
               type="button"
               variant="outlined"
               onClick={handleDialogClose}
             >
               취소
             </Button>
-            <Button type="button" onClick={handleLogoutConfirm}>
+            <Button
+              type="button"
+              className="w-[120px]"
+              onClick={handleLogoutConfirm}
+            >
               {' '}
               확인{' '}
             </Button>

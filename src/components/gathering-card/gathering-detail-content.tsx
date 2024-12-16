@@ -25,7 +25,7 @@ export default function GatheringDetailContent({ gatheringId }: Props) {
         registrationEnd={data.registrationEnd}
       />
       <GatheringInfo gathering={data} />
-      <FloatingBar createdById={data.createdBy} />
+      <FloatingBar gathering={data} />
     </>
   );
 }
