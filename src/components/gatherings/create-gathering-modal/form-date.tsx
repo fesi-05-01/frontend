@@ -116,7 +116,7 @@ export default function FormDate({ label, type, field }: Props) {
             className="mr-4"
           />
 
-          <div className="flex max-h-[240px] *:px-2.5">
+          <div className="flex max-h-[240px] divide-x divide-secondary-200 *:px-2.5">
             <ScrollArea>
               {AMPM.map((ampm) => (
                 <TimePicker
