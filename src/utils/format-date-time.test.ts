@@ -44,4 +44,27 @@ describe('formatDateTime', () => {
     const result = formatDateTime(input);
     expect(result).toEqual(expectedOutput);
   });
+
+  // 추가: 다양한 시간대 정보가 없는 케이스
+  it('시간대 정보가 없는 다양한 시간을 처리해야 합니다', () => {
+    const testCases = [
+      {
+        input: '2024-12-15T00:00:00',
+        expected: { date: '12월 15일', time: '00:00' },
+      },
+      {
+        input: '2024-12-15T23:59:00',
+        expected: { date: '12월 15일', time: '23:59' },
+      },
+      {
+        input: '2024-12-15T09:30:00',
+        expected: { date: '12월 15일', time: '09:30' },
+      },
+    ];
+
+    testCases.forEach(({ input, expected }) => {
+      const result = formatDateTime(input);
+      expect(result).toEqual(expected);
+    });
+  });
 });

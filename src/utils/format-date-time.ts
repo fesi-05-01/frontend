@@ -16,26 +16,32 @@ export default function formatDateTime(dateTime: string): {
   const timeZone = 'Asia/Seoul';
   let parsedDate = parseISO(dateTime);
 
-  // dateTime에 시간대 정보가 없을 경우 한국 시간대로 간주
-  if (
-    !dateTime.includes('Z') &&
-    !dateTime.includes('+') &&
-    !dateTime.includes('-')
-  ) {
-    parsedDate = new Date(parsedDate.getTime() - 9 * 60 * 60 * 1000);
+  // 시간 부분에서만 시간대 정보를 찾도록 수정
+  const timezonePart = dateTime.split('T')[1];
+  const hasTimezoneInfo =
+    timezonePart.includes('Z') ||
+    timezonePart.includes('+') ||
+    timezonePart.includes('-');
+
+  if (!hasTimezoneInfo) {
+    console.log('Entering no timezone info branch');
+    parsedDate = new Date(
+      parsedDate.getFullYear(),
+      parsedDate.getMonth(),
+      parsedDate.getDate(),
+      parsedDate.getHours(),
+      parsedDate.getMinutes(),
+    );
+  } else {
+    parsedDate = toZonedTime(parsedDate, timeZone);
   }
 
-  const localDateObj = toZonedTime(parsedDate, timeZone);
+  const month = parsedDate.getMonth() + 1;
+  const day = parsedDate.getDate();
+  const hours = parsedDate.getHours();
+  const minutes = parsedDate.getMinutes();
 
-  const month = localDateObj.getMonth() + 1;
-  const day = localDateObj.getDate();
-  const hours = localDateObj.getHours();
-  const minutes = localDateObj.getMinutes();
-
-  // "1월 7일" 형식으로 변환
   const date = `${month}월 ${day}일`;
-
-  // "17:00" 형식으로 변환
   const time = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
   return { date, time };
