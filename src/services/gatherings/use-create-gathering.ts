@@ -19,7 +19,7 @@ export default function useCreateGathering() {
 
       const appendDateTime = (dateObj: typeof date.gathering) => {
         const adjustedHour =
-          dateObj.hour < 12 && dateObj.ampm === 'AM'
+          dateObj.hour < 12 && dateObj.ampm === 'PM'
             ? dateObj.hour + 12
             : dateObj.hour;
 
