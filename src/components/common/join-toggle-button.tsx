@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAtom } from 'jotai';
+import { toast } from 'sonner';
 
 import Button from '~/src/components/common/button';
 import {
@@ -44,7 +45,11 @@ export default function JoinButton({
     );
   };
   const handleJoin = () => {
-    joinGathering(gatheringId);
+    joinGathering(gatheringId, {
+      onSuccess: () => {
+        toast.success('모임에 참여했습니다.');
+      },
+    });
   };
 
   const handleConfirmCancel = () => {

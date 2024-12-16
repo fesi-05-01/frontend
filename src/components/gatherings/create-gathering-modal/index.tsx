@@ -24,7 +24,7 @@ export default function CreateGatheringModal() {
       </DialogTrigger>
 
       {isLoggedIn ? (
-        <ContentsForm onOpenChange={handleOpenChange} />
+        <ContentsForm open={open} onOpenChange={handleOpenChange} />
       ) : (
         <ContentsLogin />
       )}
