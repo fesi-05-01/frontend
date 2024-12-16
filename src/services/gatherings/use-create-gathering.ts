@@ -12,13 +12,25 @@ export default function useCreateGathering() {
 
   return useMutation({
     mutationFn: (form: CreateGatheringForm) => {
-      const { location, type, day, image, capacity } = form;
+      const { name, location, type, date, image, capacity } = form;
+
+      const appendDateTime = (dateObj: typeof date.gathering) => {
+        const adjustedHour =
+          dateObj.hour < 12 && dateObj.ampm === 'AM'
+            ? dateObj.hour + 12
+            : dateObj.hour;
+
+        return getDateForFormData(dateObj.date, adjustedHour, dateObj.minutes);
+      };
 
       const formData = new FormData();
+      formData.append('name', name);
       formData.append('location', location);
       formData.append('type', type);
-      formData.append('name', NAME[type]);
-      formData.append('dateTime', getDateForFormData(day.date, day.time));
+      formData.append('dateTime', appendDateTime(date.gathering));
+      if (date.registration) {
+        formData.append('registrationEnd', appendDateTime(date.registration));
+      }
       formData.append('capacity', capacity);
       formData.append('image', image);
 
@@ -52,9 +64,3 @@ export default function useCreateGathering() {
     },
   });
 }
-
-const NAME = {
-  OFFICE_STRETCHING: '달램핏 오피스 스트레칭',
-  MINDFULNESS: '달램핏 마인드풀니스',
-  WORKATION: '워케이션',
-};
