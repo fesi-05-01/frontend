@@ -70,7 +70,7 @@ export default function GroupCard({
 
         {joinedGathering.isCompleted ? (
           <button
-            className="w-120 h-10 cursor-not-allowed rounded-xl border-[1px] border-orange-600 bg-white px-[22px] py-[10px] text-sm font-semibold text-orange-600"
+            className="h-10 w-[120px] cursor-not-allowed rounded-xl border-[1px] border-orange-600 bg-white px-[20px] py-[10px] text-sm font-semibold text-orange-600"
             disabled
           >
             예약 취소하기
@@ -78,7 +78,7 @@ export default function GroupCard({
         ) : (
           <button
             onClick={handleCancelReservation}
-            className="w-120 h-10 rounded-xl border-[1px] border-orange-600 bg-white px-[22px] py-[10px] text-sm font-semibold text-orange-600"
+            className="h-10 w-[120px] rounded-xl border-[1px] border-orange-600 bg-white px-[20px] py-[10px] text-sm font-semibold text-orange-600"
           >
             예약 취소하기
           </button>

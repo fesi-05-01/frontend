@@ -24,6 +24,7 @@ export default function DataRenderer() {
           completed: true,
         }),
     },
+    user?.id,
     accessToken!,
   );
 
