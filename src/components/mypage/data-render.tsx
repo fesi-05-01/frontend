@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { useAtom } from 'jotai';
 
 import GroupCard from '~/src/components/mypage/group-card';
@@ -7,41 +7,46 @@ import TabTop from '~/src/components/mypage/tab-top';
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGetJoinedGatheringsInfinite from '~/src/services/mypage/use-get-joined-gatherings-infinite';
 import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
-import { userInfoAtom } from '~/src/stores/auth-store';
+import { accessTokenAtom, userInfoAtom } from '~/src/stores/auth-store';
 import { activeTabAtom, reviewSubTabAtom } from '~/src/stores/my-page-atoms';
 
 export default function DataRenderer() {
   const [activeTab] = useAtom(activeTabAtom);
   const [reviewSubTab] = useAtom(reviewSubTabAtom);
   const [user] = useAtom(userInfoAtom);
+  const [accessToken] = useAtom(accessTokenAtom);
 
-  const { data: groupData } = useGetJoinedGatheringsInfinite({
-    ...(activeTab === 'myReviews' &&
-      reviewSubTab === 'writableReviews' && {
-        reviewed: false,
-        completed: true,
+  const { data: groupData } = useGetJoinedGatheringsInfinite(
+    {
+      ...(activeTab === 'myReviews' &&
+        reviewSubTab === 'writableReviews' && {
+          reviewed: false,
+          completed: true,
+        }),
+    },
+    accessToken!,
+  );
+
+  const flattenedGroupData = useMemo(
+    () =>
+      (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
+        const currentTime = new Date();
+        return new Date(item.dateTime) > currentTime;
       }),
-  });
-  const flattenedGroupData = (
-    groupData?.pages.flatMap((page) => page) || []
-  ).filter((item) => {
-    const currentTime = new Date();
-    const startTime = new Date(item.dateTime);
-    return startTime > currentTime;
-  });
-  // `createdBy`를 클라이언트 측에서 필터링
-  const filteredGroupData =
-    activeTab === 'createdGroups'
-      ? flattenedGroupData.filter((item) => item.createdBy === user?.id)
-      : flattenedGroupData;
+    [groupData],
+  );
+
+  const filteredGroupData = useMemo(
+    () =>
+      activeTab === 'createdGroups'
+        ? flattenedGroupData.filter((item) => item.createdBy === user?.id)
+        : flattenedGroupData,
+    [flattenedGroupData, activeTab, user],
+  );
 
   const { data: reviewData } = useGetReviewInfiniteList();
 
-  // 임시버튼 상태 관리
-  const [forceEmpty, setForceEmpty] = useState(false);
-
-  // 데이터 없을 때의 메세지 함수
-  const getEmptyMessage = () => {
+  const getEmptyMessage = useMemo(() => {
     if (activeTab === 'myGroups') return '신청한 모임이 아직 없어요';
     if (activeTab === 'myReviews') {
       return reviewSubTab === 'writtenReviews'
@@ -50,33 +55,25 @@ export default function DataRenderer() {
     }
     if (activeTab === 'createdGroups') return '아직 만든 모임이 없어요';
     return null;
-  };
+  }, [activeTab, reviewSubTab]);
 
-  const isEmpty =
-    forceEmpty ||
-    (activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
-      ? !reviewData?.length
-      : !filteredGroupData.length);
+  const isEmpty = useMemo(
+    () =>
+      activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
+        ? !reviewData?.length
+        : !filteredGroupData.length,
+    [activeTab, reviewSubTab, reviewData, filteredGroupData],
+  );
 
   return (
     <div className="mt-4 flex grow flex-col border-t-2 border-secondary-900 px-4 py-6 tablet:p-6 desktop:mt-[30px]">
       <TabTop />
       {activeTab === 'myReviews' && <TabBottom />}
 
-      {/* 임시 버튼 */}
-      <div className="mb-4 flex justify-end">
-        <button
-          onClick={() => setForceEmpty((prev) => !prev)}
-          className="rounded-md bg-gray-300 px-4 py-2 text-sm font-medium text-secondary-900"
-        >
-          {forceEmpty ? '데이터 표시' : '데이터 숨기기'}
-        </button>
-      </div>
-
       {isEmpty ? (
         <div className="flex grow items-center justify-center">
           <p className="text-sm font-medium text-secondary-500">
-            {getEmptyMessage()}
+            {getEmptyMessage}
           </p>
         </div>
       ) : (

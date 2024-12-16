@@ -6,17 +6,23 @@ import {
   type GetJoinedGatheringsRequest,
   type GetJoinedGatheringsResponse,
 } from '~/src/services/mypage/types';
+
 const LIMIT = 10;
 
 export default function useGetJoinedGatheringsInfinite(
   params: GetJoinedGatheringsRequest,
+  accessToken: string,
 ) {
   return useInfiniteQuery({
     queryKey: gatheringsQueryKeys.joinedInfiniteList(params),
     queryFn: ({ pageParam }) =>
       get<GetJoinedGatheringsResponse>(`/gatherings/joined`, {
         params: { ...params, ...pageParam },
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
       }),
+    enabled: !!accessToken,
     initialPageParam: { limit: LIMIT, offset: 0 },
     getNextPageParam: (lastPage, _, lastPageParam) =>
       lastPage.length < LIMIT
