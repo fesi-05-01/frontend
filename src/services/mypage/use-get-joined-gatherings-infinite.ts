@@ -11,10 +11,11 @@ const LIMIT = 10;
 
 export default function useGetJoinedGatheringsInfinite(
   params: GetJoinedGatheringsRequest,
+  userId: number | undefined,
   accessToken: string,
 ) {
   return useInfiniteQuery({
-    queryKey: gatheringsQueryKeys.joinedInfiniteList(params),
+    queryKey: gatheringsQueryKeys.joinedInfiniteList(params, userId),
     queryFn: ({ pageParam }) =>
       get<GetJoinedGatheringsResponse>(`/gatherings/joined`, {
         params: { ...params, ...pageParam },
@@ -22,7 +23,7 @@ export default function useGetJoinedGatheringsInfinite(
           Authorization: `Bearer ${accessToken}`,
         },
       }),
-    enabled: !!accessToken,
+    enabled: !!accessToken && !!userId,
     initialPageParam: { limit: LIMIT, offset: 0 },
     getNextPageParam: (lastPage, _, lastPageParam) =>
       lastPage.length < LIMIT
