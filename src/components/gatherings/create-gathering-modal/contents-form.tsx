@@ -20,9 +20,8 @@ import {
   DialogTitle,
 } from '~/src/components/common/modal';
 import { ScrollArea } from '~/src/components/common/scroll-area';
-import FormCalendar from '~/src/components/gatherings/create-gathering-modal/form-calendar';
+import FormDate from '~/src/components/gatherings/create-gathering-modal/form-date';
 import FormGatheringType from '~/src/components/gatherings/create-gathering-modal/form-gathering-type';
-import FormHourPicker from '~/src/components/gatherings/create-gathering-modal/form-hour-picker';
 import FormImage from '~/src/components/gatherings/create-gathering-modal/form-image';
 import FormLocation from '~/src/components/gatherings/create-gathering-modal/form-location';
 import {
@@ -34,10 +33,11 @@ import useCreateGathering from '~/src/services/gatherings/use-create-gathering';
 import { cn } from '~/src/utils/class-name';
 
 interface Props {
+  open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-export default function ContentsForm({ onOpenChange }: Props) {
+export default function ContentsForm({ open, onOpenChange }: Props) {
   const router = useRouter();
 
   const { getParams } = useCustomParams();
@@ -46,9 +46,11 @@ export default function ContentsForm({ onOpenChange }: Props) {
   const form = useForm<CreateGatheringForm>({
     resolver: zodResolver(createGatheringSchema),
     defaultValues: {
-      day: {
-        date: new Date(),
-        time: undefined,
+      name: '',
+      date: {
+        gathering: {
+          date: new Date(),
+        },
       },
       capacity: '',
     },
@@ -67,6 +69,12 @@ export default function ContentsForm({ onOpenChange }: Props) {
       },
     });
   };
+
+  useEffect(() => {
+    if (open) return;
+
+    reset();
+  }, [open, reset]);
 
   useEffect(() => {
     if (params.open === 'true') {
@@ -94,6 +102,18 @@ export default function ContentsForm({ onOpenChange }: Props) {
             onSubmit={onSubmit(handleSubmit)}
             className="space-y-6 pb-6"
           >
+            {/* 모임 이름 폼 */}
+            <FormField
+              control={control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>모임 이름</FormLabel>
+                  <Input placeholder="모임 이름을 작성해주세요" {...field} />
+                </FormItem>
+              )}
+            />
+
             {/* 장소 폼 */}
             <FormField
               control={control}
@@ -116,17 +136,25 @@ export default function ContentsForm({ onOpenChange }: Props) {
             />
 
             {/* 날짜 폼 */}
-            <div>
+            <div className="flex flex-col gap-4 tablet:flex-row tablet:gap-9">
               <FormField
                 control={control}
-                name="day"
-                render={({ field }) => <FormCalendar field={field} />}
+                name="date"
+                render={({ field }) => (
+                  <FormDate type="gathering" label="모임 날짜" field={field} />
+                )}
               />
 
               <FormField
                 control={control}
-                name="day"
-                render={({ field }) => <FormHourPicker field={field} />}
+                name="date"
+                render={({ field }) => (
+                  <FormDate
+                    type="registration"
+                    label="마감 날짜(선택사항)"
+                    field={field}
+                  />
+                )}
               />
             </div>
 
@@ -138,7 +166,7 @@ export default function ContentsForm({ onOpenChange }: Props) {
                 <FormItem>
                   <FormLabel>모집 정원</FormLabel>
                   <Input
-                    placeholder="최소 5인 이상 입력해주세요."
+                    placeholder="최소 5인 이상 입력해주세요"
                     error={formState.errors.capacity?.message}
                     {...field}
                   />
