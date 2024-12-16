@@ -14,7 +14,7 @@ export const setAccessTokenAtom = atom(
       Cookies.set('accessToken', newToken, {
         secure: true, // HTTPS 에서만
         sameSite: 'strict', // CSRF
-        expires: 1 / 24,
+        maxAge: 3600,
       });
     } else {
       Cookies.remove('accessToken');
@@ -41,7 +41,7 @@ export const setUserInfoAtom = atom(
       Cookies.set('userInfo', JSON.stringify(newUserInfo), {
         secure: true,
         sameSite: 'strict',
-        expires: 1 / 24,
+        maxAge: 3600,
       });
     } else {
       Cookies.remove('userInfo');
