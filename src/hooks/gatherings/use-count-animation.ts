@@ -7,23 +7,28 @@ export function useCountAnimation(
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    let startTime: number;
-    let animationFrame: number;
+    let startTime: number | null = null;
+    let timeoutId: NodeJS.Timeout;
 
-    const animate = (currentTime: number) => {
+    const animate = () => {
+      const currentTime = performance.now();
       if (!startTime) startTime = currentTime;
-      const progress = (currentTime - startTime) / duration;
+
+      const progress = Math.min((currentTime - startTime) / duration, 1);
 
       if (progress < 1) {
         setCount(Math.floor(targetValue * progress));
-        animationFrame = requestAnimationFrame(animate);
+        timeoutId = setTimeout(animate, 16);
       } else {
         setCount(targetValue);
       }
     };
 
-    animationFrame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animationFrame);
+    setCount(0);
+    startTime = null;
+    timeoutId = setTimeout(animate, 16);
+
+    return () => clearTimeout(timeoutId);
   }, [targetValue, duration]);
 
   return count;

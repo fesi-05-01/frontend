@@ -44,6 +44,7 @@ export default function ProgressBar({
       className={cn(`relative h-1 w-full rounded-md bg-orange-50`, className)}
     >
       <div
+        role="presentation"
         className={cn(
           `h-1 rounded-md bg-orange-600 transition-all duration-1000 ease-out`,
           barClassName,
