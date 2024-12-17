@@ -39,6 +39,7 @@ export default function GatheringCardLarge({
     <div
       {...props}
       onClick={handleClick}
+      role="card-large"
       className={`relative flex rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       {/* 이미지 */}
@@ -108,18 +109,14 @@ export default function GatheringCardLarge({
               {cardState === 'confirmation' && <Confirmation />}
             </div>
             <ProgressBar
-              current={gathering.participantCount || 5}
-              capacity={gathering.capacity || 20}
+              current={gathering.participantCount}
+              capacity={gathering.capacity}
               barClassName={cardState === 'closed' ? 'bg-orange-400' : ''}
             />
           </div>
 
           {/* 버튼 */}
-          {cardState === 'closed' ? (
-            <ClosedButton />
-          ) : (
-            <JoinNowButton onClick={() => console.log('wow')} />
-          )}
+          {cardState === 'closed' ? <ClosedButton /> : <JoinNowButton />}
         </div>
       </div>
 
@@ -135,7 +132,7 @@ export default function GatheringCardLarge({
           {isSaved && (
             <SaveBye
               role="button"
-              aria-label="save-bye"
+              aria-label="save-bye-large"
               className="pointer-events-auto absolute right-4 top-4 cursor-pointer"
               onClick={(e: React.MouseEvent<SVGSVGElement>) => {
                 e.preventDefault();
