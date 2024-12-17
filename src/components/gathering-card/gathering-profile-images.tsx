@@ -4,9 +4,9 @@ import Image from 'next/image';
 import { toast } from 'sonner';
 
 import Loading from '~/app/loading';
+import ProfileLarge from '~/src/assets/images/profile-large.png';
 import { type GatheringParticipant } from '~/src/services/gatherings/types';
 import useGatheringParticipants from '~/src/services/gatherings/use-gathering-participants';
-
 interface Props {
   gatheringId: number;
   participantCount: number;
@@ -49,7 +49,7 @@ export default function GatheringProfileImages({
         >
           <Image
             key={index}
-            src={src}
+            src={!!src ? src : ProfileLarge}
             alt={`Profile Image ${index + 1}`}
             width={29}
             height={29}
@@ -70,7 +70,7 @@ export default function GatheringProfileImages({
             className="flex items-center gap-2 border-b border-gray-200 py-2 pl-3 pr-4"
           >
             <Image
-              src={participant.image}
+              src={!!participant.image ? participant.image : ProfileLarge}
               alt={`Profile Image ${index + 1}`}
               width={29}
               height={29}
