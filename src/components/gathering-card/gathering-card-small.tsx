@@ -11,6 +11,7 @@ import Tag from '~/src/components/common/tag';
 import ChipInfoContainer from '~/src/components/gathering-card/chip-info-container';
 import ClosedButton from '~/src/components/gathering-card/closed-button';
 import Confirmation from '~/src/components/gathering-card/confirmation';
+import { GatheringTypeContainer } from '~/src/components/gathering-card/gathering-type-container';
 import JoinNowButton from '~/src/components/gathering-card/join-now-button';
 import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
 import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
@@ -86,6 +87,7 @@ export default function GatheringCardSmall({
             </span>
           </div>
           <ChipInfoContainer dateTime={gathering.dateTime} />
+          <GatheringTypeContainer type={gathering.type} />
         </div>
 
         {/* progress bar */}
