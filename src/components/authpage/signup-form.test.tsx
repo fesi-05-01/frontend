@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import SignupForm from '~/src/components/authpage/signup-form';
+import { useSignup } from '~/src/services/auths/use-signup';
 
 jest.mock('~/src/services/auths/use-signup');
 
@@ -37,6 +38,60 @@ describe('회원가입 폼', () => {
     expect(getConfirmPasswordInput()).toBeInTheDocument();
 
     expect(getSignupButton()).toBeInTheDocument();
+  });
+
+  test('모든 필드 유효성 통과 useSignup 호출 테스트', async () => {
+    const mockMutate = jest.fn();
+    const mockUseSignup = jest.fn(() => ({
+      mutate: mockMutate,
+      isPending: false,
+    }));
+
+    (useSignup as jest.Mock).mockReturnValue(mockUseSignup());
+
+    renderSignupForm();
+    const nameInput = getNameInput();
+    const emailInput = getEmailInput();
+    const companyNameInput = getCompanyNameInput();
+    const passwordInput = getPasswordInput();
+    const confirmPasswordInput = getConfirmPasswordInput();
+    const signupButton = getSignupButton();
+
+    fireEvent.change(nameInput, { target: { value: '이름' } });
+    fireEvent.change(emailInput, { target: { value: 'test@test.com' } });
+    fireEvent.change(companyNameInput, { target: { value: '회사' } });
+    fireEvent.change(passwordInput, { target: { value: 'test1234*' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'test1234*' } });
+    fireEvent.submit(signupButton);
+
+    await waitFor(() => {
+      expect(mockMutate).toHaveBeenCalledWith({
+        email: 'test@test.com',
+        password: 'test1234*',
+        name: '이름',
+        companyName: '회사',
+        confirmPassword: 'test1234*',
+      });
+    });
+  });
+
+  test('isPending 테스트', async () => {
+    const mockUseSignup = jest.fn().mockReturnValue({
+      mutate: jest.fn(),
+      isPending: true,
+    });
+
+    (useSignup as jest.Mock).mockReturnValue(mockUseSignup());
+
+    renderSignupForm();
+
+    const signupButton = getSignupButton();
+
+    fireEvent.submit(signupButton);
+
+    await waitFor(() => {
+      expect(signupButton).toBeDisabled();
+    });
   });
 
   test('이름 입력 테스트', async () => {
