@@ -30,7 +30,7 @@ export const getDateForFormData = (
   if (hour) {
     const formattedHour = hour.toString().padStart(2, '0');
     const formattedMinute = (minute || 0).toString().padStart(2, '0');
-    return `${formattedDate}T${formattedHour}:${formattedMinute}:00+09:00`;
+    return `${formattedDate}T${formattedHour}:${formattedMinute}:00`;
   }
 
   return formattedDate;

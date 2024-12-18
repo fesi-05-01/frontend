@@ -11,6 +11,7 @@ import Tag from '~/src/components/common/tag';
 import ChipInfoContainer from '~/src/components/gathering-card/chip-info-container';
 import ClosedButton from '~/src/components/gathering-card/closed-button';
 import Confirmation from '~/src/components/gathering-card/confirmation';
+import { GatheringTypeContainer } from '~/src/components/gathering-card/gathering-type-container';
 import JoinNowButton from '~/src/components/gathering-card/join-now-button';
 import { type GatheringCardProps } from '~/src/components/gathering-card/type-props';
 import useGatheringCard from '~/src/hooks/gatherings/use-gathering-card';
@@ -43,7 +44,7 @@ export default function GatheringCardLarge({
       className={`relative flex rounded-3xl border-2 border-gray-100 transition-shadow hover:border-gray-200 hover:shadow-card-hover`}
     >
       {/* 이미지 */}
-      <div className="relative h-[156px] w-[280px] flex-shrink-0">
+      <div className="relative w-[280px] flex-shrink-0">
         {/* 이미지 없으면 그냥 하얗게 비워놓음 */}
         {gathering.image && (
           <Image
@@ -83,7 +84,8 @@ export default function GatheringCardLarge({
                 {gathering.location}
               </span>
             </div>
-            <ChipInfoContainer dateTime={gathering.dateTime ?? ''} />
+            <ChipInfoContainer dateTime={gathering.dateTime} />
+            <GatheringTypeContainer type={gathering.type} />
           </div>
         </div>
         <div>
