@@ -49,3 +49,37 @@ export const getDateForFormData = (
 
   return formattedDate;
 };
+
+/**
+ * 12시간제(AM/PM) 시간을 24시간제로 변환합니다.
+ * @param {Object} params - 변환할 시간 정보
+ * @param {number} params.hour - 시간 (1-12)
+ * @param {('AM'|'PM')} params.ampm - 오전/오후 구분
+ * @returns {number} 24시간제로 변환된 시간 (0-23)
+ * @example
+ * // AM 12시 -> 0시
+ * convertTo24Hour({ hour: 12, ampm: 'AM' }) // returns 0
+ *
+ * // PM 12시 -> 12시
+ * convertTo24Hour({ hour: 12, ampm: 'PM' }) // returns 12
+ *
+ * // PM 9시 -> 21시
+ * convertTo24Hour({ hour: 9, ampm: 'PM' }) // returns 21
+ */
+export const convertTo24Hour = ({
+  hour,
+  ampm,
+}: {
+  hour: number;
+  ampm: 'AM' | 'PM';
+}) => {
+  if (hour < 1 || hour > 12) {
+    throw new Error('시간은 1-12 사이의 값이어야 합니다.');
+  }
+
+  if (ampm === 'AM') {
+    return hour === 12 ? 0 : hour;
+  }
+
+  return hour === 12 ? 12 : hour + 12;
+};
