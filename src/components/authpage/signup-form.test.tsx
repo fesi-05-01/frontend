@@ -3,6 +3,11 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import SignupForm from '~/src/components/authpage/signup-form';
 import { useSignup } from '~/src/services/auths/use-signup';
 
+// 회원가입 폼 입력 필드 렌더링 테스트 - 통과
+// 모든 필드 유효성 검사 통과 useSignup 호출 테스트 - 통과
+// isPending 로딩중일 때 비활성화 테스트
+// 각 필드마다 빈 값이거나, 잘못된 형식일 때 에러 메시지 표시 테스트 - 통과
+
 jest.mock('~/src/services/auths/use-signup');
 
 jest.mock('~/src/services/auths/use-signup', () => ({
@@ -13,7 +18,6 @@ jest.mock('~/src/services/auths/use-signup', () => ({
 }));
 
 const renderSignupForm = () => render(<SignupForm />);
-screen.debug();
 
 const getNameInput = () => screen.getByPlaceholderText(/이름을 입력해주세요/);
 const getEmailInput = () =>
@@ -66,10 +70,10 @@ describe('회원가입 폼', () => {
 
     await waitFor(() => {
       expect(mockMutate).toHaveBeenCalledWith({
-        email: 'test@test.com',
-        password: 'test1234*',
         name: '이름',
+        email: 'test@test.com',
         companyName: '회사',
+        password: 'test1234*',
         confirmPassword: 'test1234*',
       });
     });
@@ -94,6 +98,7 @@ describe('회원가입 폼', () => {
     });
   });
 
+  // 이름
   test('이름 입력 테스트', async () => {
     renderSignupForm();
 
@@ -122,6 +127,8 @@ describe('회원가입 폼', () => {
       ).toBeInTheDocument();
     });
   });
+
+  // 이메일
   test('이메일 입력 테스트', async () => {
     renderSignupForm();
 
@@ -150,6 +157,7 @@ describe('회원가입 폼', () => {
       expect(screen.getByText(/이메일 형식이 아닙니다/)).toBeInTheDocument();
     });
   });
+  // 회사
   test('회사 입력 테스트', async () => {
     renderSignupForm();
 
@@ -178,6 +186,8 @@ describe('회원가입 폼', () => {
       ).toBeInTheDocument();
     });
   });
+  // 비밀번호
+
   test('비밀번호 입력 테스트', async () => {
     renderSignupForm();
 
@@ -203,6 +213,40 @@ describe('회원가입 폼', () => {
     await waitFor(() => {
       expect(
         screen.getByText(/비밀번호는 8자리 이상이어야 합니다/),
+      ).toBeInTheDocument();
+    });
+  });
+  test('비밀번호 형식 테스트', async () => {
+    renderSignupForm();
+
+    const passwordInput = getPasswordInput();
+    const signupButton = getSignupButton();
+
+    fireEvent.change(passwordInput, { target: { value: 'test1234' } });
+    fireEvent.submit(signupButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(
+          /영문, 숫자, 특수문자\(~!@#\$%\^&\*\)를 모두 조합해 주세요/,
+        ),
+      ).toBeInTheDocument();
+    });
+  });
+
+  // 비밀번호 확인
+  test('비밀번호 확인 입력 테스트', async () => {
+    renderSignupForm();
+
+    const confirmPasswordInput = getConfirmPasswordInput();
+    const signupButton = getSignupButton();
+
+    fireEvent.change(confirmPasswordInput, { target: { value: '' } });
+    fireEvent.submit(signupButton);
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/비밀번호를 다시 입력해주세요/),
       ).toBeInTheDocument();
     });
   });

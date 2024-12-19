@@ -68,7 +68,7 @@ describe('로그인 폼', () => {
       expect(screen.getByText(/이메일 형식이 아닙니다./)).toBeInTheDocument();
     });
   });
-  test('useLogin 호출 테스트', async () => {
+  test('유효성 검사 통과 useLogin 호출 테스트', async () => {
     const mockMutate = jest.fn();
     const mockUseLogin = jest.fn(() => ({
       mutate: mockMutate,
