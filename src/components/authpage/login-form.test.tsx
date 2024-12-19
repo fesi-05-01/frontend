@@ -65,7 +65,7 @@ describe('로그인 폼', () => {
     fireEvent.submit(loginButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/이메일 형식이 아닙니다./)).toBeInTheDocument();
+      expect(screen.getByText(/이메일 형식이 아닙니다/)).toBeInTheDocument();
     });
   });
   test('유효성 검사 통과 useLogin 호출 테스트', async () => {
