@@ -1,4 +1,5 @@
 import { signupSchema } from '~/src/components/authpage/validation/auth-schemas';
+import { loginSchema } from '~/src/components/authpage/validation/auth-schemas';
 
 describe('signupSchema', () => {
   const validData = {
@@ -53,5 +54,43 @@ describe('signupSchema', () => {
     expect(() => signupSchema.parse(differentPasswordData)).toThrow(
       '비밀번호가 일치하지 않습니다.',
     );
+  });
+
+  it('모든 유효성 조건이 만족된 경우', () => {
+    const parsedData = signupSchema.parse(validData);
+    expect(parsedData).toEqual(validData);
+  });
+});
+
+describe('loginSchema', () => {
+  const validData = {
+    email: 'test1@test.com',
+    password: 'test1234*',
+  };
+
+  it('잘못된 이메일일 경우', () => {
+    const invalidEmail = { ...validData, email: 'invalidEmail' };
+    expect(() => loginSchema.parse(invalidEmail)).toThrow(
+      '이메일 형식이 아닙니다.',
+    );
+  });
+
+  it('이메일을 입력하지 않았을 경우', () => {
+    const missingEmailData = { ...validData, email: '' };
+    expect(() => loginSchema.parse(missingEmailData)).toThrow(
+      '이메일을 입력해주세요',
+    );
+  });
+
+  it('비밀번호를 입력하지 않았을 경우', () => {
+    const shortPasswordData = { ...validData, password: '' };
+    expect(() => loginSchema.parse(shortPasswordData)).toThrow(
+      '비밀번호를 입력해주세요',
+    );
+  });
+
+  it('모든 유효성 조건이 만족된 경우', () => {
+    const parsedData = loginSchema.parse(validData);
+    expect(parsedData).toEqual(validData);
   });
 });
