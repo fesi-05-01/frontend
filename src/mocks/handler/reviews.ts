@@ -10,134 +10,36 @@ export const reviewsHandlers = [
       ['offset', 'limit', 'type', 'location', 'date', 'sortBy'] as const,
     );
 
-    const rawData = reviewJSON;
-    const { data } = rawData;
+    const { data } = reviewJSON;
 
     // 필터링 적용
-    const filteredData = {
-      ...rawData,
-      data: data.filter((review) => {
-        const typeMatch = type
-          ? type === 'DALLAEMFIT'
-            ? ['OFFICE_STRETCHING', 'MINDFULNESS'].includes(
-                review.Gathering.type,
-              )
-            : review.Gathering.type === type
-          : true;
-        const locationMatch = location
-          ? review.Gathering.location === location
-          : true;
-        const dateMatch = date ? review.createdAt.split('T')[0] === date : true;
+    const filteredData = filterReviews(data, { type, location, date });
 
-        return typeMatch && locationMatch && dateMatch;
-      }),
-    };
+    // 참여자 수 계산
+    const participantCounts = calculateParticipantCounts(filteredData);
 
     // 정렬 적용
-    if (sortBy) {
-      const participantCounts = filteredData.data.reduce(
-        (acc, review) => {
-          const gatheringId = review.Gathering.id;
-          acc[gatheringId] = (acc[gatheringId] || 0) + 1;
-          return acc;
-        },
-        {} as Record<number, number>,
-      );
+    const sortedData = sortReviews(filteredData, sortBy, participantCounts);
 
-      filteredData.data.sort((a, b) => {
-        switch (sortBy) {
-          case 'createdAt':
-            return (
-              new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-            );
-          case 'score':
-            return b.score - a.score;
-          case 'participantCount':
-            return (
-              participantCounts[b.Gathering.id] -
-              participantCounts[a.Gathering.id]
-            );
-          default:
-            return 0;
-        }
-      });
-    }
-
-    const slicedData = filteredData.data.slice(
-      Number(offset),
-      Number(offset) + Number(limit),
+    // 페이지네이션 데이터 계산
+    return HttpResponse.json(
+      calculatePaginationData(sortedData, offset, limit),
     );
-
-    const slicedTotalItemCount = filteredData.data.length;
-
-    return HttpResponse.json({
-      data: slicedData,
-      totalItemCount: slicedTotalItemCount,
-      currentPage: Math.floor(Number(offset) / Number(limit)) + 1,
-      totalPages: Math.ceil(slicedTotalItemCount / Number(limit)),
-    });
   }),
 
   http.get(baseUrl('/reviews/scores'), ({ request }) => {
     const { type } = getQueryParams(request.url, ['type'] as const);
 
-    const rawData = reviewJSON;
-    const { data } = rawData;
+    const { data } = reviewJSON;
 
     // 필터링 적용
-    const filteredData = {
-      ...rawData,
-      data: data.filter((review) => {
-        const typeMatch = type
-          ? type === 'DALLAEMFIT'
-            ? ['DALLAEMFIT', 'OFFICE_STRETCHING', 'MINDFULNESS'].includes(
-                review.Gathering.type,
-              )
-            : review.Gathering.type === type
-          : true;
+    const filteredData = filterReviews(data, { type });
 
-        return typeMatch;
-      }),
-    };
-
-    // 필터링된 데이터에서 별점 통계 계산
-    const scoreStats = filteredData.data.reduce(
-      (acc, review) => {
-        switch (review.score) {
-          case 1:
-            acc.oneStar++;
-            break;
-          case 2:
-            acc.twoStars++;
-            break;
-          case 3:
-            acc.threeStars++;
-            break;
-          case 4:
-            acc.fourStars++;
-            break;
-          case 5:
-            acc.fiveStars++;
-            break;
-        }
-        return acc;
-      },
-      {
-        oneStar: 0,
-        twoStars: 0,
-        threeStars: 0,
-        fourStars: 0,
-        fiveStars: 0,
-      },
-    );
+    // 별점 통계 계산
+    const scoreStats = calculateScoreStats(filteredData);
 
     // 평균 점수 계산
-    const totalScore = filteredData.data.reduce(
-      (sum, review) => sum + review.score,
-      0,
-    );
-    const averageScore =
-      filteredData.data.length > 0 ? totalScore / filteredData.data.length : 0;
+    const averageScore = calculateAverageScore(filteredData);
 
     return HttpResponse.json([
       {
@@ -149,3 +51,119 @@ export const reviewsHandlers = [
     ]);
   }),
 ];
+
+export const filterReviews = (
+  reviews: typeof reviewJSON.data,
+  filters: {
+    type: string | null;
+    location?: string | null;
+    date?: string | null;
+  },
+) => {
+  return reviews.filter((review) => {
+    const typeMatch = filters.type
+      ? filters.type === 'DALLAEMFIT'
+        ? ['OFFICE_STRETCHING', 'MINDFULNESS'].includes(review.Gathering.type)
+        : review.Gathering.type === filters.type
+      : true;
+    const locationMatch = filters.location
+      ? review.Gathering.location === filters.location
+      : true;
+    const dateMatch = filters.date
+      ? review.createdAt.split('T')[0] === filters.date
+      : true;
+
+    return typeMatch && locationMatch && dateMatch;
+  });
+};
+
+export const calculateParticipantCounts = (reviews: typeof reviewJSON.data) => {
+  return reviews.reduce(
+    (acc, review) => {
+      const gatheringId = review.Gathering.id;
+      acc[gatheringId] = (acc[gatheringId] || 0) + 1;
+      return acc;
+    },
+    {} as Record<number, number>,
+  );
+};
+
+export const sortReviews = (
+  reviews: typeof reviewJSON.data,
+  sortBy: string | null,
+  participantCounts: Record<number, number>,
+) => {
+  if (!sortBy) return reviews;
+
+  return [...reviews].sort((a, b) => {
+    switch (sortBy) {
+      case 'createdAt':
+        return (
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      case 'score':
+        return b.score - a.score;
+      case 'participantCount':
+        return (
+          participantCounts[b.Gathering.id] - participantCounts[a.Gathering.id]
+        );
+      default:
+        return 0;
+    }
+  });
+};
+
+export const calculatePaginationData = (
+  filteredData: typeof reviewJSON.data,
+  offset: string | null,
+  limit: string | null,
+) => {
+  const slicedData = filteredData.slice(
+    Number(offset),
+    Number(offset) + Number(limit),
+  );
+
+  return {
+    data: slicedData,
+    totalItemCount: filteredData.length,
+    currentPage: Math.floor(Number(offset) / Number(limit)) + 1,
+    totalPages: Math.ceil(filteredData.length / Number(limit)),
+  };
+};
+
+export const calculateScoreStats = (reviews: typeof reviewJSON.data) => {
+  return reviews.reduce(
+    (acc, review) => {
+      switch (review.score) {
+        case 1:
+          acc.oneStar++;
+          break;
+        case 2:
+          acc.twoStars++;
+          break;
+        case 3:
+          acc.threeStars++;
+          break;
+        case 4:
+          acc.fourStars++;
+          break;
+        case 5:
+          acc.fiveStars++;
+          break;
+      }
+      return acc;
+    },
+    {
+      oneStar: 0,
+      twoStars: 0,
+      threeStars: 0,
+      fourStars: 0,
+      fiveStars: 0,
+    },
+  );
+};
+
+export const calculateAverageScore = (reviews: typeof reviewJSON.data) => {
+  const totalScore = reviews.reduce((sum, review) => sum + review.score, 0);
+  return reviews.length > 0 ? totalScore / reviews.length : 0;
+};
