@@ -113,7 +113,7 @@ export default function ProfileEdit() {
         }
       } catch (error) {
         console.error(error);
-        toast.error('이미지 업로드 중 오류가 발생했어요.');
+        toast.error('이미지 업로드 중 오류가 발생했습니다.');
       }
     }
   };
