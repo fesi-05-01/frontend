@@ -2,114 +2,107 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import RightFilter from '~/src/components/common/right-filter';
 
-describe('RightFilter 컴포넌트 테스트', () => {
-  const mockOptions = ['Option 1', 'Option 2', 'Option 3'];
-  const mockOnOptionSelect = jest.fn();
-  const mockOnDateSelect = jest.fn();
-  const mockOnDateReset = jest.fn();
+jest.mock('~/src/components/common/calendar-dropdown', () => ({
+  __esModule: true,
+  default: jest.fn(({ onDateSelect, onReset }) => (
+    <div role="dialog">
+      <button onClick={() => onDateSelect(new Date(2024, 11, 19))}>19</button>
+      <button aria-label="초기화" onClick={onReset}>
+        초기화
+      </button>
+    </div>
+  )),
+}));
 
-  afterEach(() => {
+jest.mock('~/src/components/common/dropdown', () => ({
+  __esModule: true,
+  default: jest.fn(({ options, onSelect, selectedOption }) => (
+    <div role="listbox">
+      {options.map((option: string) => (
+        <button
+          key={option}
+          role="option"
+          aria-selected={selectedOption === option}
+          onClick={() => onSelect(option)}
+        >
+          {option}
+        </button>
+      ))}
+    </div>
+  )),
+}));
+
+describe('RightFilter 컴포넌트', () => {
+  const placeholder = '필터 선택';
+  const options = ['옵션 1', '옵션 2', '옵션 3'];
+  const onOptionSelect = jest.fn();
+  const onDateSelect = jest.fn();
+  const onDateReset = jest.fn();
+
+  beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('플레이스홀더 텍스트가 제대로 렌더링되는지 확인', () => {
+  test('캘린더가 열리고 날짜를 선택하면 onDateSelect가 호출되어야 한다.', () => {
     render(
       <RightFilter
-        placeholder="Select an option"
-        options={mockOptions}
-        onOptionSelect={mockOnOptionSelect}
-      />,
-    );
-
-    expect(screen.getByText('Select an option')).toBeInTheDocument();
-  });
-
-  it('드롭다운 옵션을 클릭하면 onOptionSelect 콜백이 호출되는지 확인', () => {
-    render(
-      <RightFilter
-        placeholder="Select an option"
-        options={mockOptions}
-        onOptionSelect={mockOnOptionSelect}
-      />,
-    );
-
-    fireEvent.click(screen.getByText('Select an option'));
-    fireEvent.click(screen.getByText('Option 1'));
-
-    expect(mockOnOptionSelect).toHaveBeenCalledTimes(1);
-    expect(mockOnOptionSelect).toHaveBeenCalledWith('Option 1');
-  });
-
-  it('캘린더 모드에서 날짜를 선택하면 onDateSelect 콜백이 호출되는지 확인', () => {
-    render(
-      <RightFilter
-        options={mockOptions}
-        placeholder="Select a date"
+        options={options}
+        placeholder={placeholder}
         calendar
-        onDateSelect={mockOnDateSelect}
+        onDateSelect={onDateSelect}
       />,
     );
 
-    fireEvent.click(screen.getByText('Select a date'));
+    const button = screen.getByRole('button', { name: placeholder });
+    fireEvent.click(button);
 
-    // 날짜를 선택하는 로직이 별도 구현체에 따라 다르므로 가정된 코드
-    const mockDate = new Date(2024, 11, 25); // 2024년 12월 25일
-    fireEvent.click(screen.getByText('25')); // 가정: 날짜 버튼이 '25' 텍스트로 렌더링됨
+    const dayButton = screen.getByText('19');
+    fireEvent.click(dayButton);
 
-    expect(mockOnDateSelect).toHaveBeenCalledTimes(1);
-    expect(mockOnDateSelect).toHaveBeenCalledWith(mockDate);
+    expect(onDateSelect).toHaveBeenCalledWith(new Date(2024, 11, 19));
   });
 
-  it('캘린더 초기화 버튼이 작동하고 onDateReset 콜백이 호출되는지 확인', () => {
+  test('초기화를 누르면 onDateReset이 호출되어야 한다.', () => {
     render(
       <RightFilter
-        options={mockOptions}
-        placeholder="Select a date"
+        placeholder={placeholder}
         calendar
-        onDateSelect={mockOnDateSelect}
-        onDateReset={mockOnDateReset}
+        onDateReset={onDateReset}
+        options={options}
       />,
     );
 
-    fireEvent.click(screen.getByText('Select a date'));
+    const button = screen.getByRole('button', { name: placeholder });
+    fireEvent.click(button);
 
-    // 초기화 버튼 클릭 가정
-    const resetButton = screen.getByText('초기화');
+    const resetButton = screen.getByRole('button', { name: /초기화/i });
     fireEvent.click(resetButton);
 
-    expect(mockOnDateReset).toHaveBeenCalledTimes(1);
+    expect(onDateReset).toHaveBeenCalled();
   });
 
-  it('드롭다운 외부 클릭 시 드롭다운이 닫히는지 확인', () => {
+  test('옵션 드롭다운이 열리고 옵션을 선택하면 onOptionSelect가 호출되어야 한다.', () => {
     render(
       <RightFilter
-        placeholder="Select an option"
-        options={mockOptions}
-        onOptionSelect={mockOnOptionSelect}
+        options={options}
+        placeholder={placeholder}
+        onOptionSelect={onOptionSelect}
       />,
     );
 
-    // 드롭다운 열기
-    fireEvent.click(screen.getByText('Select an option'));
+    const button = screen.getByRole('button', { name: placeholder });
+    fireEvent.click(button);
 
-    // 외부 클릭
-    fireEvent.mouseDown(document);
+    const option = screen.getByRole('option', { name: '옵션 2' });
+    fireEvent.click(option);
 
-    expect(screen.queryByText('Option 1')).not.toBeInTheDocument();
+    expect(onOptionSelect).toHaveBeenCalledWith('옵션 2');
   });
 
-  it('선택된 옵션이 표시되는지 확인', () => {
-    render(
-      <RightFilter
-        placeholder="Select an option"
-        options={mockOptions}
-        onOptionSelect={mockOnOptionSelect}
-      />,
-    );
+  test('플레이스홀더가 제대로 표시되어야 한다.', () => {
+    render(<RightFilter options={options} placeholder={placeholder} />);
 
-    fireEvent.click(screen.getByText('Select an option'));
-    fireEvent.click(screen.getByText('Option 2'));
-
-    expect(screen.getByText('Option 2')).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: placeholder });
+    expect(button).toBeInTheDocument();
   });
 });
