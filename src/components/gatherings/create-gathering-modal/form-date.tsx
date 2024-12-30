@@ -50,7 +50,7 @@ export default function FormDate({ label, type, field }: Props) {
       selectedDate?.ampm === currentAmPm &&
       (currentAmPm === 'PM'
         ? hour === 12 || hour < (nowTime % 12 || 12)
-        : hour < nowTime)
+        : hour === 12 || hour < nowTime) // AM일 때 12시도 체크
     );
   };
 
