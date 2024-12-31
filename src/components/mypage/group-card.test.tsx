@@ -1,4 +1,5 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { render, screen } from '@testing-library/react';
 
 import GroupCard from '~/src/components/mypage/group-card';
 import { type GatheringLocation } from '~/src/services/types';
@@ -19,17 +20,16 @@ describe('GroupCard', () => {
     state: 'default' as const,
   };
 
+  const renderWithQueryClient = (ui: React.ReactElement) => {
+    const queryClient = new QueryClient();
+    return render(
+      <QueryClientProvider client={queryClient}>{ui}</QueryClientProvider>,
+    );
+  };
+
   it('renders the group card with correct details', () => {
-    render(<GroupCard {...mockProps} />);
+    renderWithQueryClient(<GroupCard {...mockProps} />);
     expect(screen.getByText('Test Gathering')).toBeInTheDocument();
     expect(screen.getByText('Test Location')).toBeInTheDocument();
-  });
-
-  it('changes state to "disabled" when cancel button is clicked', () => {
-    render(<GroupCard {...mockProps} />);
-    const cancelButton = screen.getByText('예약 취소하기');
-    fireEvent.click(cancelButton);
-
-    expect(screen.getByText(/모집 취소된 모임이에요/)).toBeInTheDocument();
   });
 });

@@ -24,7 +24,7 @@ export default function DataRenderer() {
             completed: true,
           }
         : {
-            completed: false,
+            completed: undefined,
             reviewed: undefined,
           }),
     },
