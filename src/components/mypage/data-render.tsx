@@ -6,7 +6,7 @@ import TabBottom from '~/src/components/mypage/tab-bottom';
 import TabTop from '~/src/components/mypage/tab-top';
 import ReviewCardItem from '~/src/components/reviews/review-card-item';
 import useGetJoinedGatheringsInfinite from '~/src/services/mypage/use-get-joined-gatherings-infinite';
-import useGetReviewInfiniteList from '~/src/services/reviews/use-get-review-infinite-list';
+import useGetJoinedReviewInfiniteList from '~/src/services/mypage/use-get-joined-review-infinite-list';
 import { accessTokenAtom, userInfoAtom } from '~/src/stores/auth-store';
 import { activeTabAtom, reviewSubTabAtom } from '~/src/stores/my-page-atoms';
 
@@ -18,22 +18,30 @@ export default function DataRenderer() {
 
   const { data: groupData } = useGetJoinedGatheringsInfinite(
     {
-      ...(activeTab === 'myReviews' &&
-        reviewSubTab === 'writableReviews' && {
-          reviewed: false,
-          completed: true,
-        }),
+      ...(activeTab === 'myReviews' && reviewSubTab === 'writableReviews'
+        ? {
+            reviewed: false,
+            completed: true,
+          }
+        : {
+            completed: false,
+            reviewed: undefined,
+          }),
     },
     user?.id,
     accessToken!,
   );
 
+  // const flattenedGroupData = useMemo(
+  //   () =>
+  //     (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
+  //       const currentTime = new Date();
+  //       return new Date(item.dateTime) > currentTime;
+  //     }),
+  //   [groupData],
+  // );
   const flattenedGroupData = useMemo(
-    () =>
-      (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
-        const currentTime = new Date();
-        return new Date(item.dateTime) > currentTime;
-      }),
+    () => groupData?.pages.flatMap((page) => page) || [],
     [groupData],
   );
 
@@ -45,7 +53,7 @@ export default function DataRenderer() {
     [flattenedGroupData, activeTab, user],
   );
 
-  const { data: reviewData } = useGetReviewInfiniteList();
+  const { data: reviewData } = useGetJoinedReviewInfiniteList(user?.id);
 
   const getEmptyMessage = useMemo(() => {
     if (activeTab === 'myGroups') return '신청한 모임이 아직 없어요';
