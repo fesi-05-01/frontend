@@ -32,6 +32,14 @@ export default function DataRenderer() {
     accessToken!,
   );
 
+  // const flattenedGroupData = useMemo(
+  //   () =>
+  //     (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
+  //       const currentTime = new Date();
+  //       return new Date(item.dateTime) > currentTime;
+  //     }),
+  //   [groupData],
+  // );
   const flattenedGroupData = useMemo(
     () => groupData?.pages.flatMap((page) => page) || [],
     [groupData],
