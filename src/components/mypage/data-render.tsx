@@ -24,7 +24,7 @@ export default function DataRenderer() {
             completed: true,
           }
         : {
-            completed: undefined,
+            completed: false,
             reviewed: undefined,
           }),
     },
@@ -32,26 +32,28 @@ export default function DataRenderer() {
     accessToken!,
   );
 
-  // const flattenedGroupData = useMemo(
-  //   () =>
-  //     (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
-  //       const currentTime = new Date();
-  //       return new Date(item.dateTime) > currentTime;
-  //     }),
-  //   [groupData],
-  // );
   const flattenedGroupData = useMemo(
     () => groupData?.pages.flatMap((page) => page) || [],
     [groupData],
   );
 
-  const filteredGroupData = useMemo(
-    () =>
-      activeTab === 'createdGroups'
-        ? flattenedGroupData.filter((item) => item.createdBy === user?.id)
-        : flattenedGroupData,
-    [flattenedGroupData, activeTab, user],
-  );
+  const filteredAndSortedGroupData = useMemo(() => {
+    const today = new Date().toISOString();
+
+    return flattenedGroupData
+      .map((item) => ({
+        ...item,
+        state:
+          new Date(item.dateTime) < new Date(today) &&
+          item.isCompleted === false
+            ? ('disabled' as const)
+            : ('default' as const),
+      }))
+      .sort(
+        (a, b) =>
+          new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime(),
+      );
+  }, [flattenedGroupData]);
 
   const { data: reviewData } = useGetJoinedReviewInfiniteList(user?.id);
 
@@ -70,8 +72,8 @@ export default function DataRenderer() {
     () =>
       activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
         ? !reviewData?.length
-        : !filteredGroupData.length,
-    [activeTab, reviewSubTab, reviewData, filteredGroupData],
+        : !filteredAndSortedGroupData.length,
+    [activeTab, reviewSubTab, reviewData, filteredAndSortedGroupData],
   );
 
   return (
@@ -97,11 +99,11 @@ export default function DataRenderer() {
                   hasTypeDescription={true}
                 />
               ))
-            : filteredGroupData.map((data) => (
+            : filteredAndSortedGroupData.map((data) => (
                 <GroupCard
                   key={data.id}
                   joinedGathering={data}
-                  state="default"
+                  state={data.state}
                 />
               ))}
         </div>

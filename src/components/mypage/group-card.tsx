@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
 import { useAtom } from 'jotai';
 
@@ -18,7 +17,7 @@ export default function GroupCard({
   joinedGathering,
   state: initialState,
 }: GroupCardProps) {
-  const [state, setState] = useState(initialState);
+  const state = initialState;
   const [activeTab] = useAtom(activeTabAtom);
   const [user] = useAtom(userInfoAtom);
   const { date, time } = formatDateTime(joinedGathering.dateTime ?? '');
@@ -35,7 +34,7 @@ export default function GroupCard({
       { gatheringId: joinedGathering.id },
       {
         onSuccess: () => {
-          setState('disabled');
+          alert('모임 참여를 성공적으로 취소했습니다.');
         },
         onError: () => {
           alert('예약 취소에 실패했습니다. 다시 시도해주세요.');
