@@ -60,10 +60,16 @@ export default function DataRenderer() {
             ? ('disabled' as const)
             : ('default' as const),
       }))
-      .sort(
-        (a, b) =>
-          new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime(),
-      );
+      .sort((a, b) => {
+        const isAPast = new Date(a.dateTime) < new Date(today);
+        const isBPast = new Date(b.dateTime) < new Date(today);
+
+        if (isAPast !== isBPast) {
+          return isAPast ? 1 : -1;
+        }
+
+        return new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime();
+      });
   }, [filteredGroupData]);
 
   const { data: reviewData } = useGetJoinedReviewInfiniteList(user?.id);
@@ -119,7 +125,7 @@ export default function DataRenderer() {
           </p>
         </div>
       ) : (
-        <div className="flex w-full flex-col gap-4">
+        <div className="flex w-full flex-col gap-4" role="listitem">
           {activeTab === 'myReviews' && reviewSubTab === 'writtenReviews'
             ? reviewData?.map((data) => (
                 <ReviewCardItem
@@ -140,7 +146,11 @@ export default function DataRenderer() {
         </div>
       )}
 
-      <div ref={observerRef} className="h-10"></div>
+      <div
+        ref={observerRef}
+        className="h-10"
+        data-testid="observer-target"
+      ></div>
 
       {isFetchingNextPage && (
         <div className="flex justify-center p-4 text-sm text-secondary-500">

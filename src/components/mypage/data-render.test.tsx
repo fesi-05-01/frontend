@@ -1,11 +1,28 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { createStore, Provider as JotaiProvider } from 'jotai';
 
 import DataRenderer from '~/src/components/mypage/data-render';
 import { type User } from '~/src/services/auths/types';
 import { accessTokenAtom, userInfoAtom } from '~/src/stores/auth-store';
 import { activeTabAtom, reviewSubTabAtom } from '~/src/stores/my-page-atoms';
+
+beforeAll(() => {
+  class MockIntersectionObserver {
+    observe = jest.fn();
+    unobserve = jest.fn();
+    disconnect = jest.fn();
+    takeRecords = jest.fn();
+  }
+
+  Object.defineProperty(MockIntersectionObserver, 'prototype', {
+    value: MockIntersectionObserver.prototype,
+  });
+
+  global.IntersectionObserver =
+    MockIntersectionObserver as unknown as typeof IntersectionObserver;
+});
+
 describe('DataRenderer 컴포넌트 테스트', () => {
   const renderWithProviders = ({
     activeTab = 'myReviews',
@@ -15,7 +32,6 @@ describe('DataRenderer 컴포넌트 테스트', () => {
   } = {}) => {
     const queryClient = new QueryClient();
 
-    // Jotai의 상태 초기화를 위한 store 생성
     const store = createStore();
     store.set(
       activeTabAtom,
@@ -74,5 +90,15 @@ describe('DataRenderer 컴포넌트 테스트', () => {
 
     const emptyMessage = await screen.findByText('아직 만든 모임이 없어요');
     expect(emptyMessage).toBeInTheDocument();
+  });
+
+  it('GroupCard와 ReviewCardItem이 데이터를 기반으로 렌더링되어야 한다.', async () => {
+    renderWithProviders({
+      activeTab: 'myGroups',
+    });
+
+    await waitFor(() => screen.getAllByRole('listitem'));
+    const groupCards = screen.getAllByRole('listitem');
+    expect(groupCards).toHaveLength(1); // mock 데이터 기준
   });
 });

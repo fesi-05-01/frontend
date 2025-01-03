@@ -18,7 +18,6 @@ export default function GroupCard({
   state: initialState,
 }: GroupCardProps) {
   const state = initialState;
-
   const [activeTab] = useAtom(activeTabAtom);
   const [user] = useAtom(userInfoAtom);
   const { date, time } = formatDateTime(joinedGathering.dateTime ?? '');
