@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useAtom } from 'jotai';
 
 import GroupCard from '~/src/components/mypage/group-card';
@@ -16,7 +16,12 @@ export default function DataRenderer() {
   const [user] = useAtom(userInfoAtom);
   const [accessToken] = useAtom(accessTokenAtom);
 
-  const { data: groupData } = useGetJoinedGatheringsInfinite(
+  const {
+    data: groupData,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetJoinedGatheringsInfinite(
     {
       ...(activeTab === 'myReviews' && reviewSubTab === 'writableReviews'
         ? {
@@ -24,7 +29,7 @@ export default function DataRenderer() {
             completed: true,
           }
         : {
-            completed: false,
+            completed: undefined,
             reviewed: undefined,
           }),
     },
@@ -32,23 +37,21 @@ export default function DataRenderer() {
     accessToken!,
   );
 
-  // const flattenedGroupData = useMemo(
-  //   () =>
-  //     (groupData?.pages.flatMap((page) => page) || []).filter((item) => {
-  //       const currentTime = new Date();
-  //       return new Date(item.dateTime) > currentTime;
-  //     }),
-  //   [groupData],
-  // );
   const flattenedGroupData = useMemo(
     () => groupData?.pages.flatMap((page) => page) || [],
     [groupData],
   );
-
+  const filteredGroupData = useMemo(
+    () =>
+      activeTab === 'createdGroups'
+        ? flattenedGroupData.filter((item) => item.createdBy === user?.id)
+        : flattenedGroupData,
+    [flattenedGroupData, activeTab, user],
+  );
   const filteredAndSortedGroupData = useMemo(() => {
     const today = new Date().toISOString();
 
-    return flattenedGroupData
+    return filteredGroupData
       .map((item) => ({
         ...item,
         state:
@@ -61,7 +64,7 @@ export default function DataRenderer() {
         (a, b) =>
           new Date(a.dateTime).getTime() - new Date(b.dateTime).getTime(),
       );
-  }, [flattenedGroupData]);
+  }, [filteredGroupData]);
 
   const { data: reviewData } = useGetJoinedReviewInfiniteList(user?.id);
 
@@ -83,6 +86,26 @@ export default function DataRenderer() {
         : !filteredAndSortedGroupData.length,
     [activeTab, reviewSubTab, reviewData, filteredAndSortedGroupData],
   );
+
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const currentRef = observerRef.current;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasNextPage) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1.0 },
+    );
+
+    if (currentRef) observer.observe(currentRef);
+
+    return () => {
+      if (currentRef) observer.unobserve(currentRef);
+    };
+  }, [hasNextPage, fetchNextPage]);
 
   return (
     <div className="mt-4 flex grow flex-col border-t-2 border-secondary-900 px-4 py-6 tablet:p-6 desktop:mt-[30px]">
@@ -114,6 +137,14 @@ export default function DataRenderer() {
                   state={data.state}
                 />
               ))}
+        </div>
+      )}
+
+      <div ref={observerRef} className="h-10"></div>
+
+      {isFetchingNextPage && (
+        <div className="flex justify-center p-4 text-sm text-secondary-500">
+          로딩 중...
         </div>
       )}
     </div>
